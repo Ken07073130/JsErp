@@ -1,0 +1,246 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="dzlym.aspx.cs" Inherits="jsERP_glym" Title="金色能源ERP-电子流评审" %>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server" >
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>金色能源数据系统</title>
+
+<style type="text/css">
+  .titleCount{
+    width:10px;
+    color:#FF0000;
+    
+  }
+    table{
+    font-size:12px;
+    text-align :center;
+    }
+</style>  
+</head>
+<body>
+<form id="form1" runat="server" >
+<table width="600" border="0" cellspacing="0" cellpadding="0" align="center" >
+      <tr align="center" height="10">
+     <td></td>
+     <td></td>
+     <td></td>
+   </tr> 
+   <tr align="center" >
+     <td width="200" >
+
+         <table width="190" border="0" cellpadding="0"  cellspacing="1" bgcolor="#000000">
+           <tr >
+             <td height="26" bgcolor="#33CCFF" align="center" >合同评审单</td>
+           </tr>
+
+           <tr bgcolor="#FFFFFF">
+             <td height="120"  >		 <table width="190" border="0" cellspacing="0" cellpadding="0">
+           <tr>
+             <td height="90" colspan="2" valign="top" ></td>
+             </tr>
+           <tr>
+             <td height="30" align="left"  >&nbsp;&nbsp;&nbsp;下载</td>
+             <td   align="right"  ><a href="swxt/htpsbList.aspx">查看</a>&nbsp;&nbsp;&nbsp;</td>
+           </tr>
+         </table></td>
+           </tr>
+       </table>
+</td>
+     <td width="200"><table width="190" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000">
+       <tr >
+         <td height="26" bgcolor="#33CCFF" align="center" >合同评审变更单</td>
+       </tr>
+       <tr bgcolor="#FFFFFF">
+         <td height="120">
+		 <table width="190" border="0" cellspacing="0" cellpadding="0">
+           <tr>
+             <td height="90" colspan="2" valign="top" >&nbsp; </br> 未评审前3条：</br>【PO123456】[3天]</br>【PZ231256】[2天]</br>【PW498273】[1天]</td>
+             </tr>
+           <tr>
+             <td height="30" align="left"  >&nbsp;&nbsp;&nbsp;下载</td>
+             <td   align="right" >查看&nbsp;&nbsp;&nbsp;</td>
+           </tr>
+         </table>
+         
+         </td>
+       </tr>
+     </table></td>
+     <td width="200"><table width="190" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000">
+       <tr >
+         <td height="26" bgcolor="#33CCFF" align="center" >生产补投评审单</td>
+       </tr>
+       <tr bgcolor="#FFFFFF">
+         <td height="120">&nbsp;</td>
+       </tr>
+     </table></td>
+   </tr>
+      <tr align="center" height="10">
+     <td></td>
+     <td></td>
+     <td></td>
+   </tr> 
+   <tr align="center" >
+     <td>
+	    <table width="190" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000">
+           <tr >
+             <td height="26" bgcolor="#33CCFF" align="center" >客诉处理单</td>
+           </tr>
+           <tr bgcolor="#FFFFFF">
+             <td height="120"> <table width="190" border="0" cellspacing="0" cellpadding="0">
+           <tr>
+             <td height="90" colspan="2" valign="top" >&nbsp; </br> 未评审前3条：</br>【PO123456】[3天]</br>【PZ231256】[2天]</br>【PW498273】[1天]</td>
+             </tr>
+           <tr>
+             <td height="30" align="left"  >&nbsp;&nbsp;&nbsp;下载</td>
+             <td   align="right" ><a href="dzlps/ksdlb.aspx">查询</a>&nbsp;&nbsp;&nbsp;</td>
+           </tr>
+         </table></td>
+           </tr>
+       </table>
+	 </td>
+	      <td>
+	    <div style="width:190px">
+	    <table width="190" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000">
+           <tr >
+             <td height="26" bgcolor="#33CCFF" align="center" >品质反馈单<asp:Label ID="lbYpjysTs" runat="server" class="titleCount" ></asp:Label></td>
+           </tr>
+           <tr bgcolor="#FFFFFF">
+             <td height="120"> <table width="190" border="0" cellspacing="0" cellpadding="0">
+           <tr>
+             <td height="90" colspan="2" valign="top" >
+                     &nbsp; </br> 未评审前3条：
+                     </br><asp:Label ID="lbYpjys1" runat="server" ></asp:Label>
+                     </br><asp:Label ID="lbYpjys2" runat="server"></asp:Label>
+                     </br><asp:Label ID="lbYpjys3" runat="server"></asp:Label>
+             </td>
+             </tr>
+           <tr>
+             <td height="30" align="left"  ></td>
+             <td align="right" ><a href="jsERP/pzfkbList.aspx" >进入</a></td>
+           </tr>
+         </table></td>
+           </tr>
+       </table>
+       </div>
+	 </td>
+     <td>
+     	 <div style="width:190px">
+	    <table width="190" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000">
+           <tr >
+             <td height="26" bgcolor="#33CCFF" align="center" >产品开发提案书<asp:Label ID="lbCpkftasTs" runat="server" class="titleCount" ></asp:Label></td>
+           </tr>
+           <tr bgcolor="#FFFFFF">
+             <td height="120"> <table width="190" border="0" cellspacing="0" cellpadding="0">
+           <tr>
+             <td height="90" colspan="2" valign="top" >
+                &nbsp; </br> 未评审前3条：
+                </br><asp:Label ID="lbCpkftas1" runat="server" Text="无需要评审记录"></asp:Label>
+                     </br><asp:Label ID="lbCpkftas2" runat="server"></asp:Label>
+                     </br><asp:Label ID="lbCpkftas3" runat="server"></asp:Label>
+             </td>
+             </tr>
+           <tr>
+             <td height="30" align="left"  >&nbsp;&nbsp;&nbsp;下载</td>
+             <td   align="right" ><a href="yp/cpkftaList.aspx?djlx=CPKFTA">查询</a>&nbsp;&nbsp;&nbsp;</td>
+           </tr>
+         </table></td>
+           </tr>
+       </table>
+       </div>
+     </td>
+     <td> 
+       </td>
+   </tr>
+   
+   <!--第三行-->
+    <tr align="center" height="10">
+     <td></td>
+     <td></td>
+     <td></td>
+   </tr> 
+   <tr align="center" >
+     <td>
+	   <div style="width:190px">
+	    <table width="190" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000">
+           <tr >
+             <td height="26" bgcolor="#33CCFF" align="center" >专项问题反馈<asp:Label ID="Label1" runat="server" class="titleCount" ></asp:Label></td>
+           </tr>
+           <tr bgcolor="#FFFFFF">
+             <td height="120"> <table width="190" border="0" cellspacing="0" cellpadding="0">
+           <tr>
+             <td height="90" colspan="2" valign="top" >
+                     &nbsp; </br> 未评审前3条：
+                     </br><asp:Label ID="Label2" runat="server" Text="无需要评审记录"></asp:Label>
+                     </br><asp:Label ID="Label3" runat="server"></asp:Label>
+                     </br><asp:Label ID="Label4" runat="server"></asp:Label>
+             </td>
+             </tr>
+           <tr>
+             <td height="30" align="left"  ><a href="PPT/专项问题反馈/专项问题反馈.html" target="_blank">操作方法</a></td>
+             <td   align="right" ><a href="jsERP/zxwtfkList.aspx">查询</a>&nbsp;&nbsp;&nbsp;</td>
+           </tr>
+         </table></td>
+           </tr>
+       </table>
+       </div> 
+	 </td>
+	  <td>
+	  <div style="width:190px">
+	    <table width="190" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000">
+           <tr >
+             <td height="26" bgcolor="#33CCFF" align="center" >客户投诉单(市场用)<asp:Label ID="Label5" runat="server" class="titleCount" ></asp:Label></td>
+           </tr>
+           <tr bgcolor="#FFFFFF">
+             <td height="120"> <table width="190" border="0" cellspacing="0" cellpadding="0">
+           <tr>
+             <td height="90" colspan="2" valign="top" >
+                     &nbsp; </br> 未评审前3条：
+                     </br><asp:Label ID="Label6" runat="server" Text="无需要评审记录"></asp:Label>
+                     </br><asp:Label ID="Label7" runat="server"></asp:Label>
+                     </br><asp:Label ID="Label8" runat="server"></asp:Label>
+             </td>
+             </tr>
+           <tr>
+             <td height="30" align="left"  ></td>
+             <td   align="right" ><a href="yp/khtsdList.aspx">进入</a>&nbsp;&nbsp;&nbsp;</td>
+           </tr>
+         </table></td>
+           </tr>
+       </table>
+       </div> 
+	 </td>
+     <td>
+     	<div style="width:190px">
+	    <table width="190" border="0" cellpadding="0" cellspacing="1" bgcolor="#000000">
+           <tr >
+             <td height="26" bgcolor="#33CCFF" align="center" >样品综合评审<asp:Label ID="Label9" runat="server" class="titleCount" ></asp:Label></td>
+           </tr>
+           <tr bgcolor="#FFFFFF">
+             <td height="120"> <table width="190" border="0" cellspacing="0" cellpadding="0">
+           <tr>
+             <td height="90" colspan="2" valign="top" >
+                     &nbsp; </br> 未评审前3条：
+                     </br><asp:Label ID="Label10" runat="server" Text="无需要评审记录"></asp:Label>
+                     </br><asp:Label ID="Label11" runat="server"></asp:Label>
+                     </br><asp:Label ID="Label12" runat="server"></asp:Label>
+             </td>
+             </tr>
+           <tr>
+             <td height="30" align="left"  ></td>
+             <td   align="right" ><a href="yp/ypzhpsdList.aspx">进入</a>&nbsp;&nbsp;&nbsp;</td>
+           </tr>
+         </table></td>
+           </tr>
+       </table>
+       </div> 
+       </td>
+   </tr>
+
+ </table>
+ </form>
+</body>
+</html>

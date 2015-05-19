@@ -1,0 +1,588 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+
+public partial class tldEdit : System.Web.UI.Page
+{
+    string UserName = "";
+    string GroupID = "";
+    public string xh = "";
+    string lb = "";
+    int[] gridView2Index;
+    SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+    SqlCommand Cmd;
+    SqlDataReader sdr;
+    protected void Page_Load(object sender, EventArgs e) {
+        xh = Request.QueryString["xh"];
+        lb = Request.QueryString["lb"].Trim();
+        //GridView2列确定，为了以后扩展方便,列变化到这里进行控制
+        //顺序依次为 [0.删除的checkbox] [1.djlsh 单据流水号] [2.bh 序号] [3.wlbh 物料编号] [4.xqcg 需求采购] [5.物料替代单元格]
+        gridView2Index = new int[] { 0, 12, 1, 3, 10, 11 };
+
+
+        if (!IsPostBack) {
+
+            if (Session["username"] != null) {
+                UserName = Session["username"].ToString();   //取出session里面的相应用户权限
+                GroupID = Session["GroupID"].ToString();
+            }
+            else {
+                Response.Redirect("Login.aspx");
+            }
+            bind("");
+            if ("ADD" == lb) {
+                setDefault();//新增单据设置默认值
+            }
+            if ("EDIT" == lb.Trim()) {
+                getData();
+            }
+
+        }
+    }
+
+    public void bind(string conditionString) {
+        string sqlStr = "";
+        sqlStr = "select convert(varchar(20),jbrq,23) jbrq,khddh,nbdxxh,rl,nbPACKXH,isnull(TCSL,0) tcsl,psdbh,khdm,bb psdbb from dbo.js_htpsb_printH where lchqzt='已完成' and (tlzt='' or tlzt is null) " + conditionString + " order by jbrq";
+
+        SqlDataAdapter myda = new SqlDataAdapter(sqlStr, sqlcon);
+        DataSet myds = new DataSet();
+        sqlcon.Open();
+        myda.Fill(myds, "js_htpsb_newH");
+
+        GridView1.DataSource = myds;
+        GridView1.DataKeyNames = new string[] { "khddh", "nbdxxh" };
+        GridView1.DataBind();
+        sqlcon.Close();
+
+    }
+
+
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e) {
+        this.GridView1.PageIndex = e.NewPageIndex;
+        bind("");
+    }
+
+    //GridView2删除行  删除条件  djlsh
+    protected void btnDel_Click(object sender, EventArgs e) {
+        string djlshList = "";
+        for (int i = 0; i < GridView2.Rows.Count; i++) {
+            if ((GridView2.Rows[i].FindControl("cbDel") as CheckBox).Checked)
+                djlshList = djlshList + GridView2.Rows[i].Cells[gridView2Index[1]].Text + ",";
+        }
+        if (djlshList.Length > 0) {
+            djlshList = djlshList.Substring(0, djlshList.Length - 1);
+            string sqlDel = " delete from dbo.js_tldwzxhdeH where DjLsh in (" + djlshList + ")";
+            sqlcon.Open();
+            Cmd = new SqlCommand(sqlDel, sqlcon);
+            Cmd.ExecuteNonQuery();
+            sqlcon.Close();
+            getTldList();
+        }
+    }
+
+
+    //点击提交按钮时，对勾选采购需求情况提交到数据库
+    public bool cgxqSubmit() {
+        //获取是否需要采购的checkbox
+        //更新套料单列表是否需要采购
+        bool result = false;
+        string wlbh = "";
+        string bh = "";
+        string sqlUpdate = "";
+        string cgxq = "";
+        CheckBox cbCgxq = null;
+        sqlUpdate = "update dbo.js_tldwzxhdeH set CGXQ=a.cgxq  from (";
+        for (int i = 0; i < GridView2.Rows.Count; i++) {
+            bh = GridView2.Rows[i].Cells[gridView2Index[2]].Text;
+            wlbh = GridView2.Rows[i].Cells[gridView2Index[3]].Text;
+            cbCgxq = GridView2.Rows[i].FindControl("cbCgxq") as CheckBox;
+            cgxq = cbCgxq.Checked ? "1" : "0";
+            sqlUpdate = sqlUpdate + "select '" + tbPsdbh.Text + "' psdbh,'" + tbBB.Text + "' bb,'" + wlbh + "' wlbh,'" + bh + "' bh," + cgxq + " cgxq union all ";
+            //bool result = cbCgxq.Checked;
+        }
+        sqlUpdate = sqlUpdate.Substring(0, sqlUpdate.Length - 10);
+        sqlUpdate = sqlUpdate + ") a where js_tldwzxhdeH.PSDBH=a.psdbh and js_tldwzxhdeH.TLBB=a.bb and js_tldwzxhdeH.bh=a.bh and js_tldwzxhdeH.WLBH=a.wlbh ";
+        sqlcon.Open();
+        Cmd = new SqlCommand(sqlUpdate, sqlcon);
+        Cmd.ExecuteNonQuery();
+        sqlcon.Close();
+        result = true;
+        return result;
+    }
+
+    //点击选择后给当前页相关控件赋值
+    protected void GridView1_SelectedIndexChanging(object sender, GridViewSelectEventArgs e) {
+        double tcbl = 0, ddl = 0;
+        tbDdh.Text = GridView1.Rows[e.NewSelectedIndex].Cells[2].Text;
+        tbDxxh.Text = GridView1.Rows[e.NewSelectedIndex].Cells[3].Text;
+        tbRl.Text = GridView1.Rows[e.NewSelectedIndex].Cells[4].Text + "mAh";
+        tbPackxh.Text = GridView1.Rows[e.NewSelectedIndex].Cells[5].Text;
+
+        //如果PACK型号为空，则不显示PACK的框
+        if (tbPackxh.Text.Equals("&nbsp;")) {
+            divPack.Style.Add("display", "none");
+        }
+        else {
+            divPack.Style.Add("display", "");
+        }
+
+        //重选之后清空电芯定额版本列表和PACK版本列表
+        ddlDxdebb.Items.Clear();
+        ddlPackDebb.Items.Clear();
+        //填充电芯定额版本和PACK定额版本的DropDownList
+        fillDebb();
+
+        tbDDL.Text = GridView1.Rows[e.NewSelectedIndex].Cells[6].Text;
+        tbPsdbh.Text = GridView1.Rows[e.NewSelectedIndex].Cells[7].Text;
+        tbKhdm.Text = GridView1.Rows[e.NewSelectedIndex].Cells[8].Text;
+        tbPsdbb.Text = GridView1.Rows[e.NewSelectedIndex].Cells[9].Text;
+
+        ddl = Convert.ToDouble(tbDDL.Text);
+        tcbl = getTlbl(ddl);
+        tbTcbl.Text = Convert.ToString(tcbl);
+        tbTcl.Text = Convert.ToDouble(ddl * tcbl).ToString("0");
+        tbDxtcl.Text = Convert.ToDouble(ddl * tcbl).ToString("0");
+
+    }
+
+
+    //订单号或者电芯型号有变化，重新绑定gridview
+    protected void conditionChanged(object sender, EventArgs e) {
+        string conditionString = "";
+        if (!tbDdh.Text.Equals("")) {
+            conditionString = conditionString + " and khddh like '%" + tbDdh.Text + "%' ";
+        }
+        if (!tbDxxh.Text.Equals("")) {
+            conditionString = conditionString + " and nbdxxh like '%" + tbDxxh.Text + "%' ";
+        }
+        bind(conditionString);
+    }
+
+
+    //获取套料单列表
+    protected void getTldList() {
+        string sqlStr = "";
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlStr = "select a.*,b.wlmc MC,b.lsmxx GG,b.dw,b.gysmc CLCJ from dbo.js_tldwzxhdeH a left join dbo.js_xyclbmH b on a.WLBH=b.wlbh where psdbh='" + tbPsdbh.Text + "' and tlbb='" + tbBB.Text + "' order by bh";
+        SqlDataAdapter myda = new SqlDataAdapter(sqlStr, sqlcon);
+        DataSet myds = new DataSet();
+        sqlcon.Open();
+        myda.Fill(myds, "js_tldwzxhdeH");
+
+        GridView2.DataSource = myds;
+        GridView2.DataKeyNames = new string[] { "psdbh", "tlbb", "bh", "WLBH" };
+        GridView2.DataBind();
+
+        //获取采购需求的checkbox情况
+        for (int i = 0; i < GridView2.Rows.Count; i++) {
+            DataRowView drv = myds.Tables["js_tldwzxhdeH"].DefaultView[i];
+            CheckBox cbCgxq = GridView2.Rows[i].FindControl("cbCgxq") as CheckBox;
+            cbCgxq.Checked = (bool)drv["cgxq"];
+        }
+
+        sqlcon.Close();
+    }
+
+    //生成套料单
+    protected void lbBulidTld_Click(object sender, EventArgs e) {
+        if (!tbDdh.Text.Equals("") && !tbDxxh.Text.Equals("")) {
+            string sqlStrDel = "";
+            string sqlStrAdd = "";
+            sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+            sqlcon.Open();
+            SqlTransaction tran = sqlcon.BeginTransaction();
+            try {
+                //根据评审单号和套料版本来删除  套料单万只消耗定额的相关数据
+                sqlStrDel = "delete from dbo.js_tldwzxhdeH where psdbh='" + tbPsdbh.Text + "' and tlbb='" + tbBB.Text + "' ";
+                SqlCommand cmd = new SqlCommand(sqlStrDel, sqlcon);
+                cmd.Transaction = tran;
+                cmd.ExecuteNonQuery();
+                sqlStrAdd = "insert into dbo.js_tldwzxhdeH(BH,PSDBH,TLBB,XH,WLBH,WZXHDE,JHSL,CGXQ,GX) "
+                           + " select row_number() over (partition by '' order by scz),psdbh,BB,min(XH) xh,x.wlbh,WZXHDE,sum(jhsl),0,gxmc from ( "
+                           + " select '" + tbPsdbh.Text + "' psdbh,XH,'" + tbBB.Text + "' BB,WLBH,MC,CLCJ,GG,DW,WZXHDE,round(cast(WZXHDE as float)*" + tbDxtcl.Text + "/10000,3) jhsl,gxmc,scz from dbo.v_wzxhde "
+                           + " where xh='" + tbDxxh.Text + "' and BB='" + ddlDxdebb.Text + "' ";
+                if (!tbPackxh.Text.Equals("&nbsp;") && !String.IsNullOrEmpty(tbPackTcl.Text) && !tbPackDebh.Text.Equals("请选择")) {
+                    sqlStrAdd = sqlStrAdd + " union all "
+                        + " select '" + tbPsdbh.Text + "' psdbh,XH,'" + tbBB.Text + "' bb,WLBH,MC,CLCJ,GG,DW,WZXHDE,round(cast(WZXHDE as float)*" + tbPackTcl.Text + "/10000,3) jhsl,gxmc,scz from dbo.v_wzxhde "
+                    + " where xh='" + tbPackxh.Text + "' and BB='" + ddlPackDebb.Text + "'";
+
+
+                }
+                sqlStrAdd = sqlStrAdd
+                    + " ) x "
+                    + " group by x.wlbh,psdbh,x.WZXHDE,x.BB,x.gxmc, x.scz  order by x.scz ";
+                cmd = new SqlCommand(sqlStrAdd, sqlcon);
+                cmd.Transaction = tran;
+                cmd.ExecuteNonQuery();
+                tran.Commit();
+
+
+            }
+            catch (Exception ex) {
+                tran.Rollback();
+                Response.Write("<script language='javascript'>alert('" + ex.Message + "');</script>");
+            }
+            finally {
+                tran.Dispose();
+                sqlcon.Close();
+            }
+
+            if (GridView2.Rows.Count > 0) {
+                tbTlzt.Text = "已生成";
+            }
+            //获取套料单区域内容
+            getTldList();
+        }
+    }
+
+    //获取套料比例
+    public double getTlbl(double tcsl) {
+        /*  套料比例
+            ≥0＜200	1.5
+            ≥200＜500	1.3
+            ≥500＜1000	1.15
+            ≥1000＜2000	1.08
+            ≥2000＜3000	1.04
+            ≥3000＜4000	1.02
+            ≥4000＜5000	1.01
+            ≥5000	1.00 
+         */
+        double tcbl = 0;
+        if (tcsl >= 0 && tcsl < 200) {
+            tcbl = 1.5;
+        }
+        else if (tcsl >= 200 && tcsl < 500) {
+            tcbl = 1.3;
+        }
+        else if (tcsl >= 500 && tcsl < 1000) {
+            tcbl = 1.15;
+        }
+        else if (tcsl >= 1000 && tcsl < 2000) {
+            tcbl = 1.08;
+        }
+        else if (tcsl >= 2000 && tcsl < 3000) {
+            tcbl = 1.04;
+        }
+        else if (tcsl >= 3000 && tcsl < 4000) {
+            tcbl = 1.02;
+        }
+        else if (tcsl >= 4000 && tcsl < 5000) {
+            tcbl = 1.01;
+        }
+        else if (tcsl >= 5000) {
+            tcbl = 1.0;
+        }
+        return tcbl;
+
+    }
+
+
+    //填充电芯定额版本和PACK定额版本的DropDownList
+    public void fillDebb() {
+        string sqlStr = " select debh,bb,'电芯' lx from dbo.v_wzxhde where xh='" + tbDxxh.Text + "' group by debh,bb "
+                      + " union all "
+                      + " select debh,bb,'PACK' lx from dbo.v_wzxhde where xh='" + tbPackxh.Text + "' group by debh,bb ";
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlcon.Open();
+        SqlCommand cmd = new SqlCommand(sqlStr, sqlcon);
+        SqlDataReader sdr = cmd.ExecuteReader();
+
+        if (sdr.HasRows) {
+            ddlDxdebb.Items.Add("请选择");
+            ddlPackDebb.Items.Add("请选择");
+            while (sdr.Read()) {
+                if (sdr["lx"].ToString().Equals("电芯")) {
+                    ddlDxdebb.Items.Add(sdr["bb"].ToString());
+                    tbDxdebh.Text = sdr["debh"].ToString();
+                }
+                else if (sdr["lx"].ToString().Equals("PACK")) {
+                    ddlPackDebb.Items.Add(sdr["bb"].ToString());
+                    tbPackDebh.Text = sdr["debh"].ToString();
+                }
+            }
+        }
+        sqlcon.Close();
+    }
+
+    protected void btnTj_Click(object sender, EventArgs e) {
+        cgxqSubmit();
+
+        if ("ADD" == lb) {
+            if (addData()) {
+                Response.Redirect("tldList.aspx");
+            }
+        }
+        else if ("EDIT" == lb) {
+            if (editData()) { //编辑数据成功后
+                //Response.Write("<script>alert('提交成功!');</script>");
+                Response.Redirect("tldList.aspx");
+            }
+        }
+
+    }
+
+
+    //新增时设置默认值
+    public void setDefault() {
+        DateTime dtSysDate = DateTime.Now;
+        tbJbrq.Text = dtSysDate.ToString("yyyy-MM-dd");
+        tbBB.Text = "1.0";
+        tbTlzt.Text = "未生成";
+    }
+
+
+    //跳转到打印页面
+    public void btnPrint_Click(object sender, EventArgs e) {
+        Response.Redirect("cpkftaPrint.aspx?xh=" + tbBh.Text + " &lb=EDIT" + "&editType=全部");
+    }
+
+    //新增数据
+    public Boolean addData() {
+        sqlcon.Open();
+        //第一步获取编号   年 + 月 + 001,002...
+        //tbXsrhqsj.Text = tbJbrq.Text;
+        //编号  年+月+001
+        String sqlStr = "select 'TLD-' + csr_init + replicate('0', 3 - len(max_init)) + cast(max_init as varchar(3)) bh "
+                        + " from   (  select substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) csr_init ,case when max(bh) is null then '001' else cast(substring(max(bh), 11, 3) as int) + 1 end max_init from   js_tldH  "
+                        + "			where substring(JBRQ,1,4)+substring(JBRQ,6,2)= substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) "
+                        + "      ) A ";
+        Cmd = new SqlCommand(sqlStr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        if (sdr.HasRows) {
+            while (sdr.Read()) {
+                tbBh.Text = sdr["bh"].ToString();
+            }
+        }
+        sdr.Close();
+
+
+        Boolean result = false;
+        //根据数据库  前台控件和后台数据库字段对照来自动生成插入语句
+        String addSQLSring = "";
+        System.Text.StringBuilder zd = new System.Text.StringBuilder();
+        System.Text.StringBuilder zdz = new System.Text.StringBuilder();
+        String sqlstr = " select mc,zd,lx from dbo.js_controlEnable where djmc = '套料单' ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        if (sdr.HasRows) {
+            while (sdr.Read()) {
+                zd.Append(sdr["zd"].ToString());
+                zd.Append(",");
+                zdz.Append("'");
+                if ("TEXTBOX" == sdr["lx"].ToString()) {
+                    zdz.Append(((TextBox)FindControl(sdr["mc"].ToString().Trim())).Text);
+                }
+                else if ("CHECKBOX" == sdr["lx"].ToString()) {
+                    zdz.Append(((CheckBox)FindControl(sdr["mc"].ToString().Trim())).Checked);
+                }
+                else if ("DROPDOWNLIST" == sdr["lx"].ToString()) {
+                    zdz.Append(((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Text);
+                }
+                else if ("CHECKBOXLIST" == sdr["lx"].ToString()) {
+                    String strTemp = "";
+                    CheckBoxList cblTemp = (CheckBoxList)FindControl(sdr["mc"].ToString().Trim());
+                    for (int i = 0; i < cblTemp.Items.Count; i++) {
+                        if (cblTemp.Items[i].Selected) {
+                            strTemp = strTemp + cblTemp.Items[i].Text + ',';
+                        }
+                    }
+                    zdz.Append(strTemp.Substring(0, strTemp.Length > 0 ? strTemp.Length : 1 - 1));//全部都没勾选时 空字符串 就substring(0,0)
+                }
+                zdz.Append("',");
+            }
+        }
+        sdr.Close();
+
+
+
+        addSQLSring = "insert into js_tldH (djlsh,"
+                   + zd.ToString().Substring(0, zd.Length - 1)
+                   + ") select isnull(max(djlsh),0)+1,"
+                   + zdz.ToString().Substring(0, zdz.Length - 1) + " from js_tldH";
+        Cmd = new SqlCommand(addSQLSring, sqlcon);
+        Cmd.ExecuteNonQuery();
+        sqlcon.Close();
+        result = true;
+        return result;
+    }
+
+    //获取数据
+    public void getData() {
+        //填充定额版本的dropdownlist
+
+
+
+
+        sqlcon.Open();
+        //Hash表:
+        //ht_zddz 字段对照 存储 前台控件和后台字段名对应关系  KEY:数据库字段名 VALUE:控件名称
+        //ht_lxdz 类型对照 前台控件和控件类型对照  KEY:数据库字段名 VALUE：控件类型
+        Hashtable ht_zddz = new Hashtable();
+        Hashtable ht_lxdz = new Hashtable();
+        //ArrayList 存储后台数据库字段名字的列表
+        ArrayList listZd = new ArrayList();
+        String sqlstr = "select mc,zd,lx from dbo.js_controlEnable where djmc = '套料单' ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        if (sdr.HasRows) {
+            while (sdr.Read()) {
+                listZd.Add(sdr["zd"].ToString().Trim());//将数据库字段名加入list
+                ht_zddz.Add(sdr["zd"].ToString().Trim(), sdr["mc"].ToString().Trim());
+                ht_lxdz.Add(sdr["zd"].ToString().Trim(), sdr["lx"].ToString().Trim());
+            }
+        }
+        sdr.Close();
+        sqlstr = "select * from dbo.js_tldH where bh='" + xh + "'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        if (sdr.HasRows) {
+            while (sdr.Read()) {//获取数据时，只有一条数据
+                //循环表的所有数据库字段
+                foreach (String strZd in listZd) {
+                    if ("TEXTBOX" == (string)ht_lxdz[strZd]) {//根据对照表存储的字段类型进行不同类型的转换
+                        ((TextBox)FindControl((string)ht_zddz[strZd])).Text = sdr[strZd].ToString().Trim();
+                    }
+                    else if ("CHECKBOX" == (string)ht_lxdz[strZd]) {
+                        ((CheckBox)FindControl((string)ht_zddz[strZd])).Checked = ("True" == sdr[strZd].ToString());
+                    }
+                    else if ("DROPDOWNLIST" == (string)ht_lxdz[strZd]) {
+                        DropDownList ddlTemp = (DropDownList)FindControl((string)ht_zddz[strZd]);
+                        int j = 0;
+                        for (int i = 0; i < ddlTemp.Items.Count; i++) {
+                            if (ddlTemp.Items[i].Text == sdr[strZd].ToString().Trim()) {
+                                j = i;//把匹配到的索引赋给j
+                                break;
+                            }
+                        }
+                        if (0 == j) { //j=0说明数据库里的值没有匹配到，那么就自己把数据库的值加进去并选定
+                            ddlTemp.Items.Add(sdr[strZd].ToString().Trim());
+                        }
+                        ddlTemp.Text = sdr[strZd].ToString().Trim();
+                    }
+                    else if ("CHECKBOXLIST" == (string)ht_lxdz[strZd]) {
+                        CheckBoxList cblTemp = (CheckBoxList)FindControl((string)ht_zddz[strZd]);
+                        //获取的值一一去匹配CHECKBOXLIST的值，若匹配上 则打勾
+                        for (int i = 0; i < cblTemp.Items.Count; i++) {
+                            if (sdr[strZd].ToString().Trim().IndexOf(cblTemp.Items[i].Text) != -1) {
+                                cblTemp.Items[i].Selected = true;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        sdr.Close();
+        sqlcon.Close();
+
+        //填充定额版本
+        fillDebb();
+        //获取套料单列表
+        getTldList();
+    }
+
+
+    //更新数据
+    public Boolean editData() {
+        Boolean result = false;
+        //根据数据库  前台控件和后台数据库字段对照来自动生成插入语句
+        String editSQLSring = "";
+        System.Text.StringBuilder editEqualSql = new System.Text.StringBuilder();
+        sqlcon.Open();
+        String sqlstr = " select  mc,lx,zd from   dbo.js_controlEnable where   djmc = '套料单'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        if (sdr.HasRows) {
+            while (sdr.Read()) {
+                editEqualSql.Append(sdr["zd"].ToString());
+                editEqualSql.Append("='");
+                if ("TEXTBOX" == sdr["lx"].ToString()) {
+                    editEqualSql.Append(((TextBox)FindControl(sdr["mc"].ToString().Trim())).Text);
+                }
+                else if ("CHECKBOX" == sdr["lx"].ToString()) {
+                    editEqualSql.Append(((CheckBox)FindControl(sdr["mc"].ToString().Trim())).Checked);
+                }
+                else if ("DROPDOWNLIST" == sdr["lx"].ToString()) {
+                    editEqualSql.Append(((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Text);
+                }
+                else if ("CHECKBOXLIST" == sdr["lx"].ToString()) {
+                    String strTemp = "";
+                    CheckBoxList cblTemp = (CheckBoxList)FindControl(sdr["mc"].ToString().Trim());
+                    for (int i = 0; i < cblTemp.Items.Count; i++) {
+                        if (cblTemp.Items[i].Selected) {
+                            strTemp = strTemp + cblTemp.Items[i].Text + ',';
+                        }
+                    }
+                    editEqualSql.Append(strTemp.Substring(0, strTemp.Length > 0 ? strTemp.Length : 1 - 1));
+                }
+                editEqualSql.Append("',");
+
+            }
+        }
+        editSQLSring = "update js_tldH set "
+                   + editEqualSql.ToString().Substring(0, editEqualSql.Length - 1)
+                   + " where bh='" + xh + "'";
+        sdr.Close();
+        Cmd = new SqlCommand(editSQLSring, sqlcon);
+        Cmd.ExecuteNonQuery();
+        sqlcon.Close();
+
+        result = true;
+        return result;
+    }
+
+    /*
+    删除生成的套料单的内容，暂时用不上
+    protected void GridView2_RowDeleting(object sender, GridViewDeleteEventArgs e) {
+        string sqlstr = "delete from js_tldwzxhdeH where psdbh='"+tbPsdbh.Text+"' and tlbb='"+tbBB.Text+"' and wlbh='"+GridView2.Rows[e.RowIndex].Cells[0].Text+"'";
+            
+           // +' GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlcon.Open();
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        Cmd.ExecuteNonQuery();
+        sqlcon.Close();
+        getTldList();
+    }
+    */
+
+    //新窗口维护替代列表
+    protected void GridView2_RowEditing(object sender, GridViewEditEventArgs e) {
+        GridViewRow row = GridView2.Rows[e.NewEditIndex];
+        string bh = row.Cells[gridView2Index[2]].Text;
+        string wlbh = row.Cells[gridView2Index[3]].Text;
+        string psdbh = tbPsdbh.Text;
+        string bb = tbPsdbb.Text;
+        string url = "tldWlReplace.aspx?bh=" + bh + "&wlbh=" + wlbh + "&psdbh=" + psdbh + "&bb=" + bb;
+        System.Web.UI.ScriptManager.RegisterStartupScript(this.UpdatePanel1, this.GetType(), "updateScript", "window.open ('" + url + "','newwindow','height=600,width=1000,top=100,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');", true);        //不在updatePanel可以用的，在updatePanel里不能用 
+        // ClientScript.RegisterStartupScript(this.GetType(), "updateScript", "<script>window.open ('wlReplaceList.aspx','newwindow','height=100,width=400,top=0,left=0,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no')</script>", false);
+        // getTldList();
+    }
+
+    protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e) {
+        if (e.Row.RowType == DataControlRowType.DataRow) {
+            DataRowView drv = e.Row.DataItem as DataRowView;
+            string tdzt = drv["tdzt"].ToString();
+            //被替代物料无物料需求且不能被选定
+            if (tdzt.Equals("1")) {
+                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FF6666");
+                (e.Row.FindControl("cbCgxq") as CheckBox).Checked = false;
+                (e.Row.FindControl("cbCgxq") as CheckBox).Enabled = false;
+            }
+            //替代套料的套料按钮不能按
+            else if (tdzt.Equals("2")) {
+                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFCCCC");
+                (e.Row.Cells[gridView2Index[5]].Controls[0] as Button).Enabled = false;
+            }
+        }
+    }
+}

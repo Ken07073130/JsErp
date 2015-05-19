@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>专项问题反馈单帮助文档</title>
+
+<link rel="stylesheet" type="text/css" href="styles.css" />
+
+</head>
+
+<body>
+
+<div id="slideshow">
+
+	<ul class="slides">
+    	<li><img src="img/photos/1.jpg" width="1024" height="800" alt="Marsa Alam underawter close up" /></li>
+        <li><img src="img/photos/2.jpg" width="1024" height="800" alt="Turrimetta Beach - Dawn" /></li>
+        <li><img src="img/photos/3.jpg" width="1024" height="800" alt="Power Station" /></li>
+    </ul>
+
+    <span class="arrow previous"></span>
+    <span class="arrow next"></span>
+</div>
+
+  
+<script src="../../js/jquery.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

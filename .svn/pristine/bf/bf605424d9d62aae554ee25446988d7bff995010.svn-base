@@ -1,0 +1,93 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using CrystalDecisions.CrystalReports.Engine;
+using System.Data.SqlClient;
+
+public partial class tldPrint : System.Web.UI.Page {
+    ReportDocument myReport;
+    protected void Page_Load(object sender, EventArgs e) {
+
+    }
+
+    //VS2008必须放到Page_Init中
+    private void Page_Init(object sender, EventArgs e) {
+        System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("zh-CN");
+        System.Threading.Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.CreateSpecificCulture("zh-CN");
+        
+
+
+        myReport = new ReportDocument();
+       
+        ConfigureCrystalReports();
+    }
+
+    private void ConfigureCrystalReports() {
+        SqlConnection sqlconn = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlconn.Open();
+        string conditionString = "";
+        if (!String.IsNullOrEmpty(Request["bh"].ToString())) {
+            conditionString = " and charindex(a.bh,'" + Request["bh"].ToString() + "')>0";
+        }
+        String sqlstr = " select  DXXH ,a.BH ,BB , BZXH ,a.PSDBH ,DDL , PACKXH , DDH ,TCL , a.tlr,"
+                       + "        c.wlmc DXWJBH ,c.GYSMC BZWJBH ,c.lsmxx RL ,c.dw TCBL , b.WZXHDE DXTCL , b.JHSL DXDEBH ,b.wlbh DJLX"
+                       + " from    dbo.js_tldH a ,dbo.js_tldwzxhdeH b left join  js_xyclbmH c on b.WLBH = c.wlbh "
+                       + " where   a.PSDBH = b.PSDBH and a.PSDBB = b.TLBB and TDZT<>'1'"
+                       + conditionString;
+        DataSet ds = new DataSet();
+        SqlDataAdapter sda = new SqlDataAdapter(sqlstr, sqlconn);
+        //水晶报表里每张表都要设置一下数据集
+        sda.Fill(ds, "js_tldH");
+
+        myReport = new ReportDocument();
+        string reportPath = Server.MapPath("~/cgxt/rpt/tldPrint.rpt");
+        myReport.Load(reportPath);
+
+        //绑定数据集，注意，一个报表用一个数据集。
+        myReport.SetDataSource(ds);
+
+
+
+        /*设置纸张
+        int rawKind = 1; //记录标识自定义纸张的ID
+        //枚举出所有的打印纸尺寸 
+        int i = 0;
+        System.Drawing.Printing.PrintDocument doc = new System.Drawing.Printing.PrintDocument();
+        ddlZz.Items.Clear();
+        ddlDyj.Items.Clear();
+         while (!(i == doc.PrinterSettings.PaperSizes.Count)) {
+            ddlZz.Items.Add(doc.PrinterSettings.PaperSizes[i].PaperName);
+            if (doc.PrinterSettings.PaperSizes[i].PaperName == "24x14") {
+                rawKind = doc.PrinterSettings.PaperSizes[i].RawKind;
+            }
+            i++;
+        }
+        foreach (string printer in System.Drawing.Printing.PrinterSettings.InstalledPrinters) {
+            ddlDyj.Items.Add(printer);
+        }
+        myReport.PrintOptions.PaperSize = (CrystalDecisions.Shared.PaperSize)rawKind;
+        TextBox1.Text = "纸张:" + rawKind.ToString();*/
+
+
+
+
+
+        CrystalReportViewer1.ReportSource = myReport;
+        myReport.PrintToPrinter(1, false, 0, 0);
+        sqlconn.Close();
+
+    }
+
+    private void Page_Unload(object sender, EventArgs e) {
+        myReport.Dispose();
+        CrystalReportViewer1.Dispose();
+    }
+
+}

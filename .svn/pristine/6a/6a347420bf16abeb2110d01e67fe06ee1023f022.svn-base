@@ -1,0 +1,86 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="index.aspx.cs" Inherits="index" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="Css/Article.css" rel="stylesheet" type="text/css" />
+
+    <script src="jquery-ui/jquery-1.10.2.js"></script>
+
+    <script src="Js/Article.js"></script>
+
+    <script type="text/javascript">
+     
+       function showtime(){
+         var x=new Date();
+         var now,week,n,y,r,h,m,s; 
+         now=new Date(); 
+         n = now.getFullYear(); 
+         y = now.getMonth()+1; 
+         r = now.getDate(); 
+         h = now.getHours(); 
+         m = now.getMinutes(); 
+         s = now.getSeconds(); 
+         week='星期'+'日一二三四五六'.charAt(new Date().getDay());
+         document.getElementById("showtime").innerText=n+"-"+y+"-"+r+""+" "+week+" "+h+":"+m+":"+s;//改变 showtime  里面的文字
+      }
+       
+      function SetWinHeight(obj) 
+        { 
+            var win=obj; 
+            if (document.getElementById) 
+            { 
+            if (win && !window.opera) 
+            { 
+            if (win.contentDocument && win.contentDocument.body.offsetHeight) 
+            win.height = win.contentDocument.body.offsetHeight+50; 
+            else if(win.Document && win.Document.body.scrollHeight) 
+            win.height = win.Document.body.scrollHeight+50; 
+            } 
+            } 
+        } 
+   
+    </script>
+    
+
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server" style="overflow:hidden;">
+        <div id="Top">
+            <div class="Toolbar1">
+                <div class="CentreBox">
+                    <div class="Logo">
+                    </div>
+                    <div class="Menu">
+                        <asp:BulletedList ID="blDictionary" runat="server" CssClass="List1" DisplayMode="HyperLink" Target="main">
+                        </asp:BulletedList>
+                    </div>
+                    <div class="UserInfo">
+                        <p>
+                            <asp:Label ID="lbWelCome" runat="server" Text="你好" Font-Size="12px" Font-Bold="true" ></asp:Label>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="SysManage/UserManage/UserEdit.aspx" target="main" >密码修改</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="SysManage/UserManage/User.aspx"  >个人信息</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <asp:LinkButton ID="lbLoginOout" runat="server" OnClick="lbLoginOout_Click">退出系统</asp:LinkButton></p>
+                        <p style="margin-left: 20px">
+                            <span id="showtime" style="font-size:12px;">
+                            <script>
+                                 setInterval("showtime()",1000);// 重复执行 showtime()函数  间隔  1秒
+                            </script></span>
+                            <a href="main.aspx" target="_self" style="margin-left:20px;">使用旧版主页</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="Toolbar2">
+                <div class="CentreBox" id="divSubDictionary" runat="server">
+                </div>
+            </div>
+        </div>
+        <div>
+         <iframe  name="main" style=" border:0px "  scrolling="no"  onload="Javascript:SetWinHeight(this)"  width="100%" src="SysManage/SubIndex/WelCome.aspx" >
+                </iframe>
+                </div>
+    </form>
+</body>
+</html>

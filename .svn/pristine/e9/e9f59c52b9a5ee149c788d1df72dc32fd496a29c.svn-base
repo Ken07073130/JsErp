@@ -1,0 +1,84 @@
+﻿#divPage{
+  margin :0 auto;
+  width:760px;	
+  font-size:12px;
+}
+
+.layout
+{
+	overflow:hidden;
+	width:760px;
+}
+
+.layout ul {
+  list-style:none;
+}
+
+
+.layout li 
+{
+  width:358px;
+  float:left;
+}
+
+
+.spanLabel
+{
+   width:120px;	
+   display:inline-block;
+}
+
+.spanControl
+{
+   width:230px;	
+   display:inline-block;
+}
+
+
+/*单行单控件时使用*/
+.spanControlOne
+{
+   width:600px;	
+   display:inline-block;
+}
+
+
+
+
+.hidden 
+{ 
+display:none; 
+} 
+
+#divPack
+{
+  background-color:#CCFFFF;
+}
+
+#divDxxx
+{
+  background-color:#FFFFCC;
+}
+
+.hover{
+    cursor:pointer;
+    background-color:#bcd4ec;  
+   
+}   /*这里是鼠标经过时的颜色*/ 
+
+#divSclltl td
+{
+   width:69px;
+}
+
+#divFlqk td
+{
+	width:95px;
+}
+
+
+#tbLlxx td
+{
+   width:125px;
+   word-wrap: break-word;
+}

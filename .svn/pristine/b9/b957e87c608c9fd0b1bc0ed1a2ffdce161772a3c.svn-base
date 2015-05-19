@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsCgdPrint" targetNamespace="http://tempuri.org/dsCgdPrint.xsd" xmlns:mstns="http://tempuri.org/dsCgdPrint.xsd" xmlns="http://tempuri.org/dsCgdPrint.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+        </Connections>
+        <Tables>
+        </Tables>
+        <Sources>
+        </Sources>
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsCgdPrint" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="myDataTable">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="QDD" type="xs:string" minOccurs="0" />
+              <xs:element name="JBRQ" type="xs:string" minOccurs="0" />
+              <xs:element name="GYSMC" type="xs:string" minOccurs="0" />
+              <xs:element name="CGDBH" type="xs:string" minOccurs="0" />
+              <xs:element name="DZ" type="xs:string" minOccurs="0" />
+              <xs:element name="LXR_N" type="xs:string" minOccurs="0" />
+              <xs:element name="DH" type="xs:string" minOccurs="0" />
+              <xs:element name="CZ" type="xs:string" minOccurs="0" />
+              <xs:element name="XH" type="xs:string" minOccurs="0" />
+              <xs:element name="WLMC" type="xs:string" minOccurs="0" />
+              <xs:element name="LSMXX" type="xs:string" minOccurs="0" />
+              <xs:element name="DW" type="xs:string" minOccurs="0" />
+              <xs:element name="SL" type="xs:string" minOccurs="0" />
+              <xs:element name="DJ" type="xs:string" minOccurs="0" />
+              <xs:element name="JE" type="xs:string" minOccurs="0" />
+              <xs:element name="DHRQ_N" type="xs:string" minOccurs="0" />
+              <xs:element name="JEDX" type="xs:string" minOccurs="0" />
+              <xs:element name="JEHJ" type="xs:string" minOccurs="0" />
+              <xs:element name="JHFS_N" type="xs:string" minOccurs="0" />
+              <xs:element name="JHDD" type="xs:string" minOccurs="0" />
+              <xs:element name="JYTK" type="xs:string" minOccurs="0" />
+              <xs:element name="DWDZ" type="xs:string" minOccurs="0" />
+              <xs:element name="DWDH" type="xs:string" minOccurs="0" />
+              <xs:element name="DWKHH" type="xs:string" minOccurs="0" />
+              <xs:element name="DWZH" type="xs:string" minOccurs="0" />
+              <xs:element name="DWSH" type="xs:string" minOccurs="0" />
+              <xs:element name="DWYB" type="xs:string" minOccurs="0" />
+              <xs:element name="DGDW" type="xs:string" minOccurs="0" />
+              <xs:element name="KHH" type="xs:string" minOccurs="0" />
+              <xs:element name="ZH" type="xs:string" minOccurs="0" />
+              <xs:element name="SH" type="xs:string" minOccurs="0" />
+              <xs:element name="YB" type="xs:string" minOccurs="0" />
+              <xs:element name="CGR" type="xs:string" minOccurs="0" />
+              <xs:element name="JGDW" type="xs:string" minOccurs="0" />
+              <xs:element name="WLBH" type="xs:string" minOccurs="0" />
+              <xs:element name="BZ" type="xs:string" minOccurs="0" />
+              <xs:element name="DWCZ" type="xs:string" minOccurs="0" />
+              <xs:element name="BZ_N" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

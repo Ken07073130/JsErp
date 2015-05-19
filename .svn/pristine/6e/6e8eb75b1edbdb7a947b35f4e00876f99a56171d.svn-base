@@ -1,0 +1,324 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="tldEdit.aspx.cs" Inherits="tldEdit" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>系统套料单</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css" />
+
+    <script type="text/javascript">
+           function detailDjxxClick(){
+              if (document.getElementById('aShow').innerHTML=="点击展开"){
+                 document.getElementById("aShow").innerHTML="点击收拢";
+                 document.getElementById("divDjxx").style.display="";
+              } else if (document.getElementById("aShow").innerHTML=="点击收拢"){
+                 document.getElementById("aShow").innerHTML="点击展开";
+                 document.getElementById("divDjxx").style.display="none";
+              }
+           }
+           
+           function calTcsl(){
+             document.getElementById('<%= tbTcl.ClientID %>').value=(parseFloat(document.getElementById('<%= tbTcbl.ClientID %>').value)*parseFloat(document.getElementById('<%= tbDDL.ClientID %>').value)).toFixed(0);
+             document.getElementById('<%= tbDxtcl.ClientID %>').value=(parseFloat(document.getElementById('<%= tbTcbl.ClientID %>').value)*parseFloat(document.getElementById('<%= tbDDL.ClientID %>').value)).toFixed(0);
+          
+           }       
+    </script>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
+                AsyncPostBackTimeout="600" />
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div id="divPage">
+                        <div style="font-size: 25px; text-align: center; font-weight: bold;">
+                            <asp:Label ID="lblTitle" runat="server" Text="套料单"></asp:Label></div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">套料单号</span><span class="spanControl"><asp:TextBox ID="tbBh"
+                                    runat="server" Width="90%" BackColor="Silver"></asp:TextBox></span> </li>
+                                <li><span class="spanLabel">版本</span><span class="spanControl"><asp:DropDownList
+                                    ID="ddlBB" runat="server">
+                                    <asp:ListItem>1.0</asp:ListItem>
+                                </asp:DropDownList></span> </li>
+                            </ul>
+                        </div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">单据类型</span><span class="spanControl"><asp:DropDownList
+                                    ID="ddlDjlx" runat="server" Width="90%">
+                                    <asp:ListItem>请选择</asp:ListItem>
+                                    <asp:ListItem>订单</asp:ListItem>
+                                    <asp:ListItem>补投单</asp:ListItem>
+                                    <asp:ListItem>备货单</asp:ListItem>
+                                </asp:DropDownList></span> </li>
+                                <li><span class="spanLabel">订单号</span><span class="spanControl"><asp:TextBox ID="tbDdh"
+                                    runat="server" Width="70%" AutoPostBack="true" OnTextChanged="conditionChanged"
+                                    BackColor="Silver"></asp:TextBox><a id="aShow" href="javascript:void(0);" onclick="detailDjxxClick()">点击展开</a>
+                                </span></li>
+                            </ul>
+                        </div>
+                        <div id="divDjxx" style="display: none">
+                            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4"
+                                Style="text-align: center" Font-Names="Verdana" Font-Size="12px" EmptyDataText="无记录"
+                                Width="100%" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px"
+                                GridLines="Horizontal" AllowPaging="True" AllowSorting="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging"
+                                EmptyDataRowStyle-BackColor="#40e0d0" OnSelectedIndexChanging="GridView1_SelectedIndexChanging">
+                                <RowStyle ForeColor="#333333" BackColor="White" />
+                                <Columns>
+                                    <asp:CommandField ShowSelectButton="True">
+                                        <ItemStyle Width="5%" />
+                                    </asp:CommandField>
+                                    <asp:BoundField DataField="jbrq" HeaderText="日期">
+                                        <ItemStyle Width="10%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="khddh" HeaderText="订单号">
+                                        <ItemStyle Width="20%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="nbdxxh" HeaderText="电芯型号">
+                                        <ItemStyle Width="10%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="rl" HeaderText="容量">
+                                        <ItemStyle Width="5%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="nbPACKXH" HeaderText="PACK型号">
+                                        <ItemStyle Width="15%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="tcsl" HeaderText="投产数量">
+                                        <ItemStyle Width="5%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="psdbh" HeaderText="">
+                                        <ControlStyle CssClass="hidden" />
+                                        <FooterStyle CssClass="hidden" />
+                                        <HeaderStyle CssClass="hidden" />
+                                        <ItemStyle CssClass="hidden" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="khdm" HeaderText="">
+                                        <ControlStyle CssClass="hidden" />
+                                        <FooterStyle CssClass="hidden" />
+                                        <HeaderStyle CssClass="hidden" />
+                                        <ItemStyle CssClass="hidden" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="psdbb" HeaderText="">
+                                        <ControlStyle CssClass="hidden" />
+                                        <FooterStyle CssClass="hidden" />
+                                        <HeaderStyle CssClass="hidden" />
+                                        <ItemStyle CssClass="hidden" />
+                                    </asp:BoundField>
+                                </Columns>
+                                <FooterStyle BackColor="White" ForeColor="#333333" />
+                                <PagerStyle BackColor="#336666" ForeColor="White" HorizontalAlign="Center" />
+                                <SelectedRowStyle BackColor="#339966" Font-Bold="True" ForeColor="White" />
+                                <HeaderStyle BackColor="#479AC7" Font-Bold="True" ForeColor="White" />
+                                <EmptyDataRowStyle BackColor="Turquoise" />
+                            </asp:GridView>
+                        </div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">物料采购</span><span class="spanControl"><asp:DropDownList
+                                    ID="ddlWlcg" runat="server">
+                                    <asp:ListItem>请选择</asp:ListItem>
+                                    <asp:ListItem>要</asp:ListItem>
+                                    <asp:ListItem>不要</asp:ListItem>
+                                </asp:DropDownList></span> </li>
+                                <li><span class="spanLabel"></span><span class="spanControl"></span></li>
+                            </ul>
+                        </div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">客户代码</span><span class="spanControl"><asp:TextBox ID="tbKhdm"
+                                    runat="server" Width="90%"></asp:TextBox></span> </li>
+                                <li><span class="spanLabel">订单量(合同投产量)</span><span class="spanControl"><asp:TextBox
+                                    ID="tbDDL" runat="server" Width="90%" onchange="calTcsl()"></asp:TextBox></span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">投产比例</span><span class="spanControl"><asp:TextBox ID="tbTcbl"
+                                    runat="server" Width="90%" onchange="calTcsl()"></asp:TextBox></span> </li>
+                                <li><span class="spanLabel">投产量</span><span class="spanControl"><asp:TextBox ID="tbTcl"
+                                    runat="server" Width="65%"></asp:TextBox>
+                                </span></li>
+                            </ul>
+                        </div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">容量</span><span class="spanControl"><asp:TextBox ID="tbRl"
+                                    runat="server" Width="90%"></asp:TextBox></span></li><li style="display: none;">
+                                        <asp:TextBox ID="tbJbrq" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="tbPsdbh" runat="server"></asp:TextBox>
+                                        <asp:TextBox ID="tbPsdbb" runat="server"></asp:TextBox>
+                                    </li>
+                            </ul>
+                        </div>
+                        <!--电芯相关信息框开始-->
+                        <div id="divDxxx">
+                            <div class="layout">
+                                <ul>
+                                    <li><span class="spanLabel">电芯型号</span><span class="spanControl"><asp:TextBox ID="tbDxxh"
+                                        runat="server" Width="90%" AutoPostBack="true" OnTextChanged="conditionChanged"></asp:TextBox></span>
+                                    </li>
+                                    <li><span class="spanLabel">电芯定额版本</span> <span class="spanControl">
+                                        <asp:DropDownList ID="ddlDxdebb" runat="server">
+                                        </asp:DropDownList>
+                                    </span></li>
+                                </ul>
+                            </div>
+                            <div class="layout">
+                                <ul>
+                                    <li><span class="spanLabel">电芯定额编号</span><span class="spanControl"><asp:TextBox ID="tbDxdebh"
+                                        runat="server" Width="90%"></asp:TextBox></span> </li>
+                                    <li><span class="spanLabel">电芯投产量</span> <span class="spanControl">
+                                        <asp:TextBox ID="tbDxtcl" runat="server" Width="90%"></asp:TextBox>
+                                    </span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--电芯相关信息框结束-->
+                        <!--PACK相关信息框开始-->
+                        <div runat="server" id="divPack">
+                            <div class="layout">
+                                <ul>
+                                    <li><span class="spanLabel">PACK型号</span><span class="spanControl"><asp:TextBox ID="tbPackxh"
+                                        runat="server" Width="90%"></asp:TextBox></span> </li>
+                                    <li><span class="spanLabel">PACK定额版本</span> <span class="spanControl">
+                                        <asp:DropDownList ID="ddlPackDebb" runat="server">
+                                        </asp:DropDownList>
+                                    </span></li>
+                                </ul>
+                            </div>
+                            <div class="layout">
+                                <ul>
+                                    <li><span class="spanLabel">PACK定额编号</span><span class="spanControl"><asp:TextBox
+                                        ID="tbPackDebh" runat="server" Width="90%"></asp:TextBox></span> </li>
+                                    <li><span class="spanLabel">PACK投产量</span><span class="spanControl">
+                                        <asp:TextBox ID="tbPackTcl" runat="server" Width="90%"></asp:TextBox>
+                                    </span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--PACK相关信息框结束-->
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">出货型号</span><span class="spanControl"><asp:TextBox ID="tbBzxh"
+                                    runat="server" Width="90%" BackColor="Silver"></asp:TextBox></span> </li>
+                                <li><span class="spanLabel">出货包装投产量</span><span class="spanControl"><asp:TextBox
+                                    ID="tbBztcl" runat="server" Width="90%"></asp:TextBox></span> </li>
+                            </ul>
+                        </div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">出货包装定额编号</span><span class="spanControl"><asp:TextBox
+                                    ID="tbBzdebh" runat="server" Width="90%"></asp:TextBox></span> </li>
+                                <li><span class="spanLabel">出货包装定额版本</span><span class="spanControl"><asp:DropDownList ID="ddlBzdebb" runat="server">
+                                </asp:DropDownList></span> </li>
+                            </ul>
+                        </div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">套料人</span><span class="spanControl"><asp:TextBox ID="tbTlr"
+                                    runat="server" Width="90%" BackColor="Silver"></asp:TextBox></span> </li>
+                                <li><span class="spanLabel">套料日期</span><span class="spanControl"><asp:TextBox ID="tbTlrq"
+                                    runat="server" Width="90%" BackColor="Silver"></asp:TextBox></span> </li>
+                            </ul>
+                        </div>
+                        <div class="layout">
+                            <ul>
+                                <li><span class="spanLabel">套料状态</span> <span class="spanControl">
+                                    <asp:TextBox ID="tbTlzt" runat="server" Width="90%"></asp:TextBox>
+                                </span></li>
+                                <li><span class="spanLabel">
+                                    <asp:LinkButton ID="LinkButton1" runat="server" OnClick="lbBulidTld_Click">点击生成套料单</asp:LinkButton></span><span
+                                        class="spanControl"></span> </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--IE8要在gridView的外面在套一层DIV 这样才能居中-->
+                    <div style="width: 1100px; margin: 0 auto;">
+                        <div style="width: 1000px; margin: 0 auto; background-color: Black;">
+                            <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CellPadding="3"
+                                Style="text-align: center" Font-Names="Verdana" Font-Size="12px" EmptyDataText="暂无套料单信息"
+                                Width="100%" BackColor="#DEBA84" BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px"
+                                AllowSorting="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging"
+                                EmptyDataRowStyle-BackColor="#40e0d0" CellSpacing="2" GridLines="None" OnRowEditing="GridView2_RowEditing"
+                                OnRowDataBound="GridView2_RowDataBound">
+                                <RowStyle ForeColor="#8C4510" BackColor="#FFF7E7" BorderStyle="Solid" BorderWidth="1px" />
+                                <Columns>
+                                    <asp:TemplateField HeaderText="选择" ItemStyle-Width="3%">
+                                        <HeaderTemplate>
+                                            <asp:Button ID="btnDel" runat="server" Text="删除" OnClick="btnDel_Click" />
+                                        </HeaderTemplate>
+                                        <EditItemTemplate>
+                                            <asp:CheckBox ID="cbDel" runat="server" />
+                                        </EditItemTemplate>
+                                        <ItemTemplate>
+                                            <asp:CheckBox ID="cbDel" runat="server" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:BoundField DataField="BH" HeaderText="序号">
+                                        <ItemStyle Width="5%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="GX" HeaderText="工序">
+                                        <ItemStyle Width="5%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="WLBH" HeaderText="物料编号">
+                                        <ItemStyle Width="10%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="MC" HeaderText="名称">
+                                        <ItemStyle Width="10%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="CLCJ" HeaderText="材料厂家">
+                                        <ItemStyle Width="10%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="GG" HeaderText="规格">
+                                        <ItemStyle Width="15%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="DW" HeaderText="单位">
+                                        <ItemStyle Width="5%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="WZXHDE" HeaderText="万只消耗定额">
+                                        <ItemStyle Width="12%" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="JHSL" HeaderText="计划数量">
+                                        <ItemStyle Width="10%" />
+                                    </asp:BoundField>
+                                    <asp:TemplateField HeaderText="需要采购">
+                                        <EditItemTemplate>
+                                            <asp:CheckBox ID="cbCgxq" runat="server" />
+                                        </EditItemTemplate>
+                                        <ItemTemplate>
+                                            <asp:CheckBox ID="cbCgxq" runat="server" />
+                                        </ItemTemplate>
+                                        <ItemStyle Width="3%" />
+                                    </asp:TemplateField>
+                                    <asp:CommandField HeaderText="物料替代" ShowEditButton="True" ButtonType="Button" EditText="替代" />
+                                    <asp:BoundField DataField="djlsh" HeaderText="">
+                                        <ControlStyle CssClass="hidden" />
+                                        <FooterStyle CssClass="hidden" />
+                                        <HeaderStyle CssClass="hidden" />
+                                        <ItemStyle CssClass="hidden" />
+                                    </asp:BoundField>
+                                </Columns>
+                                <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
+                                <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
+                                <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
+                                <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
+                                <EmptyDataRowStyle BackColor="Turquoise" />
+                            </asp:GridView>
+                        </div>
+                        <div style="text-align: center; width: 760px; margin: 0 auto;">
+                            <br />
+                            <asp:LinkButton ID="lbtnOK" runat="server" Style="display: block; background-color: #4B97E3;
+                                width: 105px; height: 30px; color: white; font-size: 15px; line-height: 30px;
+                                text-decoration: none; margin: 0 auto;" OnClick="btnTj_Click">提交</asp:LinkButton>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </div>
+    </form>
+</body>
+</html>

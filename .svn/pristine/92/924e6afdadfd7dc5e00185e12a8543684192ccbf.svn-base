@@ -1,0 +1,183 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+
+public partial class htpsbList : System.Web.UI.Page {
+    string UserName = "";
+    string GroupNames = "";
+    SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+    SqlCommand sqlcom;
+    protected void Page_Load(object sender, EventArgs e) {
+        if (Session["username"] != null) {
+            UserName = Session["username"].ToString();   //取出session里面的相应用户权限
+
+            GroupNames = Session["groupnames"].ToString();
+        }
+        else {
+            Response.Redirect("Login.aspx");
+        }
+
+        if (!IsPostBack) {
+            bind();
+        }
+
+
+    }
+
+
+    public void bind() {
+        string sqlStr = "";
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlStr = "select * from js_htpsbH a where  " +
+                 "   ('超级用户'='" + GroupNames + "'  " +
+                 "     or a.zbr='" + UserName + "'" +
+                 "     or (charindex('合同评审表-PMC审核','" + GroupNames + "')>0 and ('" + ddlHqzt.Text + "'='全部' or PMCHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-工程部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or GCHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-设备部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or SBHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-制造部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZZHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-质量部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZLHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-PACK审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or PACKHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-供应链审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or GYLHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-生产总监审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or SCZJHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-总工审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZGHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('合同评审表-商务经理审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or SWJLHQZT='" + ddlHqzt.Text + "' )) )";
+
+
+        SqlDataAdapter myda = new SqlDataAdapter(sqlStr, sqlcon);
+        DataSet myds = new DataSet();
+        sqlcon.Open();
+        myda.Fill(myds, "js_htpsbH");
+
+        GridView1.DataSource = myds;
+        //查询过滤
+        string filterStringBh = tbBh.Text.Equals("") ? "" : "and bh like '%" + tbBh.Text.Trim() + "%'";
+        string filterStringKhddh = tbKhddh.Text.Equals("") ? "" : "and khddh like '%" + tbKhddh.Text.Trim() + "%'";
+        string filterStringKhdm = tbKhdm.Text.Equals("") ? "" : "and khdm like '%" + tbKhdm.Text.Trim() + "%'";
+        string filterStringKhdxh = tbKhxh.Text.Equals("") ? "" : "and khxh like '%" + tbKhxh.Text.Trim() + "%'";
+        string filterStringNbdxxh = tbNbdxxh.Text.Equals("") ? "" : "and nbdxxh like '%" + tbNbdxxh.Text.Trim() + "%'";
+        string filterStringNbpackxh = tbNbpackxh.Text.Equals("") ? "" : "and nbPACKXH like '%" + tbNbpackxh.Text.Trim() + "%'";
+        string filterStringNbbzxh = tbNbbzxh.Text.Equals("") ? "" : "and Nbbzxh like '%" + tbNbbzxh.Text.Trim() + "%'";
+        string filterStringGgsbh = tbGgsbh.Text.Equals("") ? "" : "and ggsbh like '%" + tbGgsbh.Text.Trim() + "%'";
+        string filterStringGgsbb = tbGgsbb.Text.Equals("") ? "" : "and ggsbb like '%" + tbGgsbb.Text.Trim() + "%'";
+        string filterString = filterStringBh + filterStringKhddh + filterStringKhdm + filterStringKhdxh
+                             + filterStringNbdxxh + filterStringNbpackxh + filterStringNbbzxh + filterStringGgsbh + filterStringGgsbb;
+        if (!filterString.Equals("")) {
+            DataTable dt = (GridView1.DataSource as DataSet).Tables[0];
+            filterString = filterString.Substring(4, filterString.Length - 4);
+            dt.DefaultView.RowFilter = filterString;
+            GridView1.DataSource = dt;
+        }
+
+
+
+
+        GridView1.DataKeyNames = new string[] { "BH" };
+        GridView1.DataBind();
+
+
+        sqlcon.Close();
+
+    }
+
+
+    protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e) {
+        string sqlDelMain = "delete from js_htpsbH where bh='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlcon.Open();
+        SqlTransaction sqlTran = sqlcon.BeginTransaction();
+        try {
+            sqlcom = new SqlCommand(sqlDelMain, sqlcon);
+            sqlcom.Transaction = sqlTran;
+            sqlcom.ExecuteNonQuery();
+            sqlTran.Commit();
+        }
+        catch (Exception exp) {
+            sqlTran.Rollback();
+            Response.Write(exp.Message);
+        }
+        finally {
+            sqlcon.Close();
+            sqlTran.Dispose();
+        }
+
+        bind();
+    }
+
+    protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e) {
+        Response.Redirect("htpsbEdit.aspx?bh=" + GridView1.DataKeys[e.NewEditIndex].Value.ToString() + " &bb=" + GridView1.Rows[e.NewEditIndex].Cells[5].Text + "&lb=EDIT&editType=" + ((LinkButton)GridView1.Rows[e.NewEditIndex].Cells[2].Controls[0]).Text);
+    }
+
+    protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e) {
+
+        if (e.Row.RowType == DataControlRowType.DataRow) {
+            LinkButton btnDel = (LinkButton)e.Row.Cells[3].Controls[0];//删除
+            btnDel.Attributes.Add("onclick ", "return confirm( '确定删除记录(编号: " + (e.Row.Cells[0].Text) + " 吗)'); ");
+            LinkButton btnEdit = (LinkButton)e.Row.Cells[2].Controls[0];
+            TableCell cellChange=e.Row.Cells[1];
+            // CheckBox cb = e.Row.FindControl("CheckBox1") as CheckBox;
+            //c只有已完成的项才能勾选打印
+            //if (e.Row.Cells[9].Text.Equals("已完成")) {
+            //    cb.Enabled = true;
+            //}
+            //else {
+            //    cb.Enabled = false;
+            //}
+            if (ddlHqzt.Text.Equals("全部")) {
+                btnEdit.Text = "查看";
+                btnDel.Enabled = false;
+                cellChange.Visible = false;
+            }
+            else {
+                if (GroupNames.IndexOf("合同评审表-发起人") >= 0 || GroupNames.IndexOf("超级用户") >= 0) {
+                    //发起人确定提交的单子不能编辑
+                    if (!e.Row.Cells[6].Text.Equals("单据建立中")) {
+                        btnEdit.Text = "查看";
+                    }
+                    btnDel.Enabled = true;//只有发起人有删除权限
+                    cellChange.Visible = true;//只有发起人有变更权限
+                }
+                else {
+                    btnDel.Enabled = false;//不是发起人不能删除单据
+                    cellChange.Visible = false;//不是发起人不能变更
+                }
+            }
+
+        }
+
+
+        // 行颜色转换
+        /*if (e.Row.RowType == DataControlRowType.DataRow) {
+            System.Data.DataRowView drv = e.Row.DataItem as DataRowView;
+            string result = drv["slzt"].ToString();
+            if (result == "已完成") {
+                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFCCCC");
+                //cb.Enabled = true;
+            }
+
+        }*/
+    }
+
+    protected void tjbd_Click(object sender, EventArgs e) {
+        Response.Redirect("htpsbEdit.aspx?lb=ADD");//只有发起人才能新建表单
+    }
+
+    protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e) {
+        this.GridView1.PageIndex = e.NewPageIndex;
+        bind();
+    }
+
+    protected void lbQuery_Click(object sender, EventArgs e) {
+        bind();
+    }
+    protected void ddlHqzt_SelectedIndexChanged(object sender, EventArgs e) {
+        bind();
+    }
+}

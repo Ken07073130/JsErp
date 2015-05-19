@@ -1,0 +1,239 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="cgdList.aspx.cs" Inherits="cgdList" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <link rel="stylesheet" type="text/css" href="css/common.css" />
+    <title>采购单</title>
+    <script type="text/javascript">
+
+        function showDiv(divName){
+            var x,y; 
+            x = event.clientX; 
+            y = event.clientY;
+           // alert(document.getElementById(divName).innerHTML);
+            document.getElementById(divName).style.left = x; 
+            document.getElementById(divName).style.top = y; 
+            document.getElementById(divName).style.display = "block"; 
+        }
+        
+        function hideDiv(divName){
+            document.getElementById(divName).style.display = "none"; 
+        }
+        
+        function printCgd(bh){
+           var url="rpt/cgdPrint.aspx?bh="+bh;
+           window.open(url);
+        }
+        
+    </script>
+    <style type="text/css">
+        .divDetails {
+        font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #4f6b72;
+        background: #E6EAE9;
+        }
+
+        a {
+        color: #c75f3e;
+        }
+
+        #mytable {
+        width: 700px;
+        padding: 0;
+        margin: 0;
+        }
+
+        caption {
+        padding: 0 0 5px 0;
+        width: 700px;
+        font: italic 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        text-align: right;
+        }
+
+        .divDetails th {
+        font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #4f6b72;
+        border-right: 1px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
+        border-top: 1px solid #C1DAD7;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-align: left;
+        padding: 6px 6px 6px 12px;
+        background: #CAE8EA no-repeat;
+        }
+
+        .divDetails th.nobg {
+        border-top: 0;
+        border-left: 0;
+        border-right: 1px solid #C1DAD7;
+        background: none;
+        }
+
+        .divDetails td {
+        border-right: 1px solid #C1DAD7;
+        border-bottom: 1px solid #C1DAD7;
+        background: #fff;
+        font-size:11px;
+        padding: 6px 6px 6px 12px;
+        color: #4f6b72;
+        }
+
+
+        .divDetails td.alt {
+        background: #F5FAFA;
+        color: #797268;
+        }
+
+        .divDetails th.spec {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #fff no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        }
+
+        .divDetails th.specalt {
+        border-left: 1px solid #C1DAD7;
+        border-top: 0;
+        background: #f5fafa no-repeat;
+        font: bold 10px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+        color: #797268;
+        }
+
+</style>
+</head>
+<body>
+
+    <form id="form1" runat="server">
+
+        <div style="margin: 0 auto; width: 100%; font-size: 12px;">
+            <div style="text-align: center; font-size: 25px; font-weight: bold; background-color: #FFFFCC;" >
+                <span style="float: left; vertical-align: middle;">
+                    <asp:LinkButton ID="lbtnOK" runat="server" Style="display: inline; width: 70px; height: 25px;
+                        font-size: 13px; line-height: 25px;" OnClick="tjbd_Click" Visible="false">新增采购单</asp:LinkButton>
+                </span><span runat="server" id="spanTitle"></span>采购单列表</div>
+            <div style="height: 15px; margin-bottom: 15px;">
+                查询供应商(输入供应商代码或者部分供应商名称)
+                <asp:TextBox ID="tbGysdm" runat="server" AutoPostBack="True" OnTextChanged="tbGysdm_TextChanged"></asp:TextBox>
+            </div>
+            <div>
+            
+              
+                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4"
+                    Style="text-align: center" Font-Names="Verdana" Font-Size="12px" OnRowDataBound="GridView1_RowDataBound"
+                    OnRowDeleting="GridView1_RowDeleting" OnRowEditing="GridView1_RowEditing" EmptyDataText="无记录"
+                    Width="100%" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px"
+                    GridLines="Horizontal" AllowPaging="true" AllowSorting="true" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging"
+                    EmptyDataRowStyle-BackColor="#40e0d0" OnSorting="GridView1_Sorting"  >
+                    <RowStyle ForeColor="#333333" BackColor="White" />
+                    <Columns>
+                        <asp:BoundField DataField="BH" HeaderText="订单编号" SortExpression="bh">
+                            <ItemStyle Width="10%" />
+                        </asp:BoundField>
+                        <asp:CommandField HeaderText="生成" ShowEditButton="True">
+                            <ItemStyle Width="3%"  />
+                        </asp:CommandField>
+                        <asp:TemplateField ItemStyle-Width="3%">
+                            <HeaderTemplate>
+                                详细
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                               <div id="divDetails"><asp:Table ID="Table1" runat="server" CssClass="divDetails" style="display:none;position:absolute;z-index:1"></asp:Table></div>
+                                <asp:Label ID="lblDetail" style="text-decoration:underline; " runat="server" Text="显示详细"></asp:Label>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:BoundField DataField="GYSDM" HeaderText="供应商代码" SortExpression="gysdm">
+                            <ItemStyle Width="5%" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="GYSMC" HeaderText="供应商名称" SortExpression="gysdm">
+                            <ItemStyle Width="15%" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="SL" HeaderText="数量">
+                            <ItemStyle Width="5%" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="DW" HeaderText="单位">
+                              <ControlStyle CssClass="hidden" />
+                            <FooterStyle CssClass="hidden" />
+                            <HeaderStyle CssClass="hidden" />
+                            <ItemStyle CssClass="hidden" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="JBRQ" HeaderText="生产日期" SortExpression="jbrq">
+                            <ItemStyle Width="5%" />
+                        </asp:BoundField>
+                        <asp:BoundField DataField="sczt" HeaderText="生成状态">
+                            <ItemStyle Width="5%" />
+                        </asp:BoundField>
+                        <asp:TemplateField ItemStyle-Width="3%">
+                            <HeaderTemplate>
+                                打印
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <asp:Button ID="btnPrint" runat="server" Text="打印" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:BoundField DataField="djlsh" HeaderText="" SortExpression="djlsh">
+                            <ControlStyle CssClass="hidden" />
+                            <FooterStyle CssClass="hidden" />
+                            <HeaderStyle CssClass="hidden" />
+                            <ItemStyle CssClass="hidden" />
+                        </asp:BoundField>
+                        <asp:CommandField HeaderText="注销"  ShowDeleteButton="True" DeleteText="注销">
+                            <ItemStyle Width="3%"  />
+                        </asp:CommandField>
+                    </Columns>
+                    <PagerTemplate>
+                        <table style="font-size: 12px;">
+                            <tr>
+                                <td>
+                                    总共<asp:Label ID="Label1" runat="server" Text="<%#((GridView)Container.NamingContainer).PageCount %>"></asp:Label>页
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    第<asp:Label ID="Label2" runat="server" Text="<%#((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>页
+                                    &nbsp;</td>
+                                <td>
+                                    <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument="1" CommandName="Page"
+                                        Enabled="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>">首页</asp:LinkButton>
+                                    &nbsp;</td>
+                                <td>
+                                    <asp:LinkButton ID="LinkButton2" runat="server" CommandArgument="Prev" CommandName="Page"
+                                        Enabled="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>">上一页</asp:LinkButton>
+                                    &nbsp;</td>
+                                <td>
+                                    <asp:LinkButton ID="LinkButton3" runat="server" CommandArgument="Next" CommandName="Page"
+                                        Enabled="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">下一页 </asp:LinkButton>
+                                    &nbsp;</td>
+                                <td>
+                                    <asp:LinkButton ID="LinkButton4" runat="server" CommandArgument="Last" CommandName="Page"
+                                        Enabled="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">尾页</asp:LinkButton>
+                                    &nbsp;</td>
+                                <td>
+                                    <asp:LinkButton ID="LinkButton5" runat="server" CommandArgument="-1" CommandName="Page"
+                                        ValidationGroup="1">GO</asp:LinkButton>
+                                </td>
+                                <td>
+                                    <asp:TextBox ID="txtNum" runat="server" Width="30px" Text="<%#((GridView)Container.NamingContainer).PageIndex+1 %>"
+                                        ValidationGroup="1"></asp:TextBox>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ErrorMessage=""
+                                        ValidationExpression="^/d+$" ControlToValidate="txtNum" ValidationGroup="1"></asp:RegularExpressionValidator>
+                                </td>
+                            </tr>
+                        </table>
+                    </PagerTemplate>
+                    <FooterStyle BackColor="White" ForeColor="#333333" />
+                    <PagerStyle BackColor="#336666" ForeColor="White" HorizontalAlign="Center" />
+                    <SelectedRowStyle BackColor="#339966" Font-Bold="True" ForeColor="White" />
+                    <HeaderStyle BackColor="#479AC7" Font-Bold="True" ForeColor="White" />
+                </asp:GridView>
+     
+            </div>
+        </div>
+        
+
+
+    
+
+    </form>
+</body>
+</html>

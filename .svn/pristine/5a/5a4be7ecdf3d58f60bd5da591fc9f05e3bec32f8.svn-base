@@ -1,0 +1,68 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
+
+public partial class wlbhPrint : System.Web.UI.Page
+{
+
+    //水晶报表对象
+    private ReportDocument myReport;
+
+    private void ConfigureCrystalReports(){
+        //装载水晶报表
+        myReport = new ReportDocument();
+        string reportPath = Server.MapPath("~/cgxt/rpt/wlbhPrint.rpt");
+        myReport.Load(reportPath);
+
+        //定义水晶报表的数据库连接信息
+        ConnectionInfo connectionInfo = new ConnectionInfo();
+        connectionInfo.DatabaseName = "erp_js_data0704";
+        connectionInfo.UserID = "jsny";
+        connectionInfo.Password = "2011";
+        connectionInfo.ServerName = "192.186.10.7";
+
+
+        //将数据库信息传递给报表
+        SetDBLogonForReport(connectionInfo, myReport);
+
+        //把模板对象赋给报表前端呈现控件CrystalReportViewer1
+        CrystalReportViewer1.ReportSource = myReport;
+
+        //过滤数据
+        myReport.RecordSelectionFormula = "{js_sldH.BH} = '"+Request["BH"].ToString()+"' ";
+    }
+
+    private void SetDBLogonForReport(ConnectionInfo connectionInfo, ReportDocument reportDocument) {
+        Tables tables = reportDocument.Database.Tables;
+
+        foreach (CrystalDecisions.CrystalReports.Engine.Table table in tables) {
+            TableLogOnInfo tableLogonInfo = table.LogOnInfo;
+            tableLogonInfo.ConnectionInfo = connectionInfo;
+            table.ApplyLogOnInfo(tableLogonInfo);
+
+        }
+    }
+
+   
+    //VS2008必须放到Page_Init中
+    private void Page_Init(object sender, EventArgs e) {
+        ConfigureCrystalReports();
+    }
+
+    protected void Page_Load(object sender, EventArgs e) {
+
+    }
+
+
+
+}
+
