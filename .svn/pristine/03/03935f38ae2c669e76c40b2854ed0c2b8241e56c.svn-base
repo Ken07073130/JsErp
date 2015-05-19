@@ -1,0 +1,59 @@
+﻿using System;
+using System.Data;
+using System.Configuration;
+using System.Collections;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+using CrystalDecisions.CrystalReports.Engine;
+using System.Data.SqlClient;
+
+public partial class sldPrint : System.Web.UI.Page {
+    ReportDocument myReport;
+    protected void Page_Load(object sender, EventArgs e) {
+
+    }
+
+    //VS2008必须放到Page_Init中
+    private void Page_Init(object sender, EventArgs e) {
+        myReport = new ReportDocument();
+        ConfigureCrystalReports();
+    }
+
+    private void ConfigureCrystalReports() {
+        SqlConnection sqlconn = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlconn.Open();
+        string conditionString = "";
+        if (!String.IsNullOrEmpty(Request["bh"].ToString())) {
+            conditionString = " and charindex(a.bh,'" + Request["bh"].ToString() + "')>0";
+        }
+        String sqlstr = "select  a.WLLB , a.GYSMC ,case when GC='1' then '新桥工厂' when GC='2' then '东洲工厂' else '' end GC ,a.BH ,a.JBRQ , "
+                       + "         b.WLBH ddlx ,b.WLMC SLZT , b.GG IQCHQSJ , b.DW IQCHQZT ,b.SL CGYHQSJ ,b.PH CGYHQZT,a.sly,a.cgy,a.iqc "
+                       + " from    dbo.js_sldH a , dbo.js_sld_fllbH b "
+                       + " where   a.BH = b.BH "
+                       + conditionString;
+        DataSet ds = new DataSet();
+        SqlDataAdapter sda = new SqlDataAdapter(sqlstr, sqlconn);
+        //水晶报表里每张表都要设置一下数据集
+        sda.Fill(ds, "js_sldH");
+
+        myReport = new ReportDocument();
+        string reportPath = Server.MapPath("~/cgxt/rpt/sldPrint.rpt");
+        myReport.Load(reportPath);
+
+        //绑定数据集，注意，一个报表用一个数据集。
+        myReport.SetDataSource(ds);
+        CrystalReportViewer1.ReportSource = myReport;
+        sqlconn.Close();
+
+    }
+
+    private void Page_Unload(object sender, EventArgs e) {
+        myReport.Dispose();
+        CrystalReportViewer1.Dispose();
+    }
+
+}

@@ -1,0 +1,497 @@
+﻿<% @ Page Language = "C#" AutoEventWireup = "true" CodeFile = "htpsbEdit.aspx.cs" Inherits = "swxt_htpsbEdit" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>合同评审表</title>
+    <link href="../swxt/css/htpsb.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+      .subTitle {
+        font-size: 15px;
+        font-weight: bold; 
+        font-family: 微软雅黑;
+        text-align:center;
+      }
+    </style>
+    
+    <script type="text/jscript">
+        //点击显示变更日志
+        function showChangeLog(){
+           if(document.getElementById('aShowLog').innerHTML=="点击显示评审单变更日志"){
+              document.getElementById('aShowLog').innerHTML='点击隐藏评审单变更日志';
+              document.getElementById('divChangeLog').style.display='';
+           } else {
+              document.getElementById('aShowLog').innerHTML='点击显示评审单变更日志';
+              document.getElementById('divChangeLog').style.display='none';
+           }
+        }
+        //点击评审日志
+        function showPsLog(){
+           if(document.getElementById('aShowPsLog').innerHTML=="点击显示评审记录"){
+              document.getElementById('aShowPsLog').innerHTML='点击隐藏评审记录';
+              document.getElementById('divShowPsLog').style.display='';
+           } else {
+              document.getElementById('aShowPsLog').innerHTML='点击显示评审记录';
+              document.getElementById('divShowPsLog').style.display='none';
+           }
+        }
+        
+        
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div id="divPage">
+            <div class="layout" style="font-size: 25px; text-align: center; font-weight: bold;">
+                合同评审单
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">变更理由</span><span class="spanControl"><asp:DropDownList
+                        ID="DropDownList19" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>数据输入错误</asp:ListItem>
+                        <asp:ListItem>评审内容变更</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">业务员</span><span class="spanControl"><asp:TextBox ID="TextBox39"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li style="text-align:center;"><a href="javascript:void(0)" style="line-height:30px;" id="aShowLog" onclick="showChangeLog();">点击显示评审单变更日志</a></li>
+                    <li><a href="javascript:void(0)" style="line-height:30px;" id="aShowPsLog" onclick="showPsLog();">点击显示评审记录</a></li>
+                </ul>
+            </div>
+            <div class="layout" id="divChangeLog" style="display:none;">
+                <asp:TextBox ID="TextBox40" runat="server" Rows="8" TextMode="MultiLine" Width="94%"></asp:TextBox></div>
+            <div class="layout" id="divShowPsLog" style="display:none;">
+                 评审记录
+                <asp:TextBox ID="TextBox41" runat="server" Rows="8" TextMode="MultiLine" Width="88%"></asp:TextBox></div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">评审单号</span><span class="spanControl"><asp:TextBox ID="TextBox36"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">版本</span><span class="spanControl"><asp:DropDownList
+                        ID="DropDownList18" runat="server" Width="95%">
+                    </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">制表人</span><span class="spanControl"><asp:TextBox ID="TextBox37"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">制表日期</span><span class="spanControl"><asp:TextBox ID="TextBox38"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li style="width: 474px; line-height: 30px;" class="subTitle">订单基本信息</li>
+                    <li style="line-height: 30px;" class="subTitle">产品基本信息</li>
+                    <li style="line-height: 30px;" class="subTitle">投料基本信息</li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">订单类型</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlDdlx" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>生产订单</asp:ListItem>
+                        <asp:ListItem>备货订单</asp:ListItem>
+                        <asp:ListItem>B品订单</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">订单拆分</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlDdcf" runat="server" Width="95%">
+                        <asp:ListItem>否</asp:ListItem>
+                        <asp:ListItem>是</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">成品类型</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlCplx" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>电芯</asp:ListItem>
+                        <asp:ListItem>PACK</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">生产投料</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlCctl" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>是</asp:ListItem>
+                        <asp:ListItem>否</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">客户订单号</span><span class="spanControl"><asp:TextBox ID="tbNbddh"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">客户代码</span><span class="spanControl"><asp:TextBox ID="tbKhdm"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">内部电芯型号</span><span class="spanControl"><asp:TextBox ID="tbNbdxxh"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">投产数量</span><span class="spanControl"><asp:TextBox ID="tbTcsl"
+                        runat="server" Width="50%"></asp:TextBox>
+                        <asp:DropDownList ID="ddlDw2" runat="server" Width="40%">
+                            <asp:ListItem>PCS</asp:ListItem>
+                            <asp:ListItem>组</asp:ListItem>
+                        </asp:DropDownList></span> </li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">电芯数量</span><span class="spanControl"><asp:TextBox ID="tbDxsl"
+                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw4" runat="server"
+                            Width="40%">
+                            <asp:ListItem>PCS</asp:ListItem>
+                            <asp:ListItem>组</asp:ListItem>
+                        </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">订单数量</span><span class="spanControl"><asp:TextBox ID="tbDdsl"
+                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="tbDw" runat="server"
+                            Width="40%">
+                            <asp:ListItem>PCS</asp:ListItem>
+                            <asp:ListItem>组</asp:ListItem>
+                        </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">内部包装型号</span><span class="spanControl"><asp:TextBox ID="tbNbbzxh"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">消耗备货单数</span><span class="spanControl"><asp:TextBox ID="TextBox4"
+                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="DropDownList3"
+                            runat="server" Width="40%">
+                            <asp:ListItem>PCS</asp:ListItem>
+                            <asp:ListItem>组</asp:ListItem>
+                        </asp:DropDownList></span> </li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">备品数量</span><span class="spanControl"><asp:TextBox ID="tbBpsl"
+                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw1" runat="server"
+                            Width="40%">
+                            <asp:ListItem>PCS</asp:ListItem>
+                            <asp:ListItem>组</asp:ListItem>
+                        </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">客户要求交期</span><span class="spanControl"><asp:TextBox ID="tbKhyqjq"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">电芯容量</span><span class="spanControl"><asp:TextBox ID="tbDxrl"
+                        runat="server" Width="40%"></asp:TextBox>
+                        mAh<asp:TextBox ID="TextBox42" runat="server" Width="30%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">电芯备货</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlDxbh" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>是</asp:ListItem>
+                        <asp:ListItem>否</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">规格书编号</span><span class="spanControl"><asp:TextBox ID="tbGgsbh"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">我司评审交期</span><span class="spanControl"><asp:TextBox ID="tbWspsjq"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">内部PACK型号</span><span class="spanControl"><asp:TextBox
+                        ID="tbNbpackxh" runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">PACK备货</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlPackbh" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>是</asp:ListItem>
+                        <asp:ListItem>否</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">规格书版本号</span><span class="spanControl"><asp:TextBox ID="tbGgsbbh"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">ROHS要求</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlRohs" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>有</asp:ListItem>
+                        <asp:ListItem>无</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">工艺路线</span><span class="spanControl"><asp:TextBox ID="tbGylx"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">备货单号</span><span class="spanControl"><asp:TextBox ID="tbBhdh"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">规格书型号</span><span class="spanControl"><asp:TextBox ID="tbGgsxh"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">无卤要求</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlWlyq" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>有</asp:ListItem>
+                        <asp:ListItem>无</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">材料体系</span><span class="spanControl"><asp:TextBox ID="tbCltx"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">库存出货</span><span class="spanControl"><asp:TextBox ID="tbKcch"
+                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw3" runat="server"
+                            Width="40%">
+                            <asp:ListItem>PCS</asp:ListItem>
+                            <asp:ListItem>组</asp:ListItem>
+                        </asp:DropDownList></span> </li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li><span class="spanLabel">客户型号</span><span class="spanControl"><asp:TextBox ID="tbKhxh"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel">REACH要求</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlReach" runat="server" Width="95%">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>有</asp:ListItem>
+                        <asp:ListItem>无</asp:ListItem>
+                    </asp:DropDownList></span> </li>
+                    <li><span class="spanLabel">出货包装代码</span><span class="spanControl"><asp:TextBox ID="tbChbzdm"
+                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                    <li><span class="spanLabel"></span><span class="spanControl"></span></li>
+                </ul>
+            </div>
+            <div class="layout">
+                <ul>
+                    <li style="width: 950px; height: 90px;"><span class="spanLabel">备注</span><span class="spanControl"
+                        style="width: 850px;"><asp:TextBox ID="tbQt" runat="server" Width="100%" Rows="5"
+                            TextMode="MultiLine"></asp:TextBox></span> </li>
+                </ul>
+            </div>
+            <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
+                ↓</div>
+            <!--商务会签-->
+            <div style="width: 950px; border: 2px solid #99CCFF;">
+                <div>
+                    <span class="swSpanLabel">商业可行性</span> <span class="swSpanControl">
+                        <asp:DropDownList ID="DropDownList1" runat="server" Width="95%">
+                            <asp:ListItem>请选择</asp:ListItem>
+                            <asp:ListItem>满足</asp:ListItem>
+                            <asp:ListItem>不满足</asp:ListItem>
+                        </asp:DropDownList></span> <span class="swSpanLabel">规格书</span><span class="swSpanControl">
+                            <asp:DropDownList ID="DropDownList2" runat="server" Width="95%">
+                                <asp:ListItem>请选择</asp:ListItem>
+                                <asp:ListItem>已签回</asp:ListItem>
+                                <asp:ListItem>未签回</asp:ListItem>
+                            </asp:DropDownList></span><span class="swSpanLabel">首次生产</span><span class="swSpanControl"><asp:DropDownList
+                                ID="DropDownList4" runat="server" Width="95%">
+                                <asp:ListItem>请选择</asp:ListItem>
+                                <asp:ListItem>是</asp:ListItem>
+                                <asp:ListItem>否</asp:ListItem>
+                            </asp:DropDownList></span><span class="swSpanLabel">投料时间</span><span class="swSpanControl"><asp:TextBox
+                                ID="TextBox1" runat="server" Width="95%"></asp:TextBox></span> <span class="swSpanLabel">
+                                    老化时间</span><span class="swSpanControl"><asp:DropDownList ID="DropDownList5" runat="server"
+                                        Width="95%">
+                                        <asp:ListItem>请选择</asp:ListItem>
+                                        <asp:ListItem>有</asp:ListItem>
+                                        <asp:ListItem>无</asp:ListItem>
+                                    </asp:DropDownList></span><span class="swSpanLabel">PACK时间</span><span class="swSpanControl"><asp:TextBox
+                                        ID="TextBox2" runat="server" Width="95%"></asp:TextBox></span>
+                </div>
+                <div style="margin-top: 5px;">
+                    <span style="width: 60px; text-align: center; display: inline-block;">商务备注</span><span
+                        style="width: 620px; display: inline-block;">
+                        <asp:TextBox ID="tbSwbz" runat="server" Width="99%" Rows="3" TextMode="MultiLine"></asp:TextBox></span>
+                    <span style="display: inline-block; width: 260px; border: 1px solid #99CCFF;">
+                        <ul style="list-style: none; margin: 0px; 0px;">
+                            <li><span class="spanLabel">商务评审结果</span><asp:DropDownList ID="ddlSwpsjg" runat="server"
+                                Width="120px">
+                                <asp:ListItem>请选择</asp:ListItem>
+                                <asp:ListItem>同意生产</asp:ListItem>
+                                <asp:ListItem>不同意生产</asp:ListItem>
+                                <asp:ListItem>有条件通过</asp:ListItem>
+                                <asp:ListItem>处理中</asp:ListItem>
+                            </asp:DropDownList></li>
+                            <li><span class="spanLabel">商务会签人</span><asp:TextBox ID="TextBox9" runat="server"
+                                Width="117px"></asp:TextBox>
+                            </li>
+                            <li><span class="spanLabel">商务会签时间</span><asp:TextBox ID="swjlshsj" runat="server"
+                                Width="117px"></asp:TextBox></li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+            <!--商务会签结束-->
+            <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
+                ↓</div>
+            <!--主体部门会签-->
+            <div style="border: 2px solid #99CCFF; width: 950px;">
+                <span class="spanSh" style="width: 360px;"><span class="subTitle">工程部</span>
+                    <ul>
+                        <li style="width: 355px;"><span class="gcSpanLabel">工艺下发时间</span><span class="gcSpanControl"><asp:TextBox
+                            ID="tbGyxfsj" runat="server" Width="95%"></asp:TextBox></span><span class="gcSpanLabel">量产可行性</span><span
+                                class="gcSpanControl"><asp:DropDownList ID="ddlLckxx" runat="server">
+                                    <asp:ListItem>请选择</asp:ListItem>
+                                    <asp:ListItem>是</asp:ListItem>
+                                    <asp:ListItem>否</asp:ListItem>
+                                </asp:DropDownList></span></li>
+                        <li style="width: 355px;"><span class="gcSpanLabel">模具图纸下发时间</span><span class="gcSpanControl"><asp:TextBox
+                            ID="tbMotzxfsj" runat="server" Width="95%"></asp:TextBox></span><span class="gcSpanLabel">工艺路线可行性</span><span
+                                class="gcSpanControl"><asp:DropDownList ID="ddlGylxkxx" runat="server">
+                                    <asp:ListItem>请选择</asp:ListItem>
+                                    <asp:ListItem>是</asp:ListItem>
+                                    <asp:ListItem>否</asp:ListItem>
+                                </asp:DropDownList></span></li>
+                        <li style="width: 355px;"><span class="gcSpanLabel">工装图纸下发时间</span><span class="gcSpanControl"><asp:TextBox
+                            ID="tbGzfzxfsj" runat="server" Width="95%"></asp:TextBox></span><span class="gcSpanLabel">是否有未结案问题</span><span
+                                class="gcSpanControl"><asp:DropDownList ID="ddlSfywjawt" runat="server">
+                                    <asp:ListItem>请选择</asp:ListItem>
+                                    <asp:ListItem>是</asp:ListItem>
+                                    <asp:ListItem>否</asp:ListItem>
+                                </asp:DropDownList></span></li>
+                        <li style="width: 355px;"><span class="gcSpanLabel">材料定额下发时间</span><span><asp:TextBox
+                            ID="tbCldexfsj" runat="server" Width="50%"></asp:TextBox></span></li>
+                        <li style="width: 355px; height: 60px;">
+                            <asp:TextBox ID="TextBox25" runat="server" Width="90%" Rows="3" TextMode="MultiLine"
+                                Style="margin-top: 3px;"></asp:TextBox></li>
+                        <li>工程评审结果<asp:DropDownList ID="ddlGcpsjg" runat="server">
+                            <asp:ListItem>请选择</asp:ListItem>
+                            <asp:ListItem>同意生产</asp:ListItem>
+                            <asp:ListItem>不同意生产</asp:ListItem>
+                            <asp:ListItem>有条件通过</asp:ListItem>
+                            <asp:ListItem>处理中</asp:ListItem>
+                        </asp:DropDownList></li>
+                        <li>工程会签人<asp:TextBox ID="TextBox8" runat="server" Width="100px"></asp:TextBox>
+                        </li>
+                        <li>工程会签时间<asp:TextBox ID="TextBox3" runat="server" Width="90px"></asp:TextBox></li>
+                        <li></li>
+                        <li style="width: 355px; font-size: 25px; font-weight: bold; border: 0px;">↓</li>
+                        <li style="width: 355px;" class="subTitle">技术PACK</li>
+                        <li>PACK工艺</li><li>
+                            <asp:DropDownList ID="DropDownList11" runat="server">
+                                <asp:ListItem>请选择</asp:ListItem>
+                                <asp:ListItem>能满足需求</asp:ListItem>
+                                <asp:ListItem>不能满足需求</asp:ListItem>
+                            </asp:DropDownList></li><li>PACK工艺定额下发时间</li><li>
+                                <asp:TextBox ID="TextBox6" runat="server" Width="100px"></asp:TextBox></li>
+                        <li style="width: 355px; height: 85px;">
+                            <asp:TextBox ID="TextBox5" runat="server" Rows="5" TextMode="MultiLine" Width="95%"></asp:TextBox></li><li>
+                                PACK评审结果<asp:DropDownList ID="DropDownList10" runat="server">
+                                    <asp:ListItem>请选择</asp:ListItem>
+                                    <asp:ListItem>同意生产</asp:ListItem>
+                                    <asp:ListItem>不同意生产</asp:ListItem>
+                                    <asp:ListItem>有条件通过</asp:ListItem>
+                                    <asp:ListItem>处理中</asp:ListItem>
+                                </asp:DropDownList></li>
+                        <li>PACK会签人<asp:TextBox ID="TextBox24" runat="server" Width="100px"></asp:TextBox></li>
+                        <li>PACK会签时间<asp:TextBox ID="TextBox26" runat="server" Width="90px"></asp:TextBox></li>
+                        <li></li>
+                    </ul>
+                </span><span class="spanSh"><span class="subTitle">设备部</span>
+                    <ul>
+                        <li>设备情况<asp:DropDownList ID="DropDownList7" runat="server">
+                            <asp:ListItem>请选择</asp:ListItem>
+                            <asp:ListItem>能满足需求</asp:ListItem>
+                            <asp:ListItem>不能满足需求</asp:ListItem>
+                        </asp:DropDownList></li><li style="height: 125px;">
+                            <asp:TextBox ID="TextBox14" runat="server" Rows="7" TextMode="MultiLine" Width="95%"></asp:TextBox></li>
+                        <li>设备评审结果<asp:DropDownList ID="DropDownList6" runat="server">
+                            <asp:ListItem>请选择</asp:ListItem>
+                            <asp:ListItem>同意生产</asp:ListItem>
+                            <asp:ListItem>不同意生产</asp:ListItem>
+                            <asp:ListItem>有条件通过</asp:ListItem>
+                            <asp:ListItem>处理中</asp:ListItem>
+                        </asp:DropDownList></li><li>设备会签人 &nbsp;<asp:TextBox ID="TextBox16" runat="server"
+                            Width="90px"></asp:TextBox></li><li>设备会签时间<asp:TextBox ID="TextBox17" runat="server"
+                                Width="90px"></asp:TextBox></li><li style="border: 0px; margin-top: 100px; font-size: 40px;
+                                    font-weight: bold;">→</li></ul>
+                </span><span class="spanSh"><span class="subTitle">质量部</span><ul>
+                    <li>是否品质异常<asp:DropDownList ID="DropDownList8" runat="server">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>是</asp:ListItem>
+                        <asp:ListItem>否</asp:ListItem>
+                    </asp:DropDownList></li><li style="height: 125px;">
+                        <asp:TextBox ID="TextBox18" runat="server" Rows="7" TextMode="MultiLine" Width="95%"></asp:TextBox></li>
+                    <li>设备评审结果<asp:DropDownList ID="DropDownList13" runat="server">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>同意生产</asp:ListItem>
+                        <asp:ListItem>不同意生产</asp:ListItem>
+                        <asp:ListItem>有条件通过</asp:ListItem>
+                        <asp:ListItem>处理中</asp:ListItem>
+                    </asp:DropDownList></li><li>设备会签人 &nbsp;<asp:TextBox ID="TextBox19" runat="server"
+                        Width="90px"></asp:TextBox></li><li>设备会签时间<asp:TextBox ID="TextBox20" runat="server"
+                            Width="90px"></asp:TextBox></li>
+                    <li style="width: 355px; margin-top: 30px;" class="subTitle">供应链管理部</li>
+                    <li style="width: 355px;"><span style="width: 177px; display: inline-block;">隔膜到位时间<asp:TextBox
+                        ID="TextBox10" runat="server" Width="80px"></asp:TextBox></span> <span style="width: 170px;
+                            display: inline-block;">保护板到位时间<asp:TextBox ID="TextBox7" runat="server" Width="75px"></asp:TextBox></span></li>
+                    <li style="width: 355px;"><span style="float: left">&nbsp;无法满足交期的物料<asp:TextBox ID="TextBox15"
+                        runat="server" Width="230px"></asp:TextBox></span></li>
+                    <li style="width: 355px; height: 85px;">
+                        <asp:TextBox ID="TextBox13" runat="server" Rows="5" TextMode="MultiLine" Width="95%"></asp:TextBox></li><li
+                            style="width: 355px;"><span style="width: 180px;">供应链评审结果<asp:DropDownList ID="DropDownList12"
+                                runat="server">
+                                <asp:ListItem>请选择</asp:ListItem>
+                                <asp:ListItem>同意生产</asp:ListItem>
+                                <asp:ListItem>不同意生产</asp:ListItem>
+                                <asp:ListItem>有条件通过</asp:ListItem>
+                                <asp:ListItem>处理中</asp:ListItem>
+                            </asp:DropDownList></span><span style="width: 180px;">供应链会签人<asp:TextBox ID="TextBox11"
+                                runat="server" Width="100px"></asp:TextBox></span></li>
+                    <li style="width: 355px;"><span style="float: left">供应链会签时间<asp:TextBox ID="TextBox12"
+                        runat="server" Width="90px"></asp:TextBox></span> </li>
+                </ul>
+                </span><span class="spanSh"><span class="subTitle">制造部</span><ul>
+                    <li>以往品质是否异常<asp:DropDownList ID="DropDownList9" runat="server">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>是</asp:ListItem>
+                        <asp:ListItem>否</asp:ListItem>
+                    </asp:DropDownList></li><li style="height: 125px;">
+                        <asp:TextBox ID="TextBox21" runat="server" Rows="7" TextMode="MultiLine" Width="95%"></asp:TextBox></li>
+                    <li>设备评审结果<asp:DropDownList ID="DropDownList14" runat="server">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem>同意生产</asp:ListItem>
+                        <asp:ListItem>不同意生产</asp:ListItem>
+                        <asp:ListItem>有条件通过</asp:ListItem>
+                        <asp:ListItem>处理中</asp:ListItem>
+                    </asp:DropDownList></li><li>设备会签人 &nbsp;<asp:TextBox ID="TextBox22" runat="server"
+                        Width="90px"></asp:TextBox></li><li>设备会签时间<asp:TextBox ID="TextBox23" runat="server"
+                            Width="90px"></asp:TextBox></li></ul>
+                </span>
+            </div>
+            <!--主体部门会签结束-->
+            <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
+                ↓</div>
+            <!--生产总监、总工、商务评审结果-->
+            <div style="border: 1px solid #99CCFF; width: 950px;">
+                <div class="layout">
+                    <ul>
+                        <li style="height: 90px;">
+                            <asp:TextBox ID="TextBox29" runat="server" Rows="5" TextMode="MultiLine" Width="95%"></asp:TextBox></li>
+                        <li style="height: 90px; margin-left: 20px">
+                            <asp:TextBox ID="TextBox30" runat="server" Rows="5" TextMode="MultiLine" Width="95%"></asp:TextBox></li>
+                        <li style="width: 215px; border: 0px;"></li>
+                        <li style="height: 90px;">
+                            <asp:TextBox ID="TextBox31" runat="server" Rows="5" TextMode="MultiLine" Width="95%"></asp:TextBox></li><li>
+                                <span class="spanLabel">生产总监评审</span><span class="spanControl"><asp:DropDownList
+                                    ID="DropDownList15" runat="server" Width="120px">
+                                    <asp:ListItem>请选择</asp:ListItem>
+                                    <asp:ListItem>同意生产</asp:ListItem>
+                                    <asp:ListItem>不同意生产</asp:ListItem>
+                                    <asp:ListItem>有条件通过</asp:ListItem>
+                                    <asp:ListItem>处理中</asp:ListItem>
+                                </asp:DropDownList></span></li>
+                        <li style="margin-left: 20px"><span class="spanLabel">总工评审</span><span class="spanControl"><asp:DropDownList
+                            ID="DropDownList16" runat="server" Width="120px">
+                            <asp:ListItem>请选择</asp:ListItem>
+                            <asp:ListItem>同意生产</asp:ListItem>
+                            <asp:ListItem>不同意生产</asp:ListItem>
+                            <asp:ListItem>有条件通过</asp:ListItem>
+                            <asp:ListItem>处理中</asp:ListItem>
+                        </asp:DropDownList></span></li>
+                        <li style="width: 215px; border: 0px; font-size: 25px; font-weight: bold; text-align: center;">
+                            →</li>
+                        <li><span class="spanLabel">商务经理评审</span><span class="spanControl"><asp:DropDownList
+                            ID="DropDownList17" runat="server" Width="120px">
+                            <asp:ListItem>请选择</asp:ListItem>
+                            <asp:ListItem>同意生产</asp:ListItem>
+                            <asp:ListItem>不同意生产</asp:ListItem>
+                            <asp:ListItem>有条件通过</asp:ListItem>
+                            <asp:ListItem>处理中</asp:ListItem>
+                        </asp:DropDownList></span></li><li><span class="spanLabel">生产总监签字</span><span class="spanControl"><asp:TextBox
+                            ID="TextBox27" runat="server" Width="120px"></asp:TextBox></span></li>
+                        <li style="margin-left: 20px"><span class="spanLabel">总工签字</span><span class="spanControl"><asp:TextBox
+                            ID="TextBox32" runat="server" Width="120px"></asp:TextBox></span></li>
+                        <li style="width: 215px; border: 0px;"></li>
+                        <li><span class="spanLabel">商务经理签字</span><span class="spanControl"><asp:TextBox ID="TextBox33"
+                            runat="server" Width="120px"></asp:TextBox></span></li><li><span class="spanLabel">审核时间</span><span
+                                class="spanControl"><asp:TextBox ID="TextBox28" runat="server" Width="120px"></asp:TextBox></span></li>
+                        <li style="margin-left: 20px"><span class="spanLabel">审核时间</span><span class="spanControl"><asp:TextBox
+                            ID="TextBox34" runat="server" Width="120px"></asp:TextBox></span></li>
+                        <li style="width: 215px; border: 0px;"></li>
+                        <li><span class="spanLabel">审核时间</span><span class="spanControl"><asp:TextBox ID="TextBox35"
+                            runat="server" Width="120px"></asp:TextBox></span></li></ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,117 @@
+﻿#divPage{
+  margin :0 auto;
+  width:1000px;	
+  font-size:12px;
+}
+
+.layout
+{
+	overflow:hidden;
+	width:1000px;
+}
+
+.layout ul 
+{
+    
+  list-style:none;
+  padding:0px; margin:0px;border-top:0px; 
+  /*height:38px;border:1px solid;border:1px solid #99CC00*/
+}
+
+
+.layout li 
+{
+  width:236px;
+  float:left;
+  height:30px;
+  border:1px solid #99CCFF;
+}
+
+
+.spanLabel
+{
+   width:90px;	
+   text-align:center;
+   display:inline-block;
+   margin:3px 0px;
+}
+
+.spanControl
+{
+   width:140px;	
+   display:inline-block;
+   margin:3px 0px;
+}
+
+.hidden 
+{ 
+display:none; 
+} 
+
+/*商务审核div通用*/
+.swSpanLabel
+{
+    width:60px;
+    display:inline-block;
+    text-align:center;
+}
+.swSpanControl
+{
+    width:94px;
+    display:inline-block;
+}
+
+
+
+/*审核流程分成3列用*/
+.spanSh
+{
+    width:180px;
+    display:inline-block;
+    text-align:center;
+    margin-right:12px;
+}
+
+.spanSh ul 
+{
+    
+  list-style:none;
+  padding:0px; margin:0px;border-top:0px; 
+  /*height:38px;border:1px solid;border:1px solid #99CC00*/
+}
+
+
+.spanSh li 
+{
+  width:177px;
+  float:left;
+  height:30px;
+  border:1px solid #99CCFF;
+}
+
+/*工程评审用*/
+.gcSpanLabel
+{ 
+   width:100px;	
+   text-align:center;
+   display:inline-block;
+    
+}
+
+.gcSpanControl
+{
+   width:70px;	
+   text-align:center;
+   display:inline-block;
+   margin:3px 0px;
+}
+
+
+
+
+.hover{
+    cursor:pointer;
+    background-color:#bcd4ec;  
+   
+}   /*这里是鼠标经过时的颜色*/ 
+

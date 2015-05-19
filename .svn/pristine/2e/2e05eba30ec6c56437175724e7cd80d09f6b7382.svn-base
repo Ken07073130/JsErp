@@ -1,0 +1,1080 @@
+﻿using System;
+using System.Web;
+using System.Collections;
+using System.Web.Services;
+using System.Web.Services.Protocols;
+using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Configuration;
+using AJAX_JSON;
+using System.Reflection;
+using System.Text.RegularExpressions;
+
+/// <summary>
+/// GetContent 的摘要说明
+/// </summary>
+[WebService(Namespace = "http://tempuri.org/")]
+[WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+[System.ComponentModel.ToolboxItem(false)]
+[System.Web.Script.Services.ScriptService]
+public class GetContent : System.Web.Services.WebService {
+
+    private static List<string> items;
+    public GetContent() {
+
+        //如果使用设计的组件，请取消注释以下行 
+        //InitializeComponent(); 
+    }
+
+    [WebMethod]
+
+    public string[] GetkhdmList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT KHMC,KHDM FROM JS_CTNUMH where khdm like '%" + prefixText.Trim() + "%' or KHMC like '%" + prefixText.Trim() + "%' ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["KHDM"].ToString() + "|" + sdr["KHMC"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+    [WebMethod]
+    public string[] GetKhdmList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT KHDM from js_khbmH where khdm like '%" + prefixText.Trim() + "%'  ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["KHDM"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    public string[] GetcpxhList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT xh FROM CPXHH where xh like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["xh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    public string[] GetpcList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT DISTINCT pc FROM js_scsjtjH  where pc  like '%" + prefixText.Trim() + "%' ORDER BY pc  ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["pc"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    public string[] GetxhList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT   DISTINCT xh   FROM js_scsjtjH  where xh  like '%" + prefixText.Trim() + "%' ORDER BY xh  ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["xh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+    [WebMethod]
+    public string[] GetYpjysList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT  bh  FROM js_mfypjysH  where fqr='" + Session["username"].ToString() + "' and IsDel=0 and bh  like '%" + prefixText.Trim() + "%' ORDER BY bh  ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["bh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+    [WebMethod(EnableSession = true)]
+    public string[] GetCpkftaList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        String UserName = HttpContext.Current.Session["username"].ToString();
+        string sqlstr = "SELECT  bh  FROM js_cpkftaH  where xsr='" + UserName + "' and bh  like '%" + prefixText.Trim() + "%' ORDER BY bh  ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["bh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    public string[] GetCgdList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select bh from dbo.js_cgdH where BH like '%" + prefixText.Trim() + "%' ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["bh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+
+    [WebMethod]
+    public string[] GetUserNameList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select username from dbo.STUsers where UserName like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["username"].ToString().Trim());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+
+    public string[] GetCpphList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT DXXH,khdm,PH  FROM [erp_js_data0704].[dbo].[js_tcjhH] h  LEFT  JOIN  dbo.js_tcjhF f ON h.djlsh=f.djlsh  "
+                        + "where ph like '%" + prefixText + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["PH"].ToString() + "|" + sdr["khdm"].ToString() + "|" + sdr["DXXH"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+
+    public string[] GetcmList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT distinct cm, dj FROM js_mrcd where cm like '%" + prefixText.Trim() + "%' ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["cm"].ToString() + "|" + sdr["dj"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+    [WebMethod]
+
+    public string[] GetKSDcpxhList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT distinct cpxh  FROM js_zltscldH where cpxh like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["cpxh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    //获取现有电芯型号列表--样品建议书用
+    [WebMethod]
+    public string[] GetDxxhList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select distinct ZZDXXH dxxh from dbo.js_ypzhpsdH where ZZDXXH like '%" + prefixText.Trim() + "%' union all select distinct ZZPACKXH dxxh from js_ypzhpsdH where ZZPACKXH like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["dxxh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    //获取现有电芯型号列表--合同评审表用
+    [WebMethod]
+    public string[] GetHtDxxhList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select nbdxxh dxxh from dbo.js_dxxhH where nbdxxh like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["dxxh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    //获取现有规格书型号列表--合同评审表用
+    [WebMethod]
+    public string[] GetgGgsxhList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select VwXm0001 ggsxh from dbo.View_0395 where  VwXm0001 like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["ggsxh"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+    [WebMethod]
+    public string[] GetWlflList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select flmc from dbo.js_wlflbH where flmc like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["flmc"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+    [WebMethod]
+    //物料信息
+    public List<wlxxJosn> GetwlxxArrayList(wlxxJosn wlxx) {
+        List<wlxxJosn> arrayList = new List<wlxxJosn>();
+
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "";
+        if (wlxx.Sx == "ycl") {
+            sqlstr = "SELECT wlmc,gysmc,xlmc,dw,wlbh,lsmxx  FROM js_xyclbmH  WHERE ( wlmc LIKE '%" + wlxx.Wlbh + "%' OR gysmc LIKE '%" + wlxx.Wlbh + "%' OR xlmc LIKE '%" + wlxx.Wlbh + "%' OR wlmc LIKE '%" + wlxx.Wlbh + "%' OR lsmxx LIKE '%" + wlxx.Wlbh + "%' ) AND LEFT(wlbh,7)='1005023'";
+        }
+        else {
+            string flsql = "";
+            if ((wlxx.Ckbh == "25" || wlxx.Ckbh == "10") && wlxx.Sx == "返料") {
+                flsql = " VwXm0004='1101' ";
+            }
+            else {
+                flsql = " VwXm0002='" + wlxx.Ckbh + "' ";
+            }
+            string wlpcsql = "";
+            if (wlxx.Sx != "混批转入") {
+                if (wlxx.Sx != "返料") {
+                    if ((wlxx.Wlpc.Length == 10) && (wlxx.Ckbh == "26")) {
+                        wlpcsql = "( mate_id LIKE '1%' or (scph like '%" + wlxx.Wlpc.Substring(2, 4) + "-" + wlxx.Wlpc.Substring(7, 1) + "%' and mate_name like '正极%'  ) ) and  ";
+                    }
+                    else if ((wlxx.Wlpc.Length == 10) && (wlxx.Ckbh == "11")) {
+                        wlpcsql = "( mate_id LIKE '1%' or (scph like '%" + wlxx.Wlpc.Substring(2, 4) + "-" + wlxx.Wlpc.Substring(7, 1) + "%' and mate_name like '负极%'   ) ) and  ";
+                    }
+                    else if ((wlxx.Wlpc.Length == 11) && (wlxx.Ckbh == "26")) {
+                        wlpcsql = "( mate_id LIKE '1%' or (scph like '%" + wlxx.Wlpc.Substring(3, 4) + "-" + wlxx.Wlpc.Substring(8, 1) + "%' and mate_name like '正极%'  ) ) and  ";
+                    }
+                    else if ((wlxx.Wlpc.Length == 11) && (wlxx.Ckbh == "11")) {
+                        wlpcsql = "( mate_id LIKE '1%' or (scph like '%" + wlxx.Wlpc.Substring(3, 4) + "-" + wlxx.Wlpc.Substring(8, 1) + "%' and mate_name like '负极%'  ) ) and  ";
+                    }
+
+                    else {
+                        wlpcsql = "( mate_id LIKE '1%' or scph like '%" + wlxx.Wlpc + "%' ) and  ";
+                    }
+                }
+
+            }
+
+            sqlstr = "declare @storeID varchar(100),@kjym varchar(100) "
+                        + "   set @storeID=(select stuff((select ','+VwXm0004 FROM View_0331 WHERE VwXm0007='0' AND ( " + flsql + "  ) for xml path('')),1,1,'')) "
+                        + "   set @kjym=(select stuff((select ','+VwXm0007 from View_0332 where View_0332.VwXm0005='是' for xml path('') ),1,1,'')) "
+                        + "   select  ckbh=Stor_ID,wlbh=Mate_ID,wlmc=mate_name,gg=ggxh,pc=scph,qmsl=qmsl,dw=jlDW,gysmc from ( select    Stor_ID,Mate_ID,mate_name,ggxh,scph,qmsl,jlDW "
+                        + "   FROM ST_KCMXH where " + wlpcsql + " ( Mate_ID like '%" + wlxx.Wlbh + "%' or mate_name like '%" + wlxx.Wlbh + "%' or scph like '%" + wlxx.Wlbh + "%'or ggxh like '%" + wlxx.Wlbh + "%'"
+                        + "   )and charindex(STOR_ID,@storeID)>0 and charindex(KJYM,@kjym)>0  and zt = 0) ST_KCMXH "
+                        + "   left join dbo.js_xyclbmH on ST_KCMXH.Mate_ID = dbo.js_xyclbmH.wlbh where   gysmc like '%" + wlxx.Gys + "%'   order by Stor_ID ,mate_name";
+        }//and QMSL > 0
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            wlxxJosn addwlxx = new wlxxJosn();
+            if (wlxx.Sx == "ycl") {
+                addwlxx.Ckbh = "";
+                addwlxx.Wlbh = sdr["wlbh"].ToString();
+                addwlxx.Wlmc = sdr["wlmc"].ToString();
+                addwlxx.Gg = sdr["lsmxx"].ToString();
+                addwlxx.Wlpc = "";
+                addwlxx.Dw = sdr["dw"].ToString();
+                addwlxx.Sl = "0";
+                addwlxx.Gys = sdr["gysmc"].ToString();
+            }
+            else {
+                addwlxx.Ckbh = sdr["ckbh"].ToString();
+                addwlxx.Wlbh = sdr["wlbh"].ToString();
+                addwlxx.Wlmc = sdr["wlmc"].ToString();
+                addwlxx.Gg = sdr["gg"].ToString();
+                addwlxx.Wlpc = sdr["pc"].ToString();
+                addwlxx.Dw = sdr["dw"].ToString();
+                addwlxx.Sl = Convert.ToDecimal(sdr["qmsl"].ToString()).ToString("0.00");
+                addwlxx.Gys = sdr["gysmc"].ToString();
+            }
+
+            arrayList.Add(addwlxx);
+
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+    [WebMethod]
+    //根据供应商列表
+    public string[] GetGysdmList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select GYSDM+'  '+GYSMC gysdm from dbo.js_gysglH where gysdm like '%" + prefixText.Trim() + "%' or gysmc like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["gysdm"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    //物料信息--详细
+    public List<wlxxJosn> GetGysWlxxArrayList(wlxxJosn wlxx) {
+        List<wlxxJosn> arrayList = new List<wlxxJosn>();
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = " select  wlbh,gysbh,gysmc,dw,lsmxx gg,wlmc from dbo.js_xyclbmH where (wlbh like '%" + wlxx.Wlbh + "%' or lsmxx like '%" + wlxx.Wlbh + "%') and (gysbh like '%" + wlxx.Gys + "%' or gysmc like '%" + wlxx.Gys + "%') and wlmc like '%" + wlxx.Wlmc + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            wlxxJosn addwlxx = new wlxxJosn();
+            addwlxx.Wlbh = sdr["wlbh"].ToString();
+            addwlxx.Wlmc = sdr["wlmc"].ToString();
+            addwlxx.Gg = sdr["gg"].ToString();
+            addwlxx.Dw = sdr["dw"].ToString();
+            addwlxx.Gys = sdr["gysbh"].ToString();
+            addwlxx.Gysmc = sdr["gysmc"].ToString();
+            arrayList.Add(addwlxx);
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+
+    [WebMethod]
+    //物料信息--收料单用
+    public List<wlxxJosn> GetSldWlxxArrayList(wlxxJosn wlxx) {
+        List<wlxxJosn> arrayList = new List<wlxxJosn>();
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "";
+        if (!wlxx.Ckbh.Equals("")) {
+            sqlstr = " select wlbh,gysbh,gysmc,dw,lsmxx gg,wlmc from dbo.js_xyclbmH where wlbh in (select WLBH from dbo.js_cgdH a,dbo.js_cgd_cglbH b where a.BH=b.CGDBH and a.BH='" + wlxx.Ckbh + "')  "
+                          + "and (wlbh like '%" + wlxx.Wlbh + "%' or lsmxx like '%" + wlxx.Wlbh + "%') and (gysbh like '%" + wlxx.Gys + "%' or gysmc like '%" + wlxx.Gys + "%') and wlmc like '%" + wlxx.Wlmc + "%'";
+        }
+        else {
+            sqlstr = " select wlbh,gysbh,gysmc,dw,lsmxx gg,wlmc from dbo.js_xyclbmH where (wlbh like '%" + wlxx.Wlbh + "%' or lsmxx like '%" + wlxx.Wlbh + "%') and (gysbh like '%" + wlxx.Gys + "%' or gysmc like '%" + wlxx.Gys + "%') and wlmc like '%" + wlxx.Wlmc + "%'";
+
+        }
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            wlxxJosn addwlxx = new wlxxJosn();
+            addwlxx.Wlbh = sdr["wlbh"].ToString();
+            addwlxx.Wlmc = sdr["wlmc"].ToString();
+            addwlxx.Gg = sdr["gg"].ToString();
+            addwlxx.Dw = sdr["dw"].ToString();
+            addwlxx.Gys = sdr["gysbh"].ToString();
+            addwlxx.Gysmc = sdr["gysmc"].ToString();
+            arrayList.Add(addwlxx);
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+    [WebMethod]
+    public List<blpJSON> GetCPDMZTList(blpJSON blp) {
+        List<blpJSON> arrayList = new List<blpJSON>();
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT CPDM,DMHY,lb  FROM JS_HPDMh where (CPDM like '%" + blp.Bldm + "%' or dmhy like '%" + blp.Bldm + "%' ) and  (gx like '" + blp.Bllb + "%' or gx='') and DjState='审核' order by lb ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            blpJSON addblxx = new blpJSON();
+            addblxx.Bldm = sdr["CPDM"].ToString();
+            addblxx.Blmc = sdr["DMHY"].ToString();
+            addblxx.Bllb = sdr["lb"].ToString();
+            arrayList.Add(addblxx);
+
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+    [WebMethod]
+    //物料替代用-获取替代物料
+    public List<wlxxJosn> GetWlRelaceArrayList(wlxxJosn wlxx) {
+        List<wlxxJosn> arrayList = new List<wlxxJosn>();
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = " declare @djlsh int,@tdbh varchar(10) "
+                      + " select top 1 @djlsh=DjLsh,@tdbh=TDBH from dbo.js_wlReplace_tdlbH where WLBH='" + wlxx.Wlbh + "' ;"
+                      + " select a.TDBH,a.GYSDM,a.WLBH,b.wlmc,b.lsmxx gg,b.dw,b.gysmc from js_wlReplace_tdlbH  a left join dbo.js_xyclbmH b "
+                      + " on a.WLBH=b.wlbh where a.DjLsh=@djlsh and a.TDBH in ('0',@tdbh) order by TDBH ";
+
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            wlxxJosn addwlxx = new wlxxJosn();
+            addwlxx.Wlbh = sdr["wlbh"].ToString();
+            addwlxx.Wlmc = sdr["wlmc"].ToString();
+            addwlxx.Gys = sdr["GYSDM"].ToString();
+            addwlxx.Gysmc = sdr["GYSMC"].ToString();
+            addwlxx.Gg = sdr["gg"].ToString();
+            addwlxx.Dw = sdr["dw"].ToString();
+            arrayList.Add(addwlxx);
+
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+
+
+    [WebMethod]
+    //领料退料用，物料信息和库存信息(汇总数量)
+    public List<wlxxJosn> GetWlkcxxArrayList(wlxxJosn wlxx) {
+        List<wlxxJosn> arrayList = new List<wlxxJosn>();
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = " declare @kjym varchar(20) set @kjym=(select VwXm0007 from View_0332 where View_0332.VwXm0005='是') "
+                       + " select top 30  a.wlbh,a.wlmc,sum(b.QMSL) SL,c.GYSMC,a.lsmxx gg,a.dw "
+                       + " from   dbo.js_xyclbmH a left join dbo.js_gysglH c on a.gysbh = c.GYSDM ,dbo.ST_KCMXH b"
+                       + " where  a.wlbh = b.Mate_ID and b.Stor_ID = '" + wlxx.Ckbh + "' and b.KJYM=@kjym "
+                       + " and ( a.wlbh like '%" + wlxx.Wlbh + "%'  or a.lsmxx like '%" + wlxx.Wlbh + "%') group by a.wlbh,a.wlmc,c.GYSMC,a.lsmxx,a.dw";
+
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            wlxxJosn addwlxx = new wlxxJosn();
+            addwlxx.Wlbh = sdr["wlbh"].ToString();
+            addwlxx.Wlmc = sdr["wlmc"].ToString();
+            addwlxx.Gys = sdr["GYSMC"].ToString();
+            addwlxx.Gg = sdr["gg"].ToString();
+            addwlxx.Sl = sdr["SL"].ToString();
+            addwlxx.Dw = sdr["dw"].ToString();
+            arrayList.Add(addwlxx);
+
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+    [WebMethod]
+    //领料退料用，物料信息和库存信息(批次数量)
+    public List<wlxxJosn> GetWlkcxxPCArrayList(wlxxJosn wlxx) {
+        List<wlxxJosn> arrayList = new List<wlxxJosn>();
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = " declare @kjym varchar(20) set @kjym=(select VwXm0007 from View_0332 where View_0332.VwXm0005='是') "
+                       + " select Mate_ID,scph,QMSL,ckh,hjh,pzzk,rkcz from dbo.ST_KCMXH where KJYM=@kjym and DJZT=0 and Mate_ID='" + wlxx.Wlbh + "' and Stor_ID='" + wlxx.Ckbh + "' ";
+
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            wlxxJosn addwlxx = new wlxxJosn();
+            addwlxx.Wlpc = sdr["scph"].ToString();
+            addwlxx.Sl = sdr["QMSL"].ToString();
+            addwlxx.Cw = sdr["ckh"].ToString();
+            addwlxx.Hjh = sdr["hjh"].ToString();
+            addwlxx.Pzzk = sdr["pzzk"].ToString();
+            addwlxx.Rkcz = sdr["rkcz"].ToString();
+            arrayList.Add(addwlxx);
+
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+    [WebMethod]
+    //退货单用，物料信息和库存信息(批次数量)
+    public List<wlxxJosn> GetPCArrayList(wlxxJosn wlxx) {
+        List<wlxxJosn> arrayList = new List<wlxxJosn>();
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = " declare @kjym varchar(20) set @kjym=(select VwXm0007 from View_0332 where View_0332.VwXm0005='是') "
+                       + " select top 50 a.wlbh,a.wlmc,a.gg,a.GYSMC,b.scph,b.ckh,b.hjh,a.dw,b.qmsl from dbo.v_wlxx a ,dbo.ST_KCMXH b "
+                       + " where a.wlbh=b.Mate_ID and (a.gg like '%"+wlxx.Wlbh+"%' or a.wlbh like '%"+wlxx.Wlbh+"%') "
+                       + " and b.KJYM=@kjym and b.Stor_ID='"+wlxx.Ckbh+"' ";
+
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            wlxxJosn addwlxx = new wlxxJosn();
+            addwlxx.Wlbh = sdr["wlbh"].ToString();
+            addwlxx.Wlmc = sdr["wlmc"].ToString();
+            addwlxx.Gg = sdr["gg"].ToString();
+            addwlxx.Gysmc = sdr["GYSMC"].ToString();
+            addwlxx.Wlpc = sdr["scph"].ToString();
+            addwlxx.Cw = sdr["ckh"].ToString();
+            addwlxx.Hjh = sdr["hjh"].ToString();
+            addwlxx.Dw = sdr["dw"].ToString();
+            addwlxx.Sl = sdr["QMSL"].ToString();
+            arrayList.Add(addwlxx);
+
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+    //领料退料用 车间列表
+    [WebMethod(EnableSession = true)]
+    public string[] GetCkxxList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string groupNames = HttpContext.Current.Session["GroupNames"].ToString();
+        string userID = HttpContext.Current.Session["UserID"].ToString();
+        string sqlstr = "select ckmc from ( "
+                       + "select XMBH+'_'+XMMC ckmc from P_YHTSQXH a,P_YHTSQXB b,P_YHTSQXS c "
+                       + "        where a.DjLsh=b.DjLsh and a.DjLsh=c.DjLsh "
+                       + "        and b.DjBth=c.DjBth and b.LXM='CK' and YHH='" + userID + "' "
+                       + " union "
+                       + " select distinct XMBH+'_'+XMMC ckmc  from   P_YHTSQXS d"
+                       + " where '" + groupNames + "' ='超级用户' ) a where a.ckmc like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["CKMC"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+    [WebMethod]
+    //领料退料用，车间信息
+    public List<CkxxJosn> GetCkxxArrayList(CkxxJosn Ckxx) {
+        List<CkxxJosn> arrayList = new List<CkxxJosn>();
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = " select CKDM,CKDM+''+CKMC CKMC from dbo.CKDMH where CKMC like '%" + Ckxx.Ckmc + "%' or CKDM like '%" + Ckxx.Ckdm + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            CkxxJosn addCkxx = new CkxxJosn();
+            addCkxx.Ckdm = sdr["CKDM"].ToString();
+            addCkxx.Ckmc = sdr["CKMC"].ToString();
+
+            arrayList.Add(addCkxx);
+
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+
+    [WebMethod]
+    public string Del_sgrb_bl_wl(sgrb_bel_Josn sgrb) {
+
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "";
+        if (sgrb.Blid != "0") {
+            sqlstr = "delete js_sgrb_bljl where fid=" + sgrb.Id + " and id=" + sgrb.Blid + "";
+        }
+        else {
+            sqlstr = "delete js_sgrb_wlxh where fid=" + sgrb.Id + " and id=" + sgrb.Wlid + ""; ;
+        }
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        Cmd.ExecuteNonQuery();
+        sqlcon.Close();
+        return "删除成功！";
+    }
+
+
+    [WebMethod]
+    public string[] GetxhrlList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT xh,rl FROM CPXHH where xh like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["xh"].ToString() + "|" + sdr["rl"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    public string[] GetPackxhList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT PackXH FROM js_PACKxhxxh where PackXH like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["PackXH"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    //非生产材料规格联想 
+    public string[] GetNonProductGGList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select distinct GG from dbo.js_fscclglH where GG like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["GG"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+
+    [WebMethod]
+    //物料替代用 
+    public string[] GetWlmcList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select distinct wlmc from dbo.js_xyclbmH where wlmc like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["wlmc"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+
+
+
+
+    [WebMethod]
+    public string Del_jgd_wl(sgrb_bel_Josn sgrb) {
+
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "delete js_jgd_wl where fid=" + sgrb.Id + " and id=" + sgrb.Wlid + "";
+
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        Cmd.ExecuteNonQuery();
+        sqlcon.Close();
+        return "删除成功！";
+    }
+
+    [WebMethod]
+    public string[] GetxhbomlList(string prefixText, int count) {
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        items = new List<string>(count);
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT dxxh,rl FROM dbo.js_bomZH where dxxh like '%" + prefixText.Trim() + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < count) {
+                items.Add(sdr["dxxh"].ToString() + "|" + sdr["rl"].ToString());
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    public string Getjxkh_bhxx(bhxxJosn bhxx) {
+
+        SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        string bhxx_max = "";
+        string bhxx_next = "";
+        if (bhxx.Bhxx_max == "") {
+            sqlcon.Open();
+            string sqlstr = "SELECT TOP 1 [xxbh]  FROM [erp_js_data0704].[dbo].[js_jxkh_xmsx]  ORDER BY XXBH DESC ";
+            Cmd = new SqlCommand(sqlstr, sqlcon);
+            sdr = Cmd.ExecuteReader();
+            while (sdr.Read()) {
+                bhxx_max = sdr["xxbh"].ToString();
+
+            }
+            sdr.Close();
+            sqlcon.Close();
+        }
+        else {
+            bhxx_max = bhxx.Bhxx_max;
+        }
+        bhxx_next = "[" + GetNext(bhxx_max.Substring(1, 4)) + "]";
+        return bhxx_next;
+    }
+
+
+    protected string GetNext(string str) {
+        Match m = Regex.Match(str, @"^([A-Z]*)([0-9]*)$");
+        if (!m.Success)
+            throw new ArgumentException("Input string format is invalid.");
+
+        string strLetter = m.Groups[1].Value;
+        string strDigit = m.Groups[2].Value;
+
+        if (!string.IsNullOrEmpty(strDigit) && !Regex.IsMatch(strDigit, @"^9+$")) {
+            string temp = (int.Parse(strDigit) + 1).ToString().PadLeft(strDigit.Length, '0');
+            temp = strLetter + temp;
+            return temp;
+        }
+        else {
+            char[] charArr = strLetter.ToCharArray();
+            int len = charArr.Length;
+            string temp = null;
+            for (int i = len - 1; i >= 0; i--) {
+                if (charArr[i] != 'Z') {
+                    charArr[i]++;
+                    temp = new string(charArr);
+                    break;
+                }
+                else {
+                    charArr[i] = 'A';
+                }
+            }
+            if (temp == null) {
+                temp = 'A' + new string(charArr);
+            }
+            if (temp.Length < str.Length) {
+                temp += new string('0', str.Length - temp.Length - 1) + "1";
+            }
+            return temp;
+        }
+    }
+    [WebMethod]
+    public string Del_jxkh(jxkh_del_Josn jxkh_del) {
+
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        Cmd = new SqlCommand(jxkh_del.Sqlstr, sqlcon);
+        Cmd.ExecuteNonQuery();
+        sqlcon.Close();
+        return "删除成功！";
+    }
+
+    [WebMethod]
+    public List<dxxx_Josn> Get_pcList(dxxx_Josn dxxx) {
+        List<dxxx_Josn> arrayList = new List<dxxx_Josn>();
+        int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        string items = "";
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "SELECT ph,dxxh FROM js_tcjhh h LEFT JOIN js_tcjhf f ON h.DjLsh = f.DjLsh WHERE h.dxxh='" + dxxx.Xh + "' and f.ph  like '%" + dxxx.Pc + "%' ORDER BY ph  ";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            if (i < 16) {
+                dxxx_Josn add_dxxx = new dxxx_Josn();
+                add_dxxx.Pc = sdr["ph"].ToString();
+                add_dxxx.Xh = sdr["dxxh"].ToString();
+                arrayList.Add(add_dxxx);
+            }
+            i++;
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+
+    [WebMethod]
+    //获取合同评审单信息
+    public List<htpsdJosn> GetHtpsdArrayList(htpsdJosn htpsd) {
+        List<htpsdJosn> arrayList = new List<htpsdJosn>();
+
+        // int i = 0;
+        SqlConnection sqlcon;
+        SqlCommand Cmd;
+        SqlDataReader sdr;
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);  //链接数据库
+        sqlcon.Open();
+        string sqlstr = "select top 10 psdbh,GGSXH,khddh,ddsl from dbo.js_htpsb_newH where khddh like '%" + htpsd.Ddh + "%'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        sdr = Cmd.ExecuteReader();
+        while (sdr.Read()) {
+            htpsdJosn addHtpsd = new htpsdJosn();
+            addHtpsd.Psdbh = sdr["psdbh"].ToString();
+            addHtpsd.Ggsxh = sdr["GGSXH"].ToString();
+            addHtpsd.Ddh = sdr["khddh"].ToString();
+            addHtpsd.Ddl = sdr["DDSL"].ToString();
+            arrayList.Add(addHtpsd);
+        }
+        sqlcon.Close();
+        return arrayList;
+    }
+
+}
+
