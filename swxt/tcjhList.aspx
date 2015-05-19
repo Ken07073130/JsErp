@@ -44,7 +44,7 @@
                 </span><span runat="server" id="spanTitle"></span>投产计划列表</div>
           
           
-            <div style="margin:0 auto; width:1000px; overflow:auto;">
+            <div style="margin:0 auto; width:1100px;  overflow:auto;">
                <div style="margin-bottom:5px;"><span style="border:1px solid ; background-color:#FFFF99; display:inline-block; width:50px;">&nbsp</span> 变更中</div>
                 <div style="margin-bottom:5px;">客户代码<asp:TextBox ID="tbKhdm" runat="server" Height="13px" Width="100px"></asp:TextBox>
                     电芯型号<asp:TextBox ID="tbNbdxxh"
@@ -57,7 +57,7 @@
                         text-decoration: none" Width="71px" OnClick="lbQuery_Click">查询</asp:LinkButton></div>
                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4"
                     Style="text-align: center" Font-Names="Verdana" Font-Size="12px" OnRowDataBound="GridView1_RowDataBound"
-                    OnRowEditing="GridView1_RowEditing" EmptyDataText="无记录" Width="100%" BackColor="White"
+                    OnRowEditing="GridView1_RowEditing" EmptyDataText="无记录" Width="1100" BackColor="White"
                     BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" GridLines="Horizontal"
                     AllowPaging="true" AllowSorting="true" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging"
                     EmptyDataRowStyle-BackColor="#40e0d0">
@@ -73,7 +73,8 @@
                         
                         <asp:BoundField DataField="nbdxxh" HeaderText="电芯型号" ItemStyle-Width="90" />
                         <asp:BoundField DataField="nbpackxh" HeaderText="PACK型号" ItemStyle-Width="150" />
-                        <asp:BoundField DataField="ddsl" HeaderText="数量" ItemStyle-Width="100" />
+                        <asp:BoundField DataField="ddsl" HeaderText="投产数量" ItemStyle-Width="100" />
+                        <asp:BoundField DataField="tczs" HeaderText="已投数量" ItemStyle-Width="100" />
                         <asp:BoundField DataField="djlsh" HeaderText="" >
                             <ControlStyle CssClass="hidden" />
                             <FooterStyle CssClass="hidden" />

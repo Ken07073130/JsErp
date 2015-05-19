@@ -40,8 +40,8 @@ local.properties
 *.suo
 *.user
 *.svn
-*.svn\
-*.svn/
+.svn\
+.svn/
 *.svn-base
 *.sln.docstates
 
