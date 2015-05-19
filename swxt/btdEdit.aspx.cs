@@ -69,4 +69,16 @@ public partial class btdEdit : System.Web.UI.Page {
             lbTczs.Text = Convert.ToString(zs + jhs);
         }*/
     }
+    protected void Button1_Click(object sender, EventArgs e) {
+        for (int i = 0; i < Page.Controls.Count; i++) {
+            foreach (Control con in Page.Controls[i].Controls) {
+                if (con is TextBox) {
+                    tbQkms.Text = tbQkms.Text + "select '生产补投单','TEXTBOX','" + con.ID + "','" + con.ID.Replace("tb", "").ToUpper() +"' union all " + Environment.NewLine;
+                }
+                else if (con is DropDownList) {
+                    tbQkms.Text = tbQkms.Text + "select '生产补投单','DROPDOWNLIST','" + con.ID + "','" + con.ID.Replace("ddl", "").ToUpper() + "' union all " + Environment.NewLine;
+                }
+            } 
+        }
+    }
 }

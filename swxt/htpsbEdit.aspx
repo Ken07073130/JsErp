@@ -704,7 +704,7 @@
                                         ID="tbPacksj" runat="server" Width="95%"></asp:TextBox></span>
                 </div>
                 <div style="margin-top: 5px;">
-                    <span style="width: 60px; text-align: center; display: inline-block; fonr">商务备注</span><span
+                    <span style="width: 60px; text-align: center; display: inline-block;">商务备注</span><span
                         style="width: 620px; display: inline-block;">
                         <asp:TextBox ID="tbPMCbz" runat="server" Width="99%" Rows="3" TextMode="MultiLine"></asp:TextBox></span>
                     <span style="display: inline-block; width: 260px; border: 1px solid #99CCFF;">
