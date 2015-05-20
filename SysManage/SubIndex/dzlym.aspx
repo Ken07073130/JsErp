@@ -62,7 +62,7 @@
              </tr>
            <tr>
              <td height="30" align="left"  >&nbsp;&nbsp;&nbsp;下载</td>
-             <td   align="right" >查看&nbsp;&nbsp;&nbsp;</td>
+             <td   align="right" > <a href="../../swxt/btdList.aspx" >进入</a></td>
            </tr>
          </table>
          

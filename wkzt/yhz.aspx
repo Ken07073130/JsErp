@@ -1,17 +1,18 @@
-<%@ Page Language="C#"  AutoEventWireup="true" CodeFile="yhz.aspx.cs" Inherits="wkzt_yhz" Title="Œƒøÿπ‹¿Ì-”√ªß◊È»®œﬁπ‹¿Ì" %>
+Ôªø<%@ Page Language="C#"  AutoEventWireup="true" CodeFile="yhz.aspx.cs" Inherits="wkzt_yhz" Title="ÊñáÊéßÁÆ°ÁêÜ-Áî®Êà∑ÁªÑÊùÉÈôêÁÆ°ÁêÜ" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server" >
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Ω…´ƒ‹‘¥ ˝æ›œµÕ≥</title>
+<title>ÈáëËâ≤ËÉΩÊ∫êÊï∞ÊçÆÁ≥ªÁªü</title>
 </head>
 <body>
 <form id="form1" runat="server" >
   <div align="center">
-   <p style=" font-size :large; font-weight :bold  ">◊È»®œﬁπ‹¿Ì</p> 
+   <p style=" font-size :large; font-weight :bold  ">ÁªÑÊùÉÈôêÁÆ°ÁêÜ</p> 
     <asp:GridView ID="GridView1" runat="server"   AutoGenerateColumns ="False" CellPadding="4" style="text-align: center"
          Font-Names="Verdana" Font-Size="12px"  ShowFooter ="True" 
-         emptydatatext="Œﬁº«¬º"  
+         emptydatatext="Êó†ËÆ∞ÂΩï"  
          Width="800px" GridLines="Horizontal" 
          OnRowDeleting="GridView1_RowDeleting" OnRowEditing="GridView1_RowEditing" 
          AllowPaging="True" PageSize="30"  EmptyDataRowStyle-BackColor="#40e0d0" 
@@ -24,12 +25,12 @@
                 </ItemTemplate>
             
                 <FooterTemplate>
-                    <asp:Button ID="B_TJ" runat="server" Text="ÃÌº”"  OnClick="Button_Click"/>
+                    <asp:Button ID="B_TJ" runat="server" Text="Ê∑ªÂä†"  OnClick="Button_Click"/>
                 </FooterTemplate>
             
                 <ItemStyle Width="5%"   />
             </asp:TemplateField>
-            <asp:TemplateField  HeaderText ="◊È√˚">
+            <asp:TemplateField  HeaderText ="ÁªÑÂêç">
                 <ItemTemplate  >
                      <asp:Label ID ="zm"    runat="server" Text ='<%# Eval("GroupName") %>'/>
                 </ItemTemplate>
@@ -40,16 +41,16 @@
             
                 <ItemStyle Width="15%"   />
             </asp:TemplateField>
-             <asp:BoundField DataField="GradationID" HeaderText="À˘ Ù»®œﬁ" >
+             <asp:BoundField DataField="GradationID" HeaderText="ÊâÄÂ±ûÊùÉÈôê" >
                  <ItemStyle Width="30%" />
              </asp:BoundField>
-             <asp:BoundField DataField="IsDownload" HeaderText="œ¬‘ÿ" >
+             <asp:BoundField DataField="IsDownload" HeaderText="‰∏ãËΩΩ" >
                  <ItemStyle Width="30%"  />
              </asp:BoundField>
-            <asp:CommandField HeaderText="–ﬁ∏ƒ" ShowEditButton="True">
+            <asp:CommandField HeaderText="‰øÆÊîπ" ShowEditButton="True">
                  <ItemStyle Width="5%" />
              </asp:CommandField>
-             <asp:CommandField HeaderText="…æ≥˝" ShowDeleteButton="True">
+             <asp:CommandField HeaderText="Âà†Èô§" ShowDeleteButton="True">
                  <ItemStyle Width="5%" />
              </asp:CommandField>
            
@@ -58,17 +59,17 @@
                <table style="font-size :12px;">
                <tr>
             
-                 <td> ◊‹π≤<asp:Label ID="Label1" runat="server" Text="<%#((GridView)Container.NamingContainer).PageCount %>"></asp:Label>“≥ &nbsp; </td>
+                 <td> ÊÄªÂÖ±<asp:Label ID="Label1" runat="server" Text="<%#((GridView)Container.NamingContainer).PageCount %>"></asp:Label>È°µ &nbsp; </td>
                 
-                    <td> µ⁄<asp:Label ID="Label2" runat="server" Text="<%#((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>“≥ &nbsp;</td>
+                    <td> Á¨¨<asp:Label ID="Label2" runat="server" Text="<%#((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>È°µ &nbsp;</td>
                  
-                          <td> <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument ="1" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>"> ◊“≥</asp:LinkButton> &nbsp;</td>
+                          <td> <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument ="1" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>">È¶ñÈ°µ</asp:LinkButton> &nbsp;</td>
                           <td>
-                              <asp:LinkButton ID="LinkButton2" runat="server" CommandArgument ="Prev" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>">…œ“ª“≥</asp:LinkButton> &nbsp;</td>
+                              <asp:LinkButton ID="LinkButton2" runat="server" CommandArgument ="Prev" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>">‰∏ä‰∏ÄÈ°µ</asp:LinkButton> &nbsp;</td>
                               <td>
-                                  <asp:LinkButton ID="LinkButton3" runat="server" CommandArgument ="Next" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">œ¬“ª“≥ </asp:LinkButton> &nbsp;</td>
+                                  <asp:LinkButton ID="LinkButton3" runat="server" CommandArgument ="Next" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">‰∏ã‰∏ÄÈ°µ </asp:LinkButton> &nbsp;</td>
                             <td>
-                                <asp:LinkButton ID="LinkButton4" runat="server" CommandArgument ="Last" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">Œ≤“≥</asp:LinkButton> &nbsp;</td>
+                                <asp:LinkButton ID="LinkButton4" runat="server" CommandArgument ="Last" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">Â∞æÈ°µ</asp:LinkButton> &nbsp;</td>
                                 <td>
                                     <asp:LinkButton ID="LinkButton5" runat="server" CommandArgument ="-1" CommandName ="Page" ValidationGroup="1" >GO</asp:LinkButton> </td>
                                     <td>
@@ -87,7 +88,6 @@
      </asp:GridView>
 
  </div>
-</div> 
 </form>
 </body>
 </html>

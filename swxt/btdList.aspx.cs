@@ -24,8 +24,6 @@ public partial class btdList : System.Web.UI.Page {
                 Response.Redirect("Login.aspx");
             }
 
-            ViewState["SortOrder"] = "default";
-            ViewState["OrderDire"] = "ASC";
 
 
             bind();
@@ -39,28 +37,14 @@ public partial class btdList : System.Web.UI.Page {
         string groupNames = Session["GroupNames"].ToString();
         string sqlStr = "";
         sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
-        sqlStr = "select b.nbdxxh,b.nbPACKXH,a.psdbh,a.zt,b.KHXH,b.khdm,convert(varchar(10),b.tcsl)+'('+b.dw2+')' ddsl,convert(varchar(10),b.jbrq,120) jbrq,a.djlsh,b.khddh,a.bgzt,tczs "
-                 + " from dbo.js_tcjh a left join (select psdbh,sum(jhs) tczs from  dbo.js_tcjh_list group by psdbh  ) c on c.psdbh=a.psdbh ,dbo.js_htpsbH b  "
-                 + " where a.psdbh=b.bh order by zt";
+        sqlStr = "select * from js_btdH";
 
 
 
         SqlDataAdapter myda = new SqlDataAdapter(sqlStr, sqlcon);
         DataSet myds = new DataSet();
         sqlcon.Open();
-        myda.Fill(myds, "js_tcjh");
-        /*if (ViewState["SortOrder"].ToString() == "default") {
-            myds.Tables[0].DefaultView.Sort = "zt,jbrq ";
-        }
-        else {
-            myds.Tables[0].DefaultView.Sort = ViewState["SortOrder"] + " " + ViewState["OrderDire"];
-        }
-        if (ViewState["fliter"] != null) {
-            myds.Tables[0].DefaultView.RowFilter = ViewState["fliter"].ToString();
-        }
-
-        //要排序必须绑定DefaultView
-        GridView1.DataSource = myds.Tables[0].DefaultView;*/
+        myda.Fill(myds, "js_btdH");
         GridView1.DataSource = myds;
 
         //查询过滤
@@ -76,7 +60,7 @@ public partial class btdList : System.Web.UI.Page {
             GridView1.DataSource = dt;
         }
 
-        GridView1.DataKeyNames = new string[] { "psdbh" };
+        GridView1.DataKeyNames = new string[] { "bh" };
         GridView1.DataBind();
 
 
@@ -89,11 +73,11 @@ public partial class btdList : System.Web.UI.Page {
 
 
     protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e) {
-        Response.Redirect("tcjhEdit.aspx?xh=" + GridView1.DataKeys[e.NewEditIndex].Value.ToString() + "&lb=EDIT&editType=" + (GridView1.Rows[e.NewEditIndex].Cells[1].Controls[0] as LinkButton).Text + "&gysdm=" + GridView1.Rows[e.NewEditIndex].Cells[3].Text);
+        Response.Redirect("btdEdit.aspx?xh=" + GridView1.DataKeys[e.NewEditIndex].Value.ToString() + "&lb=EDIT&editType=" + (GridView1.Rows[e.NewEditIndex].Cells[1].Controls[0] as LinkButton).Text);
     }
 
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e) {
-        if (e.Row.RowType == DataControlRowType.DataRow) {
+        /*if (e.Row.RowType == DataControlRowType.DataRow) {
             DataRowView drv = e.Row.DataItem as DataRowView;
             //
             if (drv["bgzt"].ToString().Equals("变更中")) {
@@ -155,5 +139,28 @@ public partial class btdList : System.Web.UI.Page {
     }
     protected void lbQuery_Click(object sender, EventArgs e) {
         bind();
+    }
+
+
+    protected void tjbd_Click(object sender, EventArgs e) {
+        /*sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlcon.Open();
+        String sqlstr = "select dbo.js_func_hasgroup('收料单','" + Session["username"].ToString() + "','','收料员') qx ";
+        SqlCommand cmd = new SqlCommand(sqlstr, sqlcon);
+        SqlDataReader sdr = cmd.ExecuteReader();
+        if (sdr.HasRows) {
+            while (sdr.Read()) {
+                if ("1" == sdr["qx"].ToString()) {
+                    Response.Redirect("sldEdit.aspx?lb=ADD&editType=1");//只有发起人才能新建表单
+                }
+                else {
+                    Response.Write("<script>alert('您没有添加收料单的权限!');</script>");
+                }
+            }
+        }
+        sqlcon.Close();
+        sdr.Close();
+        bind();*/
+        Response.Redirect("btdEdit.aspx?lb=ADD");//只有发起人才能新建表单
     }
 }

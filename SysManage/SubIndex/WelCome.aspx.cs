@@ -42,6 +42,7 @@ public partial class SysManage_SubIndex_Default : System.Web.UI.Page {
             sqlstr = sqlstr + "union all select '样品评审','yp/ypzhpsdList.aspx',0,0 ";
         }
 
+
         sqlstr = sqlstr + " order by 3,4 ";
         SqlDataAdapter sda = new SqlDataAdapter(sqlstr, sqlcon);
         DataSet ds = new DataSet();
