@@ -59,7 +59,7 @@ public partial class btdEdit : System.Web.UI.Page {
         DataSet ds = new DataSet();
         sda.Fill(ds, "js_btd_list");
         GridView1.DataSource = ds;
-        GridView1.DataKeyNames = new string[] { "djlsh"};
+        GridView1.DataKeyNames = new string[] { "djlsh" };
         GridView1.DataBind();
         sqlcon.Close();
     }
@@ -69,7 +69,7 @@ public partial class btdEdit : System.Web.UI.Page {
     protected void lbAddtr_Click(object sender, EventArgs e) {
         sqlcon.Open();
         string sqlstr = "insert into dbo.js_btd_list ( btdbh, blxm, sl, wtms)"
-                      + " values ('"+tbBh.Text+"','"+tbBlxm.Text+"',"+tbSl.Text+",'"+tbWtms.Text+"')";
+                      + " values ('" + tbBh.Text + "','" + tbBlxm.Text + "'," + tbSl.Text + ",'" + tbWtms.Text + "')";
         Cmd = new SqlCommand(sqlstr, sqlcon);
         Cmd.ExecuteNonQuery();
         sqlcon.Close();
@@ -90,6 +90,7 @@ public partial class btdEdit : System.Web.UI.Page {
         }
         else if ("EDIT" == lb) {
             if (editData()) { //编辑数据成功后
+                setDc();
                 //Response.Write("<script>alert('提交成功!');</script>");
                 Response.Redirect("btdList.aspx");
             }
@@ -109,27 +110,34 @@ public partial class btdEdit : System.Web.UI.Page {
 
 
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e) {
-        /*if (e.Row.RowType == DataControlRowType.DataRow) {
+        if (e.Row.RowType == DataControlRowType.DataRow) {
             DataRowView drv = e.Row.DataItem as DataRowView;
-           // int zs = Convert.ToInt32(lbTczs.Text);
-            int jhs=Convert.ToInt32(drv["jhs"].ToString());
-            lbTczs.Text = Convert.ToString(zs + jhs);
-        }*/
-    }
+            TextBox tbFsyy = e.Row.FindControl("tbFsyy") as TextBox;
+            TextBox tbDc = e.Row.FindControl("tbDc") as TextBox;
+            tbFsyy.Text = drv["fsyy"].ToString();
+            tbDc.Text = drv["dc"].ToString();
 
-   
-    protected void Button1_Click(object sender, EventArgs e) {
-        for (int i = 0; i < Page.Controls.Count; i++) {
-            foreach (Control con in Page.Controls[i].Controls) {
-                if (con is TextBox) {
-                    tbQkms.Text = tbQkms.Text + "select '生产补投单','TEXTBOX','" + con.ID + "','" + con.ID.Replace("tb", "").ToUpper() +"' union all " + Environment.NewLine;
-                }
-                else if (con is DropDownList) {
-                    tbQkms.Text = tbQkms.Text + "select '生产补投单','DROPDOWNLIST','" + con.ID + "','" + con.ID.Replace("ddl", "").ToUpper() + "' union all " + Environment.NewLine;
-                }
-            } 
         }
     }
+
+    //工程部设置对策
+    public bool setDc() {
+        bool result = false;
+        string sqlstr = "";
+        for (int i = 0; i < GridView1.Rows.Count; i++) {
+            sqlstr =sqlstr+ " select " + GridView1.Rows[i].Cells[6].Text + " djlsh,'" + (GridView1.Rows[i].FindControl("tbFsyy") as TextBox).Text + "' fsyy,'" + (GridView1.Rows[i].FindControl("tbDc") as TextBox).Text + "' dc union all";
+        }
+        if (!sqlstr.Equals("")) {
+            sqlstr = "UPDATE dbo.js_btd_list SET  fsyy=a.fsyy,dc=a.dc FROM ( " + sqlstr.Substring(0, sqlstr.Length - 10) + " ) a  WHERE js_btd_list.djlsh=a.djlsh";
+            sqlcon.Open();
+            Cmd = new SqlCommand(sqlstr, sqlcon);
+            Cmd.ExecuteNonQuery();
+            sqlcon.Close();
+        }
+        result = true;
+        return result;
+    }
+
 
     //判断控件的可编辑情况
     public void controlEnable() {
@@ -142,7 +150,7 @@ public partial class btdEdit : System.Web.UI.Page {
                 if ("TEXTBOX" == sdr["lx"].ToString())
                     //((TextBox)FindControl(sdr["mc"].ToString().Trim())).Attributes.Add("readonly","1" == sdr["qx"].ToString()?"false":"true"); 
                     ((TextBox)FindControl(sdr["mc"].ToString().Trim())).ReadOnly = !("1" == sdr["qx"].ToString());
-                else if ("DROPDOWNLIST" == sdr["lx"].ToString()){
+                else if ("DROPDOWNLIST" == sdr["lx"].ToString()) {
                     ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Enabled = ("1" == sdr["qx"].ToString());
                     ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).ForeColor = System.Drawing.Color.Black;
                 }
