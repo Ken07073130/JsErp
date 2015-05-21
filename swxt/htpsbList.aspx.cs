@@ -19,7 +19,6 @@ public partial class htpsbList : System.Web.UI.Page {
         if (Session["username"] != null) {
             UserName = Session["username"].ToString();   //取出session里面的相应用户权限
             GroupNames = Session["groupnames"].ToString();
-           
 
 
 
@@ -36,9 +35,13 @@ public partial class htpsbList : System.Web.UI.Page {
                 aShowWorkFlow.Visible = true;
             }
 
-
-
-
+            //初始化Cookie
+            if (Request.Cookies[""] == null) {
+                initCookie();
+            }
+            //初始化cbTitleList
+            initCbTitleList();
+            cblTitleList_SelectedIndexChanged(cblTitleList, e);
 
 
         }
@@ -47,18 +50,26 @@ public partial class htpsbList : System.Web.UI.Page {
     }
 
 
-    //初始化COOKIE
-    public string initCookie() {
-        string titleCookie = "";
-        for (int i = 0; i < cblTitleList.Items.Count; i++) {
-            titleCookie = titleCookie + cblTitleList.Items[i].Value + ",";
+    //初始化Cookie
+    public HttpCookie initCookie() {
+        HttpCookie hc = Response.Cookies["htpsbTitleList"];
+        if (hc.Value == null) {
+            hc.Value = "BH,BB,JBRQ,GGSXH,KHXH,KHDM,DDSL,KHDDH,NBDXXH,NBPACKXH,GGSBH,GGSBB,";
+            hc.Expires = DateTime.Now.AddDays(365);
+            Response.Cookies.Add(hc);
         }
-        HttpCookie myCookie = new HttpCookie("htpsbTitleList");
-        myCookie.Value = titleCookie;
-        myCookie.Expires.AddDays(30);
-        Response.Cookies.Add(myCookie);
+        return hc;
+    }
 
-        return titleCookie;
+    //初始化选择列
+    public void initCbTitleList() {
+        HttpCookie hc = Request.Cookies["htpsbTitleList"];
+        if (hc != null) {
+            string[] titleList = hc.Value.Split(',');
+            for (int i = 0; i < cblTitleList.Items.Count; i++) {
+                cblTitleList.Items[i].Selected = (titleList as IList).Contains(cblTitleList.Items[i].Value);
+            }
+        }
     }
 
     public void bind() {
@@ -153,48 +164,48 @@ public partial class htpsbList : System.Web.UI.Page {
 
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e) {
 
-        /* if (e.Row.RowType == DataControlRowType.DataRow) {
-             System.Data.DataRowView drv = e.Row.DataItem as DataRowView;
-             LinkButton btnDel = (LinkButton)e.Row.Cells[3].Controls[0];//删除
-             btnDel.Attributes.Add("onclick ", "return confirm( '确定删除记录(编号: " + (e.Row.Cells[0].Text) + " 吗)'); ");
-             LinkButton btnEdit = (LinkButton)e.Row.Cells[2].Controls[0];
-             TableCell cellChange = e.Row.Cells[1];
-             CheckBox cb = e.Row.FindControl("cbPrint") as CheckBox;
-             //已打印过的单据设置为√
-             if (drv["dyzt"].ToString().Length > 0) {
-                 cb.Text = "√";
-             }
-             if (ddlHqzt.Text.Equals("全部")) {
-                 btnEdit.Text = "查看";
-                 btnDel.Enabled = false;
-                 cellChange.Enabled = false;
-             }
-             else {
-                 if (GroupNames.IndexOf("合同评审表-发起人") >= 0) {
-                     //发起人确定提交的单子不能编辑
-                     if (!drv["lchqzt"].ToString().Equals("单据建立中")) {
-                         btnEdit.Text = "查看";
-                     }
-                     btnDel.Enabled = true;//只有发起人有删除权限
-                     cellChange.Enabled = true;//只有发起人有变更权限
-                 }
-                 else {
-                     btnDel.Enabled = false;//不是发起人不能删除单据
-                     cellChange.Enabled = false;//不是发起人不能变更
-                 }
-             }
+        if (e.Row.RowType == DataControlRowType.DataRow) {
+            System.Data.DataRowView drv = e.Row.DataItem as DataRowView;
+            LinkButton btnDel = (LinkButton)e.Row.Cells[3].Controls[0];//删除
+            btnDel.Attributes.Add("onclick ", "return confirm( '确定删除记录(编号: " + (e.Row.Cells[0].Text) + " 吗)'); ");
+            LinkButton btnEdit = (LinkButton)e.Row.Cells[2].Controls[0];
+            TableCell cellChange = e.Row.Cells[1];
+            CheckBox cb = e.Row.FindControl("cbPrint") as CheckBox;
+            //已打印过的单据设置为√
+            if (drv["dyzt"].ToString().Length > 0) {
+                cb.Text = "√";
+            }
+            if (ddlHqzt.Text.Equals("全部")) {
+                btnEdit.Text = "查看";
+                btnDel.Enabled = false;
+                cellChange.Enabled = false;
+            }
+            else {
+                if (GroupNames.IndexOf("合同评审表-发起人") >= 0) {
+                    //发起人确定提交的单子不能编辑
+                    if (!drv["lchqzt"].ToString().Equals("单据建立中")) {
+                        btnEdit.Text = "查看";
+                    }
+                    btnDel.Enabled = true;//只有发起人有删除权限
+                    cellChange.Enabled = true;//只有发起人有变更权限
+                }
+                else {
+                    btnDel.Enabled = false;//不是发起人不能删除单据
+                    cellChange.Enabled = false;//不是发起人不能变更
+                }
+            }
 
-             //行颜色转换,变更中的单子标色
-             //未完成且版本>1.0为变更单
-             if (!drv["lchqzt"].ToString().Equals("已完成") && Convert.ToDouble(drv["bb"].ToString()) > 1.0) {
-                 e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFF99");
-             }
-             if (drv["lchqzt"].ToString().IndexOf("不同意生产") >= 0) {
-                 e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#CC3333");
-             }
+            //行颜色转换,变更中的单子标色
+            //未完成且版本>1.0为变更单
+            if (!drv["lchqzt"].ToString().Equals("已完成") && Convert.ToDouble(drv["bb"].ToString()) > 1.0) {
+                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFF99");
+            }
+            if (drv["lchqzt"].ToString().IndexOf("不同意生产") >= 0) {
+                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#CC3333");
+            }
 
 
-         }*/
+        }
     }
 
     protected void tjbd_Click(object sender, EventArgs e) {
@@ -232,7 +243,7 @@ public partial class htpsbList : System.Web.UI.Page {
         if (e.Row.RowType == DataControlRowType.DataRow) {
             System.Data.DataRowView drv = e.Row.DataItem as DataRowView;
             //对应GridView的列，按照gridview列顺序排位，如果不需要标记的为""
-            string[] a ={ "", "", "pmchqzt", "gchqzt", "sbhqzt", "zlhqzt", "zzhqzt", "packhqzt", "gylhqzt", "sczjhqzt", "zghqzt", "swjlhqzt" };
+            string[] a = { "", "", "pmchqzt", "gchqzt", "sbhqzt", "zlhqzt", "zzhqzt", "packhqzt", "gylhqzt", "sczjhqzt", "zghqzt", "swjlhqzt" };
             for (int i = 0; i < a.Length; i++) {
                 //a[i]不为空,即只能有效字段
                 if (!a[i].Equals("")) {
@@ -269,29 +280,33 @@ public partial class htpsbList : System.Web.UI.Page {
 
     }
 
-    //列表变更，重填COOKIE
+    //列表变更，重填COOKIE，列隐藏还是显示
     protected void cblTitleList_SelectedIndexChanged(object sender, EventArgs e) {
-        /*string titleList = "";
+        string titleLists = "";
         for (int i = 0; i < cblTitleList.Items.Count; i++) {
             if (cblTitleList.Items[i].Selected) {
-                titleList = titleList + cblTitleList.Items[i].Value + ",";
+                titleLists = titleLists + cblTitleList.Items[i].Value + ",";
             }
         }
+
         HttpCookie hc = Response.Cookies["htpsbTitleList"];
-        hc.Value = titleList;
+        hc.Value = titleLists;
+        hc.Expires = DateTime.Now.AddDays(365);
         Response.AppendCookie(hc);
-        for (int i = GridView1.Columns.Count; i > 3; i--) {
-            GridView1.Columns.RemoveAt(i - 1);
 
+        string[] titleList = titleLists.Split(',');
+        for (int i = 0; i < cblTitleList.Items.Count; i++) {
+            if ((titleList as IList).Contains(cblTitleList.Items[i].Value)) {
+                GridView1.Columns[i + 5].Visible = true;
+            }
+            else {
+                GridView1.Columns[i + 5].Visible = false;
+            }
         }
 
-        for (int i = 0; i < cblTitleList.Items.Count; i++) {
-            if (titleList.IndexOf(cblTitleList.Items[i].Value) > 0) {
-                BoundField field = new BoundField();
-                field.DataField = cblTitleList.Items[i].Value;
-                field.HeaderText = cblTitleList.Items[i].Text;
-                GridView1.Columns.Add(field);
-            }
-        }*/
     }
+
+
+
+
 }
