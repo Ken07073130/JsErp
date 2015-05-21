@@ -16,14 +16,19 @@
                         OnClick="tjbd_Click">新增补投单</asp:LinkButton>
                 </span><span runat="server" id="spanTitle"></span>补投单列表
             </div>
+            
             <div style="margin-bottom: 5px;">
+                会签中<asp:DropDownList ID="ddlHqzt" runat="server" AutoPostBack="True">
+                    <asp:ListItem>会签中</asp:ListItem>
+                    <asp:ListItem>已会签</asp:ListItem>
+                    <asp:ListItem>全部</asp:ListItem>
+                </asp:DropDownList>
                 <span style="border: 1px solid; background-color: #FFFF99; display: inline-block; width: 50px;">&nbsp</span> 变更中
             </div>
             <div style="margin-bottom: 5px;">
                 客户代码<asp:TextBox ID="tbKhdm" runat="server" Height="13px" Width="100px"></asp:TextBox>
                 电芯型号<asp:TextBox ID="tbNbdxxh" runat="server" Height="13px" Width="100px"></asp:TextBox>
                 PACK型号<asp:TextBox ID="tbNbpackxh" runat="server" Height="13px" Width="100px"></asp:TextBox>
-                订单号<asp:TextBox ID="tbKhddh" runat="server" Height="13px" Width="100px"></asp:TextBox>
                 <asp:LinkButton ID="lbQuery" runat="server" Style="font-size: 13px; color: white; line-height: 20px; background-color: #3385ff; text-align: center; text-decoration: none"
                     Width="71px" OnClick="lbQuery_Click">查询</asp:LinkButton>
             </div>
@@ -32,17 +37,18 @@
                 OnRowEditing="GridView1_RowEditing" EmptyDataText="无记录" Width="1000px" BackColor="White"
                 BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" GridLines="Horizontal"
                 AllowPaging="true" AllowSorting="true" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging"
-                EmptyDataRowStyle-BackColor="#40e0d0">
+                EmptyDataRowStyle-BackColor="#40e0d0" OnRowDeleting="GridView1_RowDeleting">
                 <RowStyle ForeColor="#333333" BackColor="White" />
                 <Columns>
-                    <asp:BoundField DataField="lchqzt" HeaderText="状态" ItemStyle-Width="70px" />
-                    <asp:CommandField ShowEditButton="true" HeaderText="编辑" ItemStyle-Width="30px" />
-                    <asp:BoundField DataField="ddh" HeaderText="单号" ItemStyle-Width="150px" />
-                    <asp:BoundField DataField="jbrq" HeaderText="日期" ItemStyle-Width="100px" />
-                    <asp:BoundField DataField="KHDM" HeaderText="客户代码" ItemStyle-Width="100px" />
-                    <asp:BoundField DataField="GGSXH" HeaderText="规格书型号" ItemStyle-Width="100px" />
-                    <asp:BoundField DataField="nbdxxh" HeaderText="内部电芯" ItemStyle-Width="100px" />
-                    <asp:BoundField DataField="nbpackxh" HeaderText="PACK型号" ItemStyle-Width="100px" />
+                    <asp:BoundField DataField="lchqzt" HeaderText="状态"  ItemStyle-Width="150px"/>
+                    <asp:CommandField ShowEditButton="true" HeaderText="编辑" ItemStyle-Width="50px"/>
+                    <asp:BoundField DataField="ddh" HeaderText="单号" ItemStyle-Width="200px"  />
+                    <asp:BoundField DataField="jbrq" HeaderText="日期"  ItemStyle-Width="150px"/>
+                    <asp:BoundField DataField="KHDM" HeaderText="客户代码" ItemStyle-Width="80px"/>
+                    <asp:BoundField DataField="GGSXH" HeaderText="规格书型号" ItemStyle-Width="80px"/>
+                    <asp:BoundField DataField="nbdxxh" HeaderText="内部电芯" ItemStyle-Width="80px" />
+                    <asp:BoundField DataField="nbpackxh" HeaderText="PACK型号" ItemStyle-Width="80px"/>
+                    <asp:CommandField  ShowDeleteButton="true" HeaderText="删除"  ItemStyle-Width="50px"  DeleteText="&lt;span onclick=&quot;JavaScript:return confirm('确定删除吗？')&quot;&gt;删除&lt;/span&gt;" />
                 </Columns>
                 <PagerTemplate>
                     <table style="font-size: 12px;">

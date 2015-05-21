@@ -65,7 +65,7 @@ body {
 <!--
 html{ width:100%; height:100%;}
 body {
-    height:100%;
+    height:600px;
 	margin-left: 0px;
 	margin-top: 0px;
 	margin-right: 0px;

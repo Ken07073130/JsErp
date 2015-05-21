@@ -50,6 +50,7 @@ public partial class btdEdit : System.Web.UI.Page {
         tbBh.Text = "BTD" + dt.ToString("yyyyMMddHHmmss");
         tbTc.Text = Session["username"].ToString();
         tbJbrq.Text = dt.ToString("yyyy-MM-dd");
+        tbLchqzt.Text = "PMC会签中";
     }
 
     public void bind() {
@@ -77,24 +78,31 @@ public partial class btdEdit : System.Web.UI.Page {
         //重新绑定
         bind();
 
+        tbSl.Text = "";
+        tbBlxm.Text = "";
+        tbWtms.Text = "";
+
 
 
     }
 
     //变更状态
     protected void lbSubmit_Click(object sender, EventArgs e) {
-        if ("ADD" == lb) {
-            if (addData()) {
-                Response.Redirect("btdList.aspx");
+        if (Page.IsValid) {
+            if ("ADD" == lb) {
+                if (addData()) {
+                    Response.Redirect("btdList.aspx");
+                }
+            }
+            else if ("EDIT" == lb) {
+                if (editData()) { //编辑数据成功后
+                    setDc();
+                    //Response.Write("<script>alert('提交成功!');</script>");
+                    Response.Redirect("btdList.aspx");
+                }
             }
         }
-        else if ("EDIT" == lb) {
-            if (editData()) { //编辑数据成功后
-                setDc();
-                //Response.Write("<script>alert('提交成功!');</script>");
-                Response.Redirect("btdList.aspx");
-            }
-        }
+
     }
 
     //删除行
@@ -125,7 +133,7 @@ public partial class btdEdit : System.Web.UI.Page {
         bool result = false;
         string sqlstr = "";
         for (int i = 0; i < GridView1.Rows.Count; i++) {
-            sqlstr =sqlstr+ " select " + GridView1.Rows[i].Cells[6].Text + " djlsh,'" + (GridView1.Rows[i].FindControl("tbFsyy") as TextBox).Text + "' fsyy,'" + (GridView1.Rows[i].FindControl("tbDc") as TextBox).Text + "' dc union all";
+            sqlstr = sqlstr + " select " + GridView1.Rows[i].Cells[6].Text + " djlsh,'" + (GridView1.Rows[i].FindControl("tbFsyy") as TextBox).Text + "' fsyy,'" + (GridView1.Rows[i].FindControl("tbDc") as TextBox).Text + "' dc union all";
         }
         if (!sqlstr.Equals("")) {
             sqlstr = "UPDATE dbo.js_btd_list SET  fsyy=a.fsyy,dc=a.dc FROM ( " + sqlstr.Substring(0, sqlstr.Length - 10) + " ) a  WHERE js_btd_list.djlsh=a.djlsh";
@@ -336,4 +344,77 @@ public partial class btdEdit : System.Web.UI.Page {
         return result;
     }
 
+    protected void CustomValidator1_ServerValidate(object source, ServerValidateEventArgs args) {
+        sqlcon.Open();
+        //校验客户代码
+        string sqlstr = "";
+        int count = 0;
+        sqlstr = "select 1 from dbo.js_khbmH where KHDM='" + tbKhdm.Text + "'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        count = Convert.ToInt32(Cmd.ExecuteScalar());
+        if (count != 1) {
+            args.IsValid = false;
+            CustomValidator1.ErrorMessage = "经校验，系统中无该客户代码，请检查客户代码是否填写正确";
+            sqlcon.Close();
+            return;
+        }
+
+
+        //校验内部电芯型号
+        if (!tbNbdxxh.Text.Equals("")) {
+            sqlstr = "select 1 from dbo.js_dxxhH where nbdxxh='" + tbNbdxxh.Text + "'";
+            Cmd = new SqlCommand(sqlstr, sqlcon);
+            count = Convert.ToInt32(Cmd.ExecuteScalar());
+            if (count != 1) {
+                args.IsValid = false;
+                CustomValidator1.ErrorMessage = "经校验，系统中无该内部电芯型号，请检查内部电芯型号是否填写正确";
+                sqlcon.Close();
+                return;
+            }
+        }
+
+
+        //校验内部PACK型号
+        if (!tbNbpackxh.Text.Equals("")) {
+            sqlstr = "select 1 from dbo.js_PACKxhxxH where PackXh='" + tbNbpackxh.Text + "'";
+            Cmd = new SqlCommand(sqlstr, sqlcon);
+            count = Convert.ToInt32(Cmd.ExecuteScalar());
+            if (count != 1) {
+                args.IsValid = false;
+                CustomValidator1.ErrorMessage = "经校验，系统中无该内部PACK型号，请检查内部PACK型号是否填写正确";
+                sqlcon.Close();
+                return;
+            }
+
+        }
+
+        if (!tbNbbzxh.Text.Equals("")) {
+            //校验内部包装型号
+            sqlstr = "select 1 from dbo.js_dxxhH where nbdxxh='" + tbNbbzxh.Text + "'";
+            Cmd = new SqlCommand(sqlstr, sqlcon);
+            count = Convert.ToInt32(Cmd.ExecuteScalar());
+            if (count != 1) {
+                args.IsValid = false;
+                CustomValidator1.ErrorMessage = "经校验，系统中无该内部包装型号，请检查内部包装型号是否填写正确";
+                sqlcon.Close();
+                return;
+            }
+        }
+
+
+
+        //校验规格书型号
+        sqlstr = "select 1 from dbo.View_0395 where VwXm0001='" + tbGgsxh.Text + "'";
+        Cmd = new SqlCommand(sqlstr, sqlcon);
+        count = Convert.ToInt32(Cmd.ExecuteScalar());
+        if (count != 1) {
+            args.IsValid = false;
+            CustomValidator1.ErrorMessage = "经校验，系统中无该规格书型号，请检查规格书型号是否填写正确";
+            sqlcon.Close();
+            return;
+        }
+
+        sqlcon.Close();
+
+    }
 }

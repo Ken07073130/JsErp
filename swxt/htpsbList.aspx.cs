@@ -19,6 +19,9 @@ public partial class htpsbList : System.Web.UI.Page {
         if (Session["username"] != null) {
             UserName = Session["username"].ToString();   //取出session里面的相应用户权限
             GroupNames = Session["groupnames"].ToString();
+           
+
+
 
         }
         else {
@@ -32,11 +35,31 @@ public partial class htpsbList : System.Web.UI.Page {
             if (GroupNames.IndexOf("合同评审表-发起人") >= 0 || GroupNames.IndexOf("超级用户") >= 0) {
                 aShowWorkFlow.Visible = true;
             }
+
+
+
+
+
+
         }
 
 
     }
 
+
+    //初始化COOKIE
+    public string initCookie() {
+        string titleCookie = "";
+        for (int i = 0; i < cblTitleList.Items.Count; i++) {
+            titleCookie = titleCookie + cblTitleList.Items[i].Value + ",";
+        }
+        HttpCookie myCookie = new HttpCookie("htpsbTitleList");
+        myCookie.Value = titleCookie;
+        myCookie.Expires.AddDays(30);
+        Response.Cookies.Add(myCookie);
+
+        return titleCookie;
+    }
 
     public void bind() {
         string sqlStr = "";
@@ -44,12 +67,12 @@ public partial class htpsbList : System.Web.UI.Page {
         string conditionString = "";
         //销售人员语句做特殊处理
         if (GroupNames.IndexOf("销售人员") > 0) {
-            conditionString = conditionString + " or (charindex('"+UserName+"',dbo.js_func_getYwyLeaders(b.VwXm0004,'销售人员'))>0)";
+            conditionString = conditionString + " or (charindex('" + UserName + "',dbo.js_func_getYwyLeaders(b.VwXm0004,'销售人员'))>0)";
         }
-        sqlStr = "select *,case when lchqzt='已完成' then 1 else 0 end hqsx,convert(varchar(10),jbrq,120) jbrq1,convert(varchar(20),ddsl)+'('+dw+')' ddsl1  from js_htpsbH a,view_0391 b where a.khdm=b.VwXm0002 and " +
+        sqlStr = "select convert(varchar(10),a.jbrq,120) jbrq,*,case when lchqzt='已完成' then 1 else 0 end hqsx,convert(varchar(10),jbrq,120) jbrq1,convert(varchar(20),ddsl)+'('+dw+')' ddsl1  from js_htpsbH a,view_0391 b where a.khdm=b.VwXm0002 and " +
                  "   ('超级用户'='" + GroupNames + "'  " +
                  "     or a.zbr='" + UserName + "'" +
-                 conditionString+
+                 conditionString +
                  "     or (charindex('合同评审表-PMC审核','" + GroupNames + "')>0 and ('" + ddlHqzt.Text + "'='全部' or PMCHQZT='" + ddlHqzt.Text + "' )) " +
                  "     or (charindex('合同评审表-工程部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or GCHQZT='" + ddlHqzt.Text + "' )) " +
                  "     or (charindex('合同评审表-设备部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or SBHQZT='" + ddlHqzt.Text + "' )) " +
@@ -130,48 +153,48 @@ public partial class htpsbList : System.Web.UI.Page {
 
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e) {
 
-        if (e.Row.RowType == DataControlRowType.DataRow) {
-            System.Data.DataRowView drv = e.Row.DataItem as DataRowView;
-            LinkButton btnDel = (LinkButton)e.Row.Cells[3].Controls[0];//删除
-            btnDel.Attributes.Add("onclick ", "return confirm( '确定删除记录(编号: " + (e.Row.Cells[0].Text) + " 吗)'); ");
-            LinkButton btnEdit = (LinkButton)e.Row.Cells[2].Controls[0];
-            TableCell cellChange = e.Row.Cells[1];
-            CheckBox cb = e.Row.FindControl("cbPrint") as CheckBox;
-            //已打印过的单据设置为√
-            if (drv["dyzt"].ToString().Length > 0) {
-                cb.Text = "√";
-            }
-            if (ddlHqzt.Text.Equals("全部")) {
-                btnEdit.Text = "查看";
-                btnDel.Enabled = false;
-                cellChange.Enabled = false;
-            }
-            else {
-                if (GroupNames.IndexOf("合同评审表-发起人") >= 0) {
-                    //发起人确定提交的单子不能编辑
-                    if (!drv["lchqzt"].ToString().Equals("单据建立中")) {
-                        btnEdit.Text = "查看";
-                    }
-                    btnDel.Enabled = true;//只有发起人有删除权限
-                    cellChange.Enabled = true;//只有发起人有变更权限
-                }
-                else {
-                    btnDel.Enabled = false;//不是发起人不能删除单据
-                    cellChange.Enabled = false;//不是发起人不能变更
-                }
-            }
+        /* if (e.Row.RowType == DataControlRowType.DataRow) {
+             System.Data.DataRowView drv = e.Row.DataItem as DataRowView;
+             LinkButton btnDel = (LinkButton)e.Row.Cells[3].Controls[0];//删除
+             btnDel.Attributes.Add("onclick ", "return confirm( '确定删除记录(编号: " + (e.Row.Cells[0].Text) + " 吗)'); ");
+             LinkButton btnEdit = (LinkButton)e.Row.Cells[2].Controls[0];
+             TableCell cellChange = e.Row.Cells[1];
+             CheckBox cb = e.Row.FindControl("cbPrint") as CheckBox;
+             //已打印过的单据设置为√
+             if (drv["dyzt"].ToString().Length > 0) {
+                 cb.Text = "√";
+             }
+             if (ddlHqzt.Text.Equals("全部")) {
+                 btnEdit.Text = "查看";
+                 btnDel.Enabled = false;
+                 cellChange.Enabled = false;
+             }
+             else {
+                 if (GroupNames.IndexOf("合同评审表-发起人") >= 0) {
+                     //发起人确定提交的单子不能编辑
+                     if (!drv["lchqzt"].ToString().Equals("单据建立中")) {
+                         btnEdit.Text = "查看";
+                     }
+                     btnDel.Enabled = true;//只有发起人有删除权限
+                     cellChange.Enabled = true;//只有发起人有变更权限
+                 }
+                 else {
+                     btnDel.Enabled = false;//不是发起人不能删除单据
+                     cellChange.Enabled = false;//不是发起人不能变更
+                 }
+             }
 
-            //行颜色转换,变更中的单子标色
-            //未完成且版本>1.0为变更单
-            if (!drv["lchqzt"].ToString().Equals("已完成") && Convert.ToDouble(drv["bb"].ToString()) > 1.0) {
-                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFF99");
-            }
-            if (drv["lchqzt"].ToString().IndexOf("不同意生产") >= 0) {
-                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#CC3333");
-            }
+             //行颜色转换,变更中的单子标色
+             //未完成且版本>1.0为变更单
+             if (!drv["lchqzt"].ToString().Equals("已完成") && Convert.ToDouble(drv["bb"].ToString()) > 1.0) {
+                 e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFF99");
+             }
+             if (drv["lchqzt"].ToString().IndexOf("不同意生产") >= 0) {
+                 e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#CC3333");
+             }
 
 
-        }
+         }*/
     }
 
     protected void tjbd_Click(object sender, EventArgs e) {
@@ -237,12 +260,38 @@ public partial class htpsbList : System.Web.UI.Page {
         if (!bhList.Equals("")) {
             sqlcon.Open();
             string sqlstr = "update js_htpsbH set dyzt=isnull(dyzt,'')+'" + Session["username"].ToString() + "'+'-'+'" + DateTime.Now.ToString("yyyy-MM-dd") + "'+';' where charindex(bh,'" + bhList + "')>0 ";
-            sqlcom = new SqlCommand(sqlstr,sqlcon);
+            sqlcom = new SqlCommand(sqlstr, sqlcon);
             sqlcom.ExecuteNonQuery();
             sqlcon.Close();
             Response.Write("<script>window.open('rpt/htpsbPrint.aspx?bh=" + bhList + "','_blank')</script>");
         }
 
 
+    }
+
+    //列表变更，重填COOKIE
+    protected void cblTitleList_SelectedIndexChanged(object sender, EventArgs e) {
+        /*string titleList = "";
+        for (int i = 0; i < cblTitleList.Items.Count; i++) {
+            if (cblTitleList.Items[i].Selected) {
+                titleList = titleList + cblTitleList.Items[i].Value + ",";
+            }
+        }
+        HttpCookie hc = Response.Cookies["htpsbTitleList"];
+        hc.Value = titleList;
+        Response.AppendCookie(hc);
+        for (int i = GridView1.Columns.Count; i > 3; i--) {
+            GridView1.Columns.RemoveAt(i - 1);
+
+        }
+
+        for (int i = 0; i < cblTitleList.Items.Count; i++) {
+            if (titleList.IndexOf(cblTitleList.Items[i].Value) > 0) {
+                BoundField field = new BoundField();
+                field.DataField = cblTitleList.Items[i].Value;
+                field.HeaderText = cblTitleList.Items[i].Text;
+                GridView1.Columns.Add(field);
+            }
+        }*/
     }
 }

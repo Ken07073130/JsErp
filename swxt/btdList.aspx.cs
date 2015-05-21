@@ -19,6 +19,7 @@ public partial class btdList : System.Web.UI.Page {
             if (Session["username"] != null) {
                 UserName = Session["username"].ToString();   //取出session里面的相应用户权限
                 GroupID = Session["GroupID"].ToString();
+
             }
             else {
                 Response.Redirect("Login.aspx");
@@ -34,10 +35,23 @@ public partial class btdList : System.Web.UI.Page {
 
 
     public void bind() {
-        string groupNames = Session["GroupNames"].ToString();
+        string GroupNames = Session["GroupNames"].ToString();
         string sqlStr = "";
         sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
-        sqlStr = "select * from js_btdH";
+        sqlStr = "select convert(varchar(10),jbrq,120) jbrq,case when lchqzt='已完成' then 1 else 0 end hqsx,* from js_btdH where " +
+                 "   ('超级用户'='" + GroupNames + "'  " +
+                 "     or tc='" + UserName + "'" +
+                 "     or (charindex('生产补投单-PMC审核','" + GroupNames + "')>0 and ('" + ddlHqzt.Text + "'='全部' or PMCHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-质量部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZLHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-工程部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or GCHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-制造部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZZHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-设备部审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or SBHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-生产总监审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or SCZJHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-总工审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZGHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-供应链审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or GYLHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-商务经理审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or SWJLHQZT='" + ddlHqzt.Text + "' )) " +
+                 "     or (charindex('生产补投单-总经理助理审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZJLZLHQZT='" + ddlHqzt.Text + "' ))  ) " +
+                 "  order by hqsx,jbrq desc ";
 
 
 
@@ -51,8 +65,7 @@ public partial class btdList : System.Web.UI.Page {
         string filterStringKhdm = tbKhdm.Text.Equals("") ? "" : "and khdm like '%" + tbKhdm.Text.Trim() + "%'";
         string filterStringNbdxxh = tbNbdxxh.Text.Equals("") ? "" : "and nbdxxh like '%" + tbNbdxxh.Text.Trim() + "%'";
         string filterStringNbpackxh = tbNbpackxh.Text.Equals("") ? "" : "and nbpackxh like '%" + tbNbpackxh.Text.Trim() + "%'";
-        string filterStringKhddh = tbKhddh.Text.Equals("") ? "" : "and khddh like '%" + tbKhddh.Text.Trim() + "%'";
-        string filterString = filterStringKhdm + filterStringNbdxxh + filterStringNbpackxh + filterStringKhddh;
+        string filterString = filterStringKhdm + filterStringNbdxxh + filterStringNbpackxh;
         if (!filterString.Equals("")) {
             DataTable dt = (GridView1.DataSource as DataSet).Tables[0];
             filterString = filterString.Substring(4, filterString.Length - 4);
@@ -162,5 +175,17 @@ public partial class btdList : System.Web.UI.Page {
         sdr.Close();
         bind();*/
         Response.Redirect("btdEdit.aspx?lb=ADD");//只有发起人才能新建表单
+    }
+
+    //删除行
+    protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e) {
+        sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        sqlcon.Open();
+        string sqlstr = "delete from js_btdH where bh='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
+        SqlCommand cmd = new SqlCommand(sqlstr, sqlcon);
+        cmd.ExecuteNonQuery();
+
+        sqlcon.Close();
+        bind();
     }
 }

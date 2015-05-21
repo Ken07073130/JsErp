@@ -32,10 +32,11 @@
                     <asp:ListItem>已会签</asp:ListItem>
                     <asp:ListItem>全部</asp:ListItem>
                 </asp:DropDownList>
-                <asp:LinkButton ID="lbPrint" runat="server"  Style="font-size: 13px;
-                    color: white; line-height: 20px; background-color: #3385ff; text-align: center;
-                    text-decoration: none" Width="71px" OnClick="lbPrint_Click">打印</asp:LinkButton>
-                &nbsp;<label style="background-color: #FFFF99; width: 50px; display: inline-block; border: 1px solid;">&nbsp</label>
+                <asp:LinkButton ID="lbPrint" runat="server" Style="font-size: 13px; color: white;
+                    line-height: 20px; background-color: #3385ff; text-align: center; text-decoration: none"
+                    Width="71px" OnClick="lbPrint_Click">打印</asp:LinkButton>
+                &nbsp;<label style="background-color: #FFFF99; width: 50px; display: inline-block;
+                    border: 1px solid;">&nbsp</label>
                 变更单&nbsp;
                 <label style="background-color: #CC3333; width: 50px; display: inline-block; border: 1px solid;">
                     &nbsp</label>
@@ -43,7 +44,23 @@
                     onclick="showWorkFlow()" style="font-size: 13px; width: 120px; display: inline-block;
                     color: white; line-height: 20px; height: 20px; background-color: #FF9999; text-align: center;
                     text-decoration: none">显示签单进度</a>
-                </div>
+            </div>
+            <div style="height: 15px; margin-bottom: 15px;">
+                <asp:CheckBoxList ID="cblTitleList" runat="server" RepeatDirection="Horizontal" AutoPostBack="True" OnSelectedIndexChanged="cblTitleList_SelectedIndexChanged">
+                    <asp:ListItem Value="BH" Selected="True">单号</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="BB">版本</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="JBRQ">建表日期</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="GGSXH">规格书型号</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="KHXH">客户型号</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="KHDM">客户代码</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="DDSL">订单数量</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="KHDDH">客户订单号</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="NBDXXH">内部电芯型号</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="NBPACKXH">PACK型号</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="GGSBH">规格书编号</asp:ListItem>
+                    <asp:ListItem Selected="True" Value="GGSBB">规格书版本</asp:ListItem>
+                </asp:CheckBoxList>
+            </div>
             <div id="divWorkFlow" style="display: none; margin-bottom: 20px;">
                 <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" CellPadding="3"
                     Style="text-align: center" Font-Names="Verdana" Font-Size="12px" EmptyDataText="无记录"
@@ -101,9 +118,9 @@
                 <asp:TextBox ID="tbBh" runat="server" Height="12px" Width="89px" Font-Size="12px" />&nbsp;
                 客户订单号
                 <asp:TextBox ID="tbKhddh" runat="server" Height="12px" Width="89px" Font-Size="12px" />
-                &nbsp;
-                客户代码 &nbsp;<asp:TextBox ID="tbKhdm" runat="server" Height="12px" Width="89px" Font-Size="12px" />&nbsp;
-                客户型号<asp:TextBox ID="tbKhxh" runat="server" Height="12px" Width="89px" Font-Size="12px" />&nbsp;
+                &nbsp; 客户代码 &nbsp;<asp:TextBox ID="tbKhdm" runat="server" Height="12px" Width="89px"
+                    Font-Size="12px" />&nbsp; 客户型号<asp:TextBox ID="tbKhxh" runat="server" Height="12px"
+                        Width="89px" Font-Size="12px" />&nbsp;
                 <asp:LinkButton ID="lbQuery" runat="server" Width="71px" Style="text-align: center;
                     background-color: #3385ff; color: white; font-size: 13px; line-height: 20px;
                     text-decoration: none;" OnClick="lbQuery_Click">查询</asp:LinkButton></div>
@@ -118,67 +135,32 @@
                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4"
                     Style="text-align: center" Font-Names="Verdana" Font-Size="13px" OnRowDataBound="GridView1_RowDataBound"
                     OnRowDeleting="GridView1_RowDeleting" OnRowEditing="GridView1_RowEditing" EmptyDataText="无记录"
-                    Width="1400px" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px"
+                    Width="100%" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px"
                     GridLines="Horizontal" AllowPaging="True" AllowSorting="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging"
                     EmptyDataRowStyle-BackColor="#40e0d0">
                     <RowStyle ForeColor="#333333" BackColor="White" />
                     <Columns>
                         <asp:BoundField DataField="LCHQZT" HeaderText="状态">
-                            <ItemStyle Width="200px" />
+                            
                         </asp:BoundField>
                         <asp:HyperLinkField DataNavigateUrlFields="bh,bb" DataNavigateUrlFormatString="~/swxt/htpsbEdit.aspx?bh={0}&amp;lb=CHANGE&amp;editType=1&amp;bb={1}"
                             Target="main" Text="变更">
-                            <ItemStyle Width="50px" />
+                           
                         </asp:HyperLinkField>
                         <asp:CommandField HeaderText="修改" ShowEditButton="True">
-                            <ItemStyle Width="50px" />
+                           
                         </asp:CommandField>
                         <asp:CommandField HeaderText="删除" ShowDeleteButton="True">
-                            <ItemStyle Width="50px" />
+                            
                         </asp:CommandField>
-                        <asp:TemplateField ItemStyle-Width="50px" >
+                        <asp:TemplateField >
                             <HeaderTemplate>
                                 打印</HeaderTemplate>
                             <ItemTemplate>
-                                <asp:CheckBox ID="cbPrint" runat="server" ></asp:CheckBox>
+                                <asp:CheckBox ID="cbPrint" runat="server"></asp:CheckBox>
                             </ItemTemplate>
                         </asp:TemplateField>
-                       <asp:BoundField DataField="BH" HeaderText="单号">
-                            <ItemStyle Width="150px" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="BB" HeaderText="版本">
-                            <ItemStyle Width="40px" />
-                        </asp:BoundField>
-                         <asp:BoundField DataField="JBRQ1" HeaderText="建表日期">
-                            <ItemStyle Width="150px" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="GGSXH" HeaderText="规格书型号">
-                            <ItemStyle Width="100px" />
-                        </asp:BoundField>
-                         <asp:BoundField DataField="KHXH" HeaderText="客户型号">
-                            <ItemStyle Width="70px" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="KHDM" HeaderText="客户代码">
-                            <ItemStyle Width="80px" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="DDSL1" HeaderText="订单数量">
-                            <ItemStyle Width="100px" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="KHDDH" HeaderText="客户订单号">
-                            <ItemStyle Width="100px" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="NBDXXH" HeaderText="内部电芯型号">
-                            <ItemStyle Width="100px" />
-                        </asp:BoundField>
-                         <asp:BoundField DataField="NBPACKXH" HeaderText="PACK型号">
-                            <ItemStyle Width="130px" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="GGSBH" HeaderText="规格书编号">
-                            <ItemStyle Width="130px" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="GGSBB" HeaderText="规格书版本">
-                            <ItemStyle Width="130px" />
-                        </asp:BoundField>
+                     
                     </Columns>
                     <PagerTemplate>
                         <table style="font-size: 12px;">
