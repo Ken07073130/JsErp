@@ -180,7 +180,6 @@
         <ajaxToolkit:AutoCompleteExtender ID="AutoCompleteExtender5" runat="server" TargetControlID="tbNbbzxh"
             ServicePath="~/GetContent.asmx" ServiceMethod="GetHtDxxhList" MinimumPrefixLength="1"
             EnableCaching="true" CompletionInterval="200" />
-
         <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnableScriptGlobalization="true"
             EnableScriptLocalization="true">
             <Services>
@@ -188,7 +187,9 @@
             </Services>
         </ajaxToolkit:ToolkitScriptManager>
         <div id="divPage">
-            <div class="layout" style="text-align: center; font-weight: bold; font-size: 25px;">生产补投单<asp:CustomValidator ID="CustomValidator1" runat="server" ErrorMessage="CustomValidator" OnServerValidate="CustomValidator1_ServerValidate"></asp:CustomValidator></div>
+            <div class="layout" style="text-align: center; font-weight: bold; font-size: 25px;">
+                生产补投单<asp:CustomValidator ID="CustomValidator1" runat="server" ErrorMessage="CustomValidator"
+                    OnServerValidate="CustomValidator1_ServerValidate" Display="Dynamic"></asp:CustomValidator></div>
             <div class="layout">
                 <ul>
                     <li><span class="spanLabel">单号</span><span class="spanControl"><asp:TextBox ID="tbBh"
@@ -201,18 +202,18 @@
                         runat="server" Width="90%" onchange="upperCase(this)"></asp:TextBox></span></li>
                     <li style="width: 474px;"><span class="spanLabel">订单号</span><span class="spanControl"><asp:TextBox
                         ID="tbDdh" runat="server" Width="363px"></asp:TextBox></span></li>
-                    <li><span class="spanLabel">缺货数量</span><span class="spanControl"><asp:TextBox ID="tbQhsl" runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw3" runat="server">
-                        <asp:ListItem>PCS</asp:ListItem>
-                        <asp:ListItem>组</asp:ListItem>
-                    </asp:DropDownList>
+                    <li><span class="spanLabel">缺货数量</span><span class="spanControl"><asp:TextBox ID="tbQhsl"
+                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw3" runat="server">
+                            <asp:ListItem>PCS</asp:ListItem>
+                            <asp:ListItem>组</asp:ListItem>
+                        </asp:DropDownList>
                     </span></li>
-                    <li>
-                        <span class="spanLabel">订单总数量</span><span class="spanControl"><asp:TextBox ID="tbDdzsl"
-                            runat="server" Width="51%"></asp:TextBox>
-                            <asp:DropDownList ID="ddlDw4" runat="server">
-                                <asp:ListItem>PCS</asp:ListItem>
-                                <asp:ListItem>组</asp:ListItem>
-                            </asp:DropDownList></span></li>
+                    <li><span class="spanLabel">订单总数量</span><span class="spanControl"><asp:TextBox ID="tbDdzsl"
+                        runat="server" Width="51%"></asp:TextBox>
+                        <asp:DropDownList ID="ddlDw4" runat="server">
+                            <asp:ListItem>PCS</asp:ListItem>
+                            <asp:ListItem>组</asp:ListItem>
+                        </asp:DropDownList></span></li>
                     <li><span class="spanLabel">评审单投量</span><span class="spanControl"><asp:TextBox ID="tbPsdzl"
                         runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw2" runat="server">
                             <asp:ListItem>PCS</asp:ListItem>
@@ -235,39 +236,43 @@
                     <li><span class="spanLabel">内部PACK型号</span><span class="spanControl"><asp:TextBox
                         ID="tbNbpackxh" runat="server" Width="90%" onblur="upperCase(this)"></asp:TextBox></span></li>
                     <li><span class="spanLabel">电芯预计补投</span><span class="spanControl"><asp:TextBox ID="tbDxyjbt"
-                        runat="server" Width="50%"></asp:TextBox>
+                        runat="server" Width="50%" Text="0"></asp:TextBox>
                         <asp:DropDownList ID="ddlDw6" runat="server">
                             <asp:ListItem>PCS</asp:ListItem>
                             <asp:ListItem>组</asp:ListItem>
                         </asp:DropDownList>
-                        <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="tbDxyjbt" Display="Dynamic" ErrorMessage="数量只能为数字" SetFocusOnError="true" ValidationExpression="^\d+(\.\d+)?$"></asp:RegularExpressionValidator>
-                        </span></li><li><span class="spanLabel">正极预计补投</span><span class="spanControl"><asp:TextBox ID="tbZjyjbt"
-                        runat="server" Width="50%"></asp:TextBox>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="tbDxyjbt"
+                            Display="Dynamic" ErrorMessage="数量只能为数字" SetFocusOnError="true" ValidationExpression="^\d+(\.\d+)?$"></asp:RegularExpressionValidator>
+                    </span></li>
+                    <li><span class="spanLabel">正极预计补投</span><span class="spanControl"><asp:TextBox ID="tbZjyjbt"
+                        runat="server" Width="50%" Text="0"></asp:TextBox>
                         <asp:DropDownList ID="ddlDw7" runat="server">
                             <asp:ListItem>PCS</asp:ListItem>
                             <asp:ListItem>组</asp:ListItem>
                         </asp:DropDownList>
-                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="tbZjyjbt" Display="Dynamic" ErrorMessage="数量只能为数字" SetFocusOnError="true" ValidationExpression="^\d+(\.\d+)?$"></asp:RegularExpressionValidator>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="tbZjyjbt"
+                            Display="Dynamic" ErrorMessage="数量只能为数字" SetFocusOnError="true" ValidationExpression="^\d+(\.\d+)?$"></asp:RegularExpressionValidator>
                     </span></li>
                     <li><span class="spanLabel">负极预计补投</span><span class="spanControl"><asp:TextBox ID="tbFjyjbt"
-                        runat="server" Width="50%"></asp:TextBox>
+                        runat="server" Width="50%" Text="0"></asp:TextBox>
                         <asp:DropDownList ID="ddlDw8" runat="server">
                             <asp:ListItem>PCS</asp:ListItem>
                             <asp:ListItem>组</asp:ListItem>
                         </asp:DropDownList>
-                        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="tbFjyjbt" Display="Dynamic" ErrorMessage="数量只能为数字" SetFocusOnError="true" ValidationExpression="^\d+(\.\d+)?$"></asp:RegularExpressionValidator>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="tbFjyjbt"
+                            Display="Dynamic" ErrorMessage="数量只能为数字" SetFocusOnError="true" ValidationExpression="^\d+(\.\d+)?$"></asp:RegularExpressionValidator>
                     </span></li>
                     <li><span class="spanLabel">PACK预计补投</span><span class="spanControl"><asp:TextBox
-                        ID="tbPackyjbt" runat="server" Width="50%"></asp:TextBox>
+                        ID="tbPackyjbt" runat="server" Width="50%" Text="0"></asp:TextBox>
                         <asp:DropDownList ID="ddlDw5" runat="server">
                             <asp:ListItem>PCS</asp:ListItem>
                             <asp:ListItem>组</asp:ListItem>
                         </asp:DropDownList>
-                        <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="tbPackyjbt" Display="Dynamic" ErrorMessage="数量只能为数字" SetFocusOnError="true" ValidationExpression="^\d+(\.\d+)?$"></asp:RegularExpressionValidator>
+                        <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="tbPackyjbt"
+                            Display="Dynamic" ErrorMessage="数量只能为数字" SetFocusOnError="true" ValidationExpression="^\d+(\.\d+)?$"></asp:RegularExpressionValidator>
                     </span></li>
-
-                    <li style="width: 95%; height: 25px;"><span class="spanLabel">生产批号</span><asp:TextBox ID="tbScph"
-                        runat="server" Width="88%"></asp:TextBox></li>
+                    <li style="width: 95%; height: 25px;"><span class="spanLabel">生产批号</span><asp:TextBox
+                        ID="tbScph" runat="server" Width="88%"></asp:TextBox></li>
                     <li style="width: 95%;"><span class="spanLabel">情况描述</span><asp:TextBox ID="tbQkms"
                         runat="server" Rows="5" TextMode="MultiLine" Width="88%"></asp:TextBox></li>
                 </ul>
@@ -276,37 +281,40 @@
                 <ul>
                     <li><span class="spanLabel">不良项目</span><span class="spanControl"><asp:TextBox ID="tbBlxm"
                         runat="server" Width="90%"></asp:TextBox></span></li>
-                    <li><span class="spanLabel">数量(PCS)</span><span class="spanControl"><asp:TextBox ID="tbSl"
-                        runat="server" Width="90%"></asp:TextBox></span></li>
-                    <li style="width: 30%"><span class="spanLabel">问题描述</span><asp:TextBox ID="tbWtms"
+                    <li><span class="spanLabel">数量(PCS)</span><span class="spanControl"><asp:TextBox
+                        ID="tbSl" runat="server" Width="90%"></asp:TextBox></span></li>
+                    <li style="height:28px;width: 300px;">合计数量：<asp:Label ID="lbHjsl" runat="server"
+                        Text="0" Font-Size="20" ForeColor="red"></asp:Label></li>
+                    <li style="width:400px;"><span class="spanLabel">问题描述</span><asp:TextBox ID="tbWtms"
                         runat="server" Width="66%" Rows="3" TextMode="MultiLine"></asp:TextBox></li>
-                    <li style="width: 19%; border: 0;">
-                        <asp:LinkButton ID="lbAddtr" runat="server" Style="margin-left: 14px; font-size: 15px; color: white; line-height: 25px; background-color: #3385ff; text-align: center; text-decoration: none"
-                            Width="150px" OnClick="lbAddtr_Click" OnClientClick="return checkTcsl()">添加到分析列表</asp:LinkButton></li>
+                    <li style="width: 19%; border: 0; margin-top:15px;">
+                        <asp:LinkButton ID="lbAddtr" runat="server" Style="margin-left: 14px; font-size: 15px;
+                            color: white; line-height: 25px; background-color: #3385ff; text-align: center;
+                            text-decoration: none" Width="150px" OnClick="lbAddtr_Click" OnClientClick="return checkTcsl()">添加到分析列表</asp:LinkButton></li>
+                   
                 </ul>
                 <asp:GridView ID="GridView1" runat="server" BackColor="White" BorderColor="#DEDFDE"
                     AutoGenerateColumns="false" BorderStyle="None" BorderWidth="1px" CellPadding="4"
                     ForeColor="Black" GridLines="Vertical" EmptyDataText="暂无分析" EmptyDataRowStyle-BackColor="#40e0d0"
-                    Width="100%" Style="margin: 0 auto; text-align: center;" OnRowDeleting="GridView1_RowDeleting"
-                    OnRowDataBound="GridView1_RowDataBound">
+                    Width="100%" Style="margin: 0 auto; text-align: center; table-layout: fixed;
+                    word-wrap: break-word;" OnRowDeleting="GridView1_RowDeleting" OnRowDataBound="GridView1_RowDataBound">
                     <Columns>
-                        <asp:BoundField DataField="blxm" HeaderText="不良项目" />
-                        <asp:CommandField ShowDeleteButton="true" HeaderText="删除"  />
-                        <asp:BoundField DataField="sl" HeaderText="数量(PCS)" ItemStyle-Width="5%" />
-                        <asp:BoundField DataField="wtms" HeaderText="问题描述"  />
-                        <asp:TemplateField HeaderText="发生原因" >
+                        <asp:BoundField DataField="blxm" HeaderText="不良项目" ItemStyle-Width="80px" HeaderStyle-Width="80px" />
+                        <asp:CommandField ShowDeleteButton="true" HeaderText="删除" ItemStyle-Width="50px"
+                            HeaderStyle-Width="50px" />
+                        <asp:BoundField DataField="sl" HeaderText="数量(PCS)" ItemStyle-Width="50px" HeaderStyle-Width="50px" />
+                        <asp:BoundField DataField="wtms" HeaderText="问题描述" ItemStyle-Width="150px" HeaderStyle-Width="200px" />
+                        <asp:TemplateField HeaderText="发生原因" ItemStyle-Width="300px" HeaderStyle-Width="250px">
                             <ItemTemplate>
                                 <asp:TextBox ID="tbFsyy" runat="server" TextMode="MultiLine" Rows="3" Width="95%"></asp:TextBox>
                             </ItemTemplate>
-
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="对策">
+                        <asp:TemplateField HeaderText="对策" ItemStyle-Width="300px" HeaderStyle-Width="250px">
                             <ItemTemplate>
                                 <asp:TextBox ID="tbDc" runat="server" TextMode="MultiLine" Rows="3" Width="95%"></asp:TextBox>
                             </ItemTemplate>
-
                         </asp:TemplateField>
-                        <asp:BoundField DataField="djlsh" >
+                        <asp:BoundField DataField="djlsh">
                             <ControlStyle CssClass="hidden" />
                             <FooterStyle CssClass="hidden" />
                             <HeaderStyle CssClass="hidden" />
@@ -320,11 +328,31 @@
                     <HeaderStyle BackColor="#6B696B" Font-Bold="True" ForeColor="White" />
                     <AlternatingRowStyle BackColor="White" />
                 </asp:GridView>
-
+                 <ul style="margin-top:15px;" >
+                    <li style="background-color:Silver;"><span class="spanLabel">退回部门</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlThbm" runat="server" onchange="lc(this)">
+                        <asp:ListItem>请选择</asp:ListItem>
+                        <asp:ListItem Value="fqr">商务补投</asp:ListItem>
+                        <asp:ListItem Value="Zl">质量部</asp:ListItem>
+                        <asp:ListItem Value="Gc">工程部</asp:ListItem>
+                        <asp:ListItem Value="Zz">制造部</asp:ListItem>
+                        <asp:ListItem Value="Sb">设备部</asp:ListItem>
+                        <asp:ListItem Value="Sczj">生产总监</asp:ListItem>
+                        <asp:ListItem Value="Zg">总工</asp:ListItem>
+                        <asp:ListItem Value="Gyl">供应链</asp:ListItem>
+                        <asp:ListItem Value="Swjl">商务经理</asp:ListItem>
+                        <asp:ListItem Value="Zjlzl">总助</asp:ListItem>
+                    </asp:DropDownList></span></li>
+                    <li style="background-color:Silver;"><span class="spanLabel">流程会签状态</span><span class="spanControl"><asp:TextBox ID="tbLchqzt"
+                        runat="server" Width="90%"></asp:TextBox></span></li>
+                 
+                   
+                </ul>
             </div>
             <div class="layout" style="margin-top: 10px;">
-                <ul class="ulSign">
-                    <li><span class="spanText">PMC评审结果</span><asp:DropDownList ID="ddlPMCpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanPMC">
+                    <li><span class="spanText">PMC评审结果</span><asp:DropDownList ID="ddlPMCpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -336,8 +364,9 @@
                     <li><span class="spanText">备注</span><span class="spanControl"><asp:TextBox ID="tbPMCbz"
                         runat="server" Width="90%" TextMode="MultiLine" Rows="5"></asp:TextBox></span></li>
                 </ul>
-                <ul class="ulSign">
-                    <li><span class="spanText">质量评审结果</span><asp:DropDownList ID="ddlZlpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanZl">
+                    <li><span class="spanText">质量评审结果</span><asp:DropDownList ID="ddlZlpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -349,8 +378,9 @@
                     <li><span class="spanText">备注</span><span class="spanControl"><asp:TextBox ID="tbZlbz"
                         runat="server" Width="90%" TextMode="MultiLine" Rows="5"></asp:TextBox></span></li>
                 </ul>
-                <ul class="ulSign">
-                    <li><span class="spanText">工程评审结果</span><asp:DropDownList ID="ddlGcpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanGc">
+                    <li><span class="spanText">工程评审结果</span><asp:DropDownList ID="ddlGcpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -362,8 +392,9 @@
                     <li><span class="spanText">备注</span><span class="spanControl"><asp:TextBox ID="tbGcbz"
                         runat="server" Width="90%" TextMode="MultiLine" Rows="5"></asp:TextBox></span></li>
                 </ul>
-                <ul class="ulSign">
-                    <li><span class="spanText">制造评审结果</span><asp:DropDownList ID="ddlZzpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanZz">
+                    <li><span class="spanText">制造评审结果</span><asp:DropDownList ID="ddlZzpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -377,8 +408,9 @@
                 </ul>
             </div>
             <div class="layout" style="margin-top: 10px;">
-                <ul class="ulSign">
-                    <li><span class="spanText">设备评审结果</span><asp:DropDownList ID="ddlSbpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanSb">
+                    <li><span class="spanText">设备评审结果</span><asp:DropDownList ID="ddlSbpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -390,8 +422,9 @@
                     <li><span class="spanText">备注</span><span class="spanControl"><asp:TextBox ID="tbSbbz"
                         runat="server" Width="90%" TextMode="MultiLine" Rows="5"></asp:TextBox></span></li>
                 </ul>
-                <ul class="ulSign">
-                    <li><span class="spanText">生产总监评审</span><asp:DropDownList ID="ddlSczjpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanSczj">
+                    <li><span class="spanText">生产总监评审</span><asp:DropDownList ID="ddlSczjpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -403,8 +436,9 @@
                     <li><span class="spanText">备注</span><span class="spanControl"><asp:TextBox ID="tbSczjbz"
                         runat="server" Width="90%" TextMode="MultiLine" Rows="5"></asp:TextBox></span></li>
                 </ul>
-                <ul class="ulSign">
-                    <li><span class="spanText">总工评审</span><asp:DropDownList ID="ddlZgpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanZg">
+                    <li><span class="spanText">总工评审</span><asp:DropDownList ID="ddlZgpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -416,8 +450,9 @@
                     <li><span class="spanText">备注</span><span class="spanControl"><asp:TextBox ID="tbZgbz"
                         runat="server" Width="90%" TextMode="MultiLine" Rows="5"></asp:TextBox></span></li>
                 </ul>
-                <ul class="ulSign">
-                    <li><span class="spanText">供应链评审</span><asp:DropDownList ID="ddlGylpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanGyl">
+                    <li><span class="spanText">供应链评审</span><asp:DropDownList ID="ddlGylpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -431,8 +466,9 @@
                 </ul>
             </div>
             <div class="layout" style="margin-top: 10px;">
-                <ul class="ulSign">
-                    <li><span class="spanText">商务经理评审</span><asp:DropDownList ID="ddlSwjlpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanSwjl">
+                    <li><span class="spanText">商务经理评审</span><asp:DropDownList ID="ddlSwjlpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -444,8 +480,9 @@
                     <li><span class="spanText">备注</span><span class="spanControl"><asp:TextBox ID="tbSwjlbz"
                         runat="server" Width="90%" TextMode="MultiLine" Rows="5"></asp:TextBox></span></li>
                 </ul>
-                <ul class="ulSign">
-                    <li><span class="spanText">总助评审</span><asp:DropDownList ID="ddlZjlzlpsjg" runat="server" onchange="lc(this)">
+                <ul class="ulSign" runat="server" id="spanZjlzl">
+                    <li><span class="spanText">总助评审</span><asp:DropDownList ID="ddlZjlzlpsjg" runat="server"
+                        onchange="lc(this)">
                         <asp:ListItem>请选择</asp:ListItem>
                         <asp:ListItem>同意补投</asp:ListItem>
                     </asp:DropDownList>
@@ -457,82 +494,73 @@
                     <li><span class="spanText">备注</span><span class="spanControl"><asp:TextBox ID="tbZjlzlbz"
                         runat="server" Width="90%" TextMode="MultiLine" Rows="5"></asp:TextBox></span></li>
                 </ul>
-                <ul class="ulSign">
-                    <li style="background-color: Silver;"><span class="spanText">退回部门</span><asp:DropDownList ID="ddlThbm" runat="server" onchange="lc(this)">
-                        <asp:ListItem>请选择</asp:ListItem>
-                        <asp:ListItem Value="fqr">商务补投</asp:ListItem>
-                        <asp:ListItem Value="Zl">质量部</asp:ListItem>
-                        <asp:ListItem Value="Gc">工程部</asp:ListItem>
-                        <asp:ListItem Value="Zz">制造部</asp:ListItem>
-                        <asp:ListItem Value="Sb">设备部</asp:ListItem>
-                        <asp:ListItem Value="Sczj">生产总监</asp:ListItem>
-                        <asp:ListItem Value="Zg">总工</asp:ListItem>
-                        <asp:ListItem Value="Gyl">供应链</asp:ListItem>
-                        <asp:ListItem Value="Swjl">商务经理</asp:ListItem>
-                        <asp:ListItem Value="Zjlzl">总助</asp:ListItem>
-                    </asp:DropDownList>
-                    </li>
-                   
-                </ul>
-
             </div>
-            <div class="layout" >
+            <div class="layout" runat="server" id="divLc" style="display:none">
                 <ul>
-                    <li><span class="spanLabel">PMC会签状态</span><span class="spanControl"><asp:DropDownList ID="ddlPMChqzt" runat="server">
+                    <li><span class="spanLabel">PMC会签状态</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlPMChqzt" runat="server">
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">质量会签状态</span><span class="spanControl"><asp:DropDownList ID="ddlZlhqzt" runat="server">
+                    <li><span class="spanLabel">质量会签状态</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlZlhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">工程会签状态</span><span class="spanControl"><asp:DropDownList ID="ddlGchqzt" runat="server">
+                    <li><span class="spanLabel">工程会签状态</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlGchqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">制造会签状态</span><span class="spanControl"><asp:DropDownList ID="ddlZzhqzt" runat="server">
+                    <li><span class="spanLabel">制造会签状态</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlZzhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">设备会签状态</span><span class="spanControl"><asp:DropDownList ID="ddlSbhqzt" runat="server">
+                    <li><span class="spanLabel">设备会签状态</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlSbhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">生产总监状态</span><span class="spanControl"><asp:DropDownList ID="ddlSczjhqzt" runat="server">
+                    <li><span class="spanLabel">生产总监状态</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlSczjhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">总工会签状态</span><span class="spanControl"><asp:DropDownList ID="ddlZghqzt" runat="server">
+                    <li><span class="spanLabel">总工会签状态</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlZghqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">供应链会签状态</span><span class="spanControl"><asp:DropDownList ID="ddlGylhqzt" runat="server">
+                    <li><span class="spanLabel">供应链会签状态</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlGylhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">商务经理经会签</span><span class="spanControl"><asp:DropDownList ID="ddlSwjlhqzt" runat="server">
+                    <li><span class="spanLabel">商务经理经会签</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlSwjlhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">总助会签</span><span class="spanControl"><asp:DropDownList ID="ddlZjlzlhqzt" runat="server">
+                    <li><span class="spanLabel">总助会签</span><span class="spanControl"><asp:DropDownList
+                        ID="ddlZjlzlhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></span></li>
-                    <li><span class="spanLabel">流程会签状态</span><span class="spanControl"><asp:TextBox ID="tbLchqzt"
-                        runat="server" Width="90%"></asp:TextBox></span></li>
+                    <li><span class="spanLabel">流程会签状态</span><span class="spanControl"></span></li></ul>
             </div>
-            <div class="layout" style="text-align:center; margin-top:10px;">
-                &nbsp;<asp:LinkButton Style="font-size: 20px; margin-left: 14px; color: white; line-height: 28px; background-color: #3385ff; text-align: center; text-decoration: none"
-                    ID="lbSubmit"
+            <div class="layout" style="text-align: center; margin-top: 10px;">
+                &nbsp;<asp:LinkButton Style="font-size: 20px; margin-left: 14px; color: white; line-height: 28px;
+                    background-color: #3385ff; text-align: center; text-decoration: none" ID="lbSubmit"
                     runat="server" Width="100px" OnClick="lbSubmit_Click" OnClientClick="return thbm()">提交</asp:LinkButton></div>
             <div style="display: none;">
                 <asp:DropDownList ID="ddlDw1" runat="server">

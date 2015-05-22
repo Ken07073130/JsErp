@@ -1,3 +1,9 @@
+--常用查询
+select * from dbo.STUsers where UserName  like '%陈%';
+select * from dbo.js_shortMessage;
+select * from dbo.js_shortMessage_history order by sendTime desc;
+
+
 --2015/05/20
 --1.补投单修改适应WEB版
 drop table js_btdH
@@ -143,4 +149,9 @@ create table js_btd_list
   fsyy  varchar(500),
   dc    varchar(500)
 )
+
+
+--2014/05/22 增加入口URL
+update Erp_js_Sys.dbo.Tree set URL='swxt/btdList.aspx' where NodeCaption='生产补投评审单'
+update Erp_js_Sys.dbo.Tree set URL='swxt/htpsbList.aspx' where NodeCaption='合同评审表'
 

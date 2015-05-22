@@ -63,6 +63,15 @@ public partial class btdEdit : System.Web.UI.Page {
         GridView1.DataKeyNames = new string[] { "djlsh" };
         GridView1.DataBind();
         sqlcon.Close();
+
+
+        lbHjsl.Text = "0";
+        int sl = 0;
+        for (int i = 0; i < GridView1.Rows.Count; i++) {
+            sl = sl + Convert.ToInt32(GridView1.Rows[i].Cells[2].Text);
+        }
+        lbHjsl.Text = sl.ToString();
+
     }
 
 
@@ -82,13 +91,19 @@ public partial class btdEdit : System.Web.UI.Page {
         tbBlxm.Text = "";
         tbWtms.Text = "";
 
-
+      
 
     }
 
     //变更状态
     protected void lbSubmit_Click(object sender, EventArgs e) {
         if (Page.IsValid) {
+            //流程完成需要同步数据到别的表
+            if (tbLchqzt.Text.Equals("已完成")) {
+                if (!synDj()) {
+                    return;
+                }
+            }
             if ("ADD" == lb) {
                 if (addData()) {
                     Response.Redirect("btdList.aspx");
@@ -124,7 +139,8 @@ public partial class btdEdit : System.Web.UI.Page {
             TextBox tbDc = e.Row.FindControl("tbDc") as TextBox;
             tbFsyy.Text = drv["fsyy"].ToString();
             tbDc.Text = drv["dc"].ToString();
-
+            tbFsyy.ReadOnly =( Session["Groupnames"].ToString().IndexOf("生产补投单-工程部审核") >= 0 || Session["Groupnames"].ToString().IndexOf("超级用户")>=0);
+            tbDc.ReadOnly = (Session["Groupnames"].ToString().IndexOf("生产补投单-工程部审核") >= 0 || Session["Groupnames"].ToString().IndexOf("超级用户")>=0);
         }
     }
 
@@ -171,6 +187,38 @@ public partial class btdEdit : System.Web.UI.Page {
         sqlcon.Close();
         sdr.Close();
 
+        string groupNames = Session["Groupnames"].ToString();
+
+        //只有发起人能看到流程
+        if (groupNames.IndexOf("生产补投单-发起人") >= 0 || groupNames.IndexOf("超级用户") >= 0) {
+            divLc.Style.Add("display","");
+        }
+
+        //会签内容变色
+        if (groupNames.IndexOf("生产补投单-PMC审核") >= 0) spanPMC.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-质量部审核") >= 0) spanZl.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-工程部审核") >= 0) spanGc.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-制造部审核") >= 0) spanZz.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-设备部审核") >= 0) spanSb.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-生产总监审核") >= 0) spanSczj.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-总工审核") >= 0) spanZg.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-供应链审核") >= 0) spanGyl.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-商务经理审核") >= 0) spanSwjl.Style.Add("background-color", "#FFFFCC");
+        if (groupNames.IndexOf("生产补投单-总经理助理审核") >= 0) spanZjlzl.Style.Add("background-color", "#FFFFCC");
+
+
+        //退回的单子打开时，需要重置选择状态
+        if (tbLchqzt.Text.IndexOf("退回") >= 0) {
+            if (tbLchqzt.Text.IndexOf("PMC") > 0) ddlPMCpsjg.SelectedIndex = 0;
+            if (tbLchqzt.Text.IndexOf("质量") > 0) ddlZlpsjg.SelectedIndex = 0;
+            if (tbLchqzt.Text.IndexOf("工程") > 0) ddlGcpsjg.SelectedIndex = 0;
+            if (tbLchqzt.Text.IndexOf("制造") > 0) ddlZzpsjg.SelectedIndex = 0;
+            if (tbLchqzt.Text.IndexOf("设备") > 0) ddlSbpsjg.SelectedIndex = 0;
+            if (tbLchqzt.Text.IndexOf("生产总监") > 0) ddlSczjpsjg.SelectedIndex = 0;
+            if (tbLchqzt.Text.IndexOf("总工") > 0) ddlZgpsjg.SelectedIndex = 0;
+            if (tbLchqzt.Text.IndexOf("供应链") > 0) ddlGylpsjg.SelectedIndex = 0;
+            if (tbLchqzt.Text.IndexOf("商务经理") > 0) ddlSwjlpsjg.SelectedIndex = 0;
+        }
     }
 
 
@@ -415,6 +463,61 @@ public partial class btdEdit : System.Web.UI.Page {
         }
 
         sqlcon.Close();
+
+    }
+
+    //完成的合同评审表需要同步其他单据
+    //1.投产计划 
+    //2.套料单
+    public bool synDj() {
+        bool result = false;
+        sqlcon.Open();
+        SqlTransaction sqlTran = sqlcon.BeginTransaction();
+        int sl = 0;
+        sl = Convert.ToInt32(tbZjyjbt.Text) + Convert.ToInt32(tbFjyjbt.Text) + Convert.ToInt32(tbDxyjbt.Text) + Convert.ToInt32(tbPackyjbt.Text);
+        try {
+            if (sl>0) {
+                //投产计划
+                string sqlstr = " if not exists(select 1 from js_tcjh where psdbh='" + tbBh.Text + "') "
+                              + " insert into dbo.js_tcjh select '" + tbBh.Text + "','待投产','补投单','正常'  ";
+                            // + " else  update dbo.js_tcjh set bgzt='变更中' where psdbh='" + tbBh.Text + "'";
+                Cmd = new SqlCommand(sqlstr, sqlcon);
+                Cmd.Transaction = sqlTran;
+                Cmd.ExecuteNonQuery();
+                //套料单 
+                sqlstr = " if ( not exists (select 1 from js_tldH where  PSDBH='"+tbBh.Text+"') ) "
+                              +  " insert into dbo.js_tldH (DjLsh, "
+                              +  "        BH "
+                              +  " ,BB,JBRQ,PSDBH,PSDBB,DJLX,KHDM,DDL,DXXH,BZXH,PACKXH) "
+                              +  " select max(DjLsh)+1,  "
+                              +  "         (select 'TLD-' + csr_init + replicate('0', 3 - len(max_init)) + cast(max_init as varchar(3)) bh  "
+                              +  "          from   (  select substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) csr_init ,case when max(bh) is null then '001' else cast(substring(max(bh), 11, 3) as int) + 1 end max_init from   js_tldH  " 
+                              +  "         	where substring(JBRQ,1,4)+substring(JBRQ,6,2)= substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) ) A ) "
+                              +  " ,'1.0',convert(varchar(10),getdate(),120),'"+tbBh.Text+"','1.0','补投单','"+tbKhdm.Text+"','"+sl.ToString()+"','"+tbNbdxxh.Text+"','"+tbNbbzxh.Text+"','"+tbNbpackxh.Text+"' from dbo.js_tldH ";
+                Cmd = new SqlCommand(sqlstr, sqlcon);
+                Cmd.Transaction = sqlTran;
+                Cmd.ExecuteNonQuery();
+
+                sqlTran.Commit();
+                
+            }
+
+
+
+            result = true;
+        }
+        catch (Exception ex) {
+            sqlTran.Rollback();
+            ClientScript.RegisterStartupScript(this.GetType(), "", "<script>alert('" + ex.Message.Replace("'", "") + "')</script>");
+        }
+        finally {
+            sqlTran.Dispose();
+            sqlcon.Close();
+        }
+
+
+        return result;
+
 
     }
 }

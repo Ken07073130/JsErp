@@ -20,6 +20,7 @@
     
        //设置iframe页面属性
        function setIframeSrc(){
+          alert(document.getElementById('ddlDjlx').value);
           var bh=document.getElementById('tbPsdbh').value; 
           var url='htpsbEdit.aspx?bh='+bh+'&lb=EDIT&editType=查看';
           document.getElementById('ihtpsb').src=url;
@@ -145,6 +146,7 @@
                     <AlternatingRowStyle BackColor="White" />
                 </asp:GridView>
             </div>
+            <div style="display:none"></div>
         </div>
     </form>
 </body>

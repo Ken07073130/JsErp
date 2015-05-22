@@ -31,7 +31,7 @@ public partial class ddfhEdit : System.Web.UI.Page {
             else {
                 Response.Redirect("Login.aspx");
             }
-            
+
             if ("ADD" == lb) {
                 setDefault();//新增单据设置默认值
             }
@@ -63,7 +63,7 @@ public partial class ddfhEdit : System.Web.UI.Page {
         if (Request["tbPsdbh"] != null && !Request["tbPsdbh"].ToString().Equals("")) {
             //   String imageUrl = "D:/用户目录/Documents/Visual Studio 2005/Projects/数据系统WEB版/cgxt/images/" + Request["tbWlbh"].Trim() + ".jpg";
             sqlAdd = sqlAdd + "select '" + tbBh.Text + "', '" + Request["tbXh"].ToString() + "', '" + Request["ddlCplx"].ToString() + "', '" + Request["ddlChxz"].ToString() + "', '"
-                + Request["tbDdh"].ToString() + "', '" + Request["tbGG"].ToString() + "', '" + Request["tbWlbh"].ToString() + "', '" + Request["tbSl"].ToString() + "', '" + Request["tbDw"].ToString() + "', case when '" + Request["tbJs"].ToString() + "'='' then null else '" + Request["tbJs" ].ToString() + "' end, case when '" + Request["tbZje"].ToString() + "'='' then null else '" + Request["tbZje"].ToString() + "' end , '" + Request["tbBz"].ToString() + "', '" + Request["tbPsdbh"].ToString() + "'" + " union all ";
+                + Request["tbDdh"].ToString() + "', '" + Request["tbGG"].ToString() + "', '" + Request["tbWlbh"].ToString() + "', '" + Request["tbSl"].ToString() + "', '" + Request["tbDw"].ToString() + "', case when '" + Request["tbJs"].ToString() + "'='' then null else '" + Request["tbJs"].ToString() + "' end, case when '" + Request["tbZje"].ToString() + "'='' then null else '" + Request["tbZje"].ToString() + "' end , '" + Request["tbBz"].ToString() + "', '" + Request["tbPsdbh"].ToString() + "'" + " union all ";
         }
         if (!sqlAdd.Equals("")) {
             sqlcon.Open();
@@ -103,23 +103,35 @@ public partial class ddfhEdit : System.Web.UI.Page {
     }
 
     //发送短信
-    public void sendMessage() {
+    public bool sendMessage() {
+        bool result = false;
         sqlcon.Open();
-        string sqlstr = "insert into dbo.js_shortMessage ( UserID, Message ) "
-                      + "  select (select userid from dbo.STUsers  where UserName='" + tbYwy.Text + "'),'【数据系统】【订单发货】您好，您的订单'+(select stuff((select ','+b.DDH+'('+c.GGSXH+')'+'('+convert(varchar(20),SL)+DW+')' from dbo.js_ddfhH a,dbo.js_ddfh_fhlbH b,dbo.js_htpsb_newH c "
-                      + "  where a.BH=b.BH and a.BH='"+tbBh.Text+"' and b.PSDBH=c.psdbh "
-                      + "  for xml path('')),1,1,''))+'已发货,快递公司:'+'"+tbKdgs.Text+"'+',快递单号:'+'"+tbKddh.Text+"' ";
-        Cmd = new SqlCommand(sqlstr, sqlcon);
-        Cmd.ExecuteNonQuery();
-        sqlcon.Close();
+        try {
+            string sqlstr = "insert into dbo.js_shortMessage ( UserID, Message ) "
+                          + "  select (select userid from dbo.STUsers  where UserName='" + tbYwy.Text + "'),'【数据系统】【订单发货】您好，您的订单'+(select stuff((select ','+b.DDH+'('+c.GGSXH+')'+'('+convert(varchar(20),SL)+b.DW+')' from dbo.js_ddfhH a,dbo.js_ddfh_fhlbH b,dbo.js_htpsb_newH c "
+                          + "  where a.BH=b.BH and a.BH='" + tbBh.Text + "' and b.PSDBH=c.psdbh "
+                          + "  for xml path('')),1,1,''))+'已发货,快递公司:'+'" + tbKdgs.Text + "'+',快递单号:'+'" + tbKddh.Text + "' ";
+            Cmd = new SqlCommand(sqlstr, sqlcon);
+            Cmd.ExecuteNonQuery();
+            result = true;
+        }
+        catch (Exception ex) {
+            ClientScript.RegisterStartupScript(this.GetType(), "", "<script>alert('短信发送出错" + ex.Message.Replace("'", "") + "')</script>");
+        }
+        finally {
+            sqlcon.Close();
+        }
+        return result;
+
     }
 
     protected void btnTj_Click(object sender, EventArgs e) {
 
         if ("ADD" == lb) {
             if (addData()) {
-                sendMessage();
-                Response.Redirect("ddfhList.aspx");
+                if (sendMessage()) {
+                    Response.Redirect("ddfhList.aspx");
+                }
             }
         }
         else if ("EDIT" == lb) {
@@ -488,7 +500,7 @@ public partial class ddfhEdit : System.Web.UI.Page {
 
         result = true;
         return result;
-       
+
     }
 
 

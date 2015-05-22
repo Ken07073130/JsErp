@@ -33,7 +33,7 @@ public partial class ddfhPrint : System.Web.UI.Page
         if (!String.IsNullOrEmpty(Request["bh"].ToString())) {
             conditionString = " where charindex(a.bh,'" + Request["bh"].ToString() + "')>0";
         }
-        String sqlstr = " select * from js_htpsbH a "
+        String sqlstr = " select (select distinct convert(varchar(30), VwXm0002)+'mAh' from dbo.View_0395 where VwXm0001=a.ggsxh) pmyq,* from js_htpsbH a "
                        + conditionString;
         DataSet ds = new DataSet();
         SqlDataAdapter sda = new SqlDataAdapter(sqlstr, sqlconn);

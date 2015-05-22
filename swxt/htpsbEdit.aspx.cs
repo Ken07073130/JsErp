@@ -21,9 +21,10 @@ public partial class htpsbEdit : System.Web.UI.Page {
     protected void Page_Load(object sender, EventArgs e) {
         editType = Request.QueryString["editType"];
         bh = Request.QueryString["bh"];
-        bb = Request.QueryString["bb"];
         lb = Request.QueryString["lb"];
+        
         if (!IsPostBack) {
+            bb = Request.QueryString["bb"];
             if (Session["username"] != null) {
                 tbUserName.Text = Session["username"].ToString();
                 tbGroupName.Text = Session["groupnames"].ToString();
@@ -210,8 +211,17 @@ public partial class htpsbEdit : System.Web.UI.Page {
                     //((TextBox)FindControl(sdr["mc"].ToString().Trim())).Attributes.Add("readonly","1" == sdr["qx"].ToString()?"false":"true"); 
                     ((TextBox)FindControl(sdr["mc"].ToString().Trim())).ReadOnly = !("1" == sdr["qx"].ToString());
                 }
-                else if ("DROPDOWNLIST" == sdr["lx"].ToString())
-                    ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Enabled = ("1" == sdr["qx"].ToString());
+                else if ("DROPDOWNLIST" == sdr["lx"].ToString()) {
+                    string ddlVaule = ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).SelectedValue;
+                    if ("1" != sdr["qx"].ToString() && !sdr["mc"].Equals("ddlBB")) {
+                        //只读的，只保留默认项目,除字段BB之外
+                        ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Items.Clear();
+                        ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Items.Add(ddlVaule);
+                    }
+                    //((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Enabled = ();
+
+                   
+                }
                 else if ("CHECKBOX" == sdr["lx"].ToString())
                     ((CheckBox)FindControl(sdr["mc"].ToString().Trim())).Enabled = ("1" == sdr["qx"].ToString());
                 else if ("CHECKBOXLIST" == sdr["lx"].ToString())
@@ -223,9 +233,17 @@ public partial class htpsbEdit : System.Web.UI.Page {
 
         ddlBB.Enabled = true;
 
+        if (ddlBB.SelectedIndex != 0) {
+            lbSubmit.Visible = false;
+        }
+        else {
+            lbSubmit.Visible = true;
+        }
+
         if (editType != null && editType.Equals("查看")) {
             lbSubmit.Visible = false;
         }
+    
 
         //当前会签人员着色
         if (tbGroupName.Text.IndexOf("合同评审表-PMC审核") > 0) {
@@ -382,17 +400,17 @@ public partial class htpsbEdit : System.Web.UI.Page {
                     }
                     else if ("DROPDOWNLIST" == (string)ht_lxdz[strZd]) {
                         DropDownList ddlTemp = (DropDownList)FindControl((string)ht_zddz[strZd]);
-                        int j = 0;
+                        int j = -1;
                         for (int i = 0; i < ddlTemp.Items.Count; i++) {
                             if (ddlTemp.Items[i].Value == sdr[strZd].ToString().Trim()) {
                                 j = i;//把匹配到的索引赋给j
                                 break;
                             }
                         }
-                        if (0 == j) { //j=0说明数据库里的值没有匹配到，那么就自己把数据库的值加进去并选定
-                            ddlTemp.Items.Add(sdr[strZd].ToString().Trim());
+                        if (-1 == j) { //j=0说明数据库里的值没有匹配到，那么就自己把数据库的值加进去并选定
+                           ddlTemp.Items.Add(sdr[strZd].ToString().Trim());
                         }
-                        // ddlTemp.Text = sdr[strZd].ToString().Trim();
+                       // ddlTemp.Text = sdr[strZd].ToString().Trim();
                         ddlTemp.SelectedValue = sdr[strZd].ToString().Trim();
                     }
                     else if ("CHECKBOXLIST" == (string)ht_lxdz[strZd]) {
@@ -648,7 +666,9 @@ public partial class htpsbEdit : System.Web.UI.Page {
 
     //版本查看
     protected void ddlBB_SelectedIndexChanged(object sender, EventArgs e) {
-        Response.Redirect("htpsbEdit.aspx?bh=" + tbBh.Text + " &bb=" + ddlBB.Text + "&lb=EDIT&editType=查看");
+        bb = ddlBB.Text;
+       // Response.Redirect("htpsbEdit.aspx?bh=" + tbBh.Text + " &bb=" + ddlBB.Text + "&lb=EDIT&editType=查看");
+        getData();
     }
 
     //根据内部电芯型号，获取电芯型号的容量和代码

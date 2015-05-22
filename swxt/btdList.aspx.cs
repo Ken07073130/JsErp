@@ -50,7 +50,8 @@ public partial class btdList : System.Web.UI.Page {
                  "     or (charindex('生产补投单-总工审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZGHQZT='" + ddlHqzt.Text + "' )) " +
                  "     or (charindex('生产补投单-供应链审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or GYLHQZT='" + ddlHqzt.Text + "' )) " +
                  "     or (charindex('生产补投单-商务经理审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or SWJLHQZT='" + ddlHqzt.Text + "' )) " +
-                 "     or (charindex('生产补投单-总经理助理审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZJLZLHQZT='" + ddlHqzt.Text + "' ))  ) " +
+                 "     or (charindex('生产补投单-总经理助理审核','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' or ZJLZLHQZT='" + ddlHqzt.Text + "' ))  " +
+                 "     or (charindex('生产补投单-查看组','" + GroupNames + "')>0  and ('" + ddlHqzt.Text + "'='全部' )) )" +
                  "  order by hqsx,jbrq desc ";
 
 
@@ -90,48 +91,16 @@ public partial class btdList : System.Web.UI.Page {
     }
 
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e) {
-        /*if (e.Row.RowType == DataControlRowType.DataRow) {
-            DataRowView drv = e.Row.DataItem as DataRowView;
-            //
-            if (drv["bgzt"].ToString().Equals("变更中")) {
-                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFF99");
-            
-            }
-        }
-
-        /*if (e.Row.RowType == DataControlRowType.DataRow) {
-            e.Row.Cells[0].Attributes["onmousemove"] = "showDiv('div" + e.Row.Cells[3].Text + "')";
-            e.Row.Cells[0].Attributes["onmouseout"] = "hideDiv('div" + e.Row.Cells[3].Text + "')";
-            Table tb = e.Row.FindControl("Table1") as Table;
-            Label lb = e.Row.FindControl("lblDetail") as Label;
-            LinkButton btnEdit = e.Row.Cells[1].Controls[0] as LinkButton;
-            LinkButton btnDel = e.Row.Cells[11].Controls[0] as LinkButton;
-            Button btnPrint = e.Row.FindControl("btnPrint") as Button;
-            btnDel.Attributes.Add("onclick ", "return confirm( '确定注销采购单(编号: " + (e.Row.Cells[0].Text) + " 吗)'); ");
-           // sqlcon.Open();
-
-            btnDel.Visible = false;
-            btnPrint.Visible = false;
-            if (e.Row.Cells[8].Text.Equals("未生成")) {
-                drawDetails(tb, lb, e.Row.Cells[3].Text);
-                btnEdit.Text = "生成订单";
-            }
-            else if (e.Row.Cells[8].Text.Equals("已注销")) {
+        if (e.Row.RowType == DataControlRowType.DataRow) {
+            LinkButton btnEdit = (LinkButton)e.Row.Cells[1].Controls[0];
+            if (ddlHqzt.Text != "会签中") {
                 btnEdit.Text = "查看";
-                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FF6666");
             }
-            else {
-                btnDel.Visible = true;
-                btnPrint.Visible = true;
-                if (e.Row.Cells[5].Text.Equals("已打印")){
-                    btnEdit.Text = "查看";
-                } else {
-                    btnEdit.Text = "编辑";
-                }
+            else if ("会签中" == ddlHqzt.Text) {
+                btnEdit.Text = "编辑";
             }
-            
-            string bh = e.Row.Cells[0].Text.Replace("#", "*");
-            btnPrint.OnClientClick = "printCgd('" + bh + "')";
+
+
 
         }
 
@@ -184,8 +153,10 @@ public partial class btdList : System.Web.UI.Page {
         string sqlstr = "delete from js_btdH where bh='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
         SqlCommand cmd = new SqlCommand(sqlstr, sqlcon);
         cmd.ExecuteNonQuery();
-
         sqlcon.Close();
+        bind();
+    }
+    protected void ddlHqzt_SelectedIndexChanged(object sender, EventArgs e) {
         bind();
     }
 }

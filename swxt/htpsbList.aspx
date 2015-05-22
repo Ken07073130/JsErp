@@ -45,7 +45,9 @@
                 </asp:DropDownList>
                 <asp:LinkButton ID="lbPrint" runat="server" Style="font-size: 13px; color: white; line-height: 20px; background-color: #3385ff; text-align: center; text-decoration: none"
                     Width="71px" OnClick="lbPrint_Click">打印</asp:LinkButton>
-                &nbsp;<label style="background-color: #FFFF99; width: 50px; display: inline-block; border: 1px solid;">&nbsp</label>
+                     &nbsp;<label style="background-color: #CCFFFF; width: 50px; display: inline-block; border: 1px solid;">&nbsp</label>
+                未完成单&nbsp;
+                <label style="background-color: #FFFF99; width: 50px; display: inline-block; border: 1px solid;">&nbsp</label>
                 变更单&nbsp;
                
                 <label style="background-color: #CC3333; width: 50px; display: inline-block; border: 1px solid;">

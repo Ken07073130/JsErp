@@ -48,6 +48,10 @@
                     <asp:BoundField DataField="GGSXH" HeaderText="规格书型号" ItemStyle-Width="80px"/>
                     <asp:BoundField DataField="nbdxxh" HeaderText="内部电芯" ItemStyle-Width="80px" />
                     <asp:BoundField DataField="nbpackxh" HeaderText="PACK型号" ItemStyle-Width="80px"/>
+                        <asp:BoundField DataField="ZJYJBT" HeaderText="正极" ItemStyle-Width="80px" />
+                        <asp:BoundField DataField="FJYJBT" HeaderText="负极" ItemStyle-Width="80px" />
+                        <asp:BoundField DataField="DXYJBT" HeaderText="电芯" ItemStyle-Width="80px" />
+                        <asp:BoundField DataField="PACKYJBT" HeaderText="PACK" ItemStyle-Width="80px" />
                     <asp:CommandField  ShowDeleteButton="true" HeaderText="删除"  ItemStyle-Width="50px"  DeleteText="&lt;span onclick=&quot;JavaScript:return confirm('确定删除吗？')&quot;&gt;删除&lt;/span&gt;" />
                 </Columns>
                 <PagerTemplate>

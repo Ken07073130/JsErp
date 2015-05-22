@@ -197,6 +197,9 @@ public partial class htpsbList : System.Web.UI.Page {
 
             //行颜色转换,变更中的单子标色
             //未完成且版本>1.0为变更单
+            if (!drv["lchqzt"].ToString().Equals("已完成") && Convert.ToDouble(drv["bb"].ToString()) == 1.0) {
+                e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFFFF");
+            }
             if (!drv["lchqzt"].ToString().Equals("已完成") && Convert.ToDouble(drv["bb"].ToString()) > 1.0) {
                 e.Row.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFF99");
             }

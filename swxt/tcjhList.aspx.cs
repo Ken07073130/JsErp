@@ -39,8 +39,8 @@ public partial class tcjhList : System.Web.UI.Page {
         string groupNames = Session["GroupNames"].ToString();
         string sqlStr = "";
         sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
-        sqlStr = "select b.nbdxxh,b.nbPACKXH,a.psdbh,a.zt,b.KHXH,b.khdm,convert(varchar(10),b.tcsl)+'('+b.dw2+')' ddsl,convert(varchar(10),b.jbrq,120) jbrq,a.djlsh,b.khddh,a.bgzt,tczs "
-                 + " from dbo.js_tcjh a left join (select psdbh,sum(jhs) tczs from  dbo.js_tcjh_list group by psdbh  ) c on c.psdbh=a.psdbh ,dbo.js_htpsbH b  "
+        sqlStr = "select b.nbdxxh,b.nbPACKXH,a.psdbh,a.zt,b.KHXH,b.khdm, ddsl, jbrq,a.djlsh,b.khddh,a.bgzt,tczs "
+                 + " from dbo.js_tcjh a left join (select psdbh,sum(jhs) tczs from  dbo.js_tcjh_list group by psdbh  ) c on c.psdbh=a.psdbh ,dbo.view_htpsbOnBtd b  "
                  + " where a.psdbh=b.bh order by zt";
 
 
