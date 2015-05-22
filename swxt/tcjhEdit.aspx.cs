@@ -39,6 +39,7 @@ public partial class tcjhEdit : System.Web.UI.Page {
             if (!sdr["bgzt"].ToString().Equals("变更中")) {
                 cbBgzt.Enabled = false;
             }
+            tbDjlx.Text = sdr["djlx"].ToString();
 
         }
         sqlcon.Close();

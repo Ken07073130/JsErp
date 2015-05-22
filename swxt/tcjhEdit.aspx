@@ -20,10 +20,20 @@
     
        //设置iframe页面属性
        function setIframeSrc(){
-          alert(document.getElementById('ddlDjlx').value);
-          var bh=document.getElementById('tbPsdbh').value; 
-          var url='htpsbEdit.aspx?bh='+bh+'&lb=EDIT&editType=查看';
-          document.getElementById('ihtpsb').src=url;
+           if (document.getElementById('tbDjlx').value=="订单") {
+               var bh = document.getElementById('tbPsdbh').value;
+               var url = 'htpsbEdit.aspx?bh=' + bh + '&lb=EDIT&editType=查看';
+               document.getElementById('ihtpsb').src = url;
+               document.getElementById('ihtpsb').height = 400;
+           } else if (document.getElementById('tbDjlx').value == "补投单") {
+               var bh = document.getElementById('tbPsdbh').value;
+               var url = 'btdEdit.aspx?xh=' + bh + '&lb=EDIT&editType=查看';
+               document.getElementById('ihtpsb').src = url;
+               document.getElementById('ihtpsb').height = 300;
+
+           }
+
+         
        }
        
        //设置配料批次
@@ -146,7 +156,9 @@
                     <AlternatingRowStyle BackColor="White" />
                 </asp:GridView>
             </div>
-            <div style="display:none"></div>
+            <div >
+                <asp:TextBox ID="tbDjlx" runat="server"></asp:TextBox>
+            </div>
         </div>
     </form>
 </body>

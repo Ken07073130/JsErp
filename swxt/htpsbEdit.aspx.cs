@@ -710,7 +710,7 @@ public partial class htpsbEdit : System.Web.UI.Page {
         if (sdr.HasRows) {
             sdr.Read();
             tbWorkFlowFlag.Text = sdr["log"].ToString().Replace("&#x0D", "");
-            ClientScript.RegisterStartupScript(this.GetType(), "历史版本查看", "<script>alert(document.getElementById('tbWorkFlowFlag').value)</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "历史版本查看", "<script>showLsls()</script>");
         }
         sqlcon.Close();
     }
@@ -721,17 +721,36 @@ public partial class htpsbEdit : System.Web.UI.Page {
         bool result = false;
         sqlcon.Open();
         SqlTransaction sqlTran = sqlcon.BeginTransaction();
+        string sqlstr = "";
         try {
-            //投产计划
             if (!tbTcsl.Text.Equals("")) {
-                string sqlstr = " if not exists(select 1 from js_tcjh where psdbh='" + tbBh.Text + "') "
+                //投产计划
+                sqlstr = " if not exists(select 1 from js_tcjh where psdbh='" + tbBh.Text + "') "
                              + " insert into dbo.js_tcjh select '" + tbBh.Text + "','待投产','订单','正常'  "
                              + " else  update dbo.js_tcjh set bgzt='变更中' where psdbh='" + tbBh.Text + "'";
                 Cmd = new SqlCommand(sqlstr, sqlcon);
                 Cmd.Transaction = sqlTran;
                 Cmd.ExecuteNonQuery();
-                sqlTran.Commit();
+
+               
             }
+            //套料单 
+            sqlstr = " if ( not exists (select 1 from js_tldH where  PSDBH='" + tbBh.Text + "') ) "
+                          + " insert into dbo.js_tldH (DjLsh, "
+                          + "        BH "
+                          + " ,BB,JBRQ,PSDBH,PSDBB,DJLX,KHDM,DDL,DXXH,BZXH,PACKXH) "
+                          + " select max(DjLsh)+1,  "
+                          + "         (select 'TLD-' + csr_init + replicate('0', 3 - len(max_init)) + cast(max_init as varchar(3)) bh  "
+                          + "          from   (  select substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) csr_init ,case when max(bh) is null then '001' else cast(substring(max(bh), 11, 3) as int) + 1 end max_init from   js_tldH  "
+                          + "         	where substring(JBRQ,1,4)+substring(JBRQ,6,2)= substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) ) A ) "
+                          + " ,'1.0',convert(varchar(10),getdate(),120),'" + tbBh.Text + "','"+ddlBB.Text+"','订单','" + tbKhdm.Text + "','" + tbDdsl.Text + "','" + tbNbdxxh.Text + "','" + tbNbbzxh.Text + "','" + tbNbpackxh.Text + "' from dbo.js_tldH ";
+            Cmd = new SqlCommand(sqlstr, sqlcon);
+            Cmd.Transaction = sqlTran;
+            Cmd.ExecuteNonQuery();
+
+            sqlTran.Commit();
+
+          
 
 
             result = true;

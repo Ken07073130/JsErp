@@ -136,19 +136,27 @@ public partial class htpsbList : System.Web.UI.Page {
 
 
     protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e) {
-        string sqlDelMain = "insert into js_htpsb_history select * from js_htpsbH where bh='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
+        
         sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
         sqlcon.Open();
         SqlTransaction sqlTran = sqlcon.BeginTransaction();
         try {
+            string sqlDelMain = "insert into js_htpsb_history select * from js_htpsbH where bh='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
             sqlcom = new SqlCommand(sqlDelMain, sqlcon);
             sqlcom.Transaction = sqlTran;
             sqlcom.ExecuteNonQuery();
+
+            string sqlUpdateHitstory = "insert into js_htpsb_history select * from js_htpsbH where bh='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
+            sqlcom = new SqlCommand(sqlDelMain, sqlcon);
+            sqlcom.Transaction = sqlTran;
+            sqlcom.ExecuteNonQuery();
+
             sqlTran.Commit();
         }
         catch (Exception exp) {
             sqlTran.Rollback();
-            Response.Write(exp.Message);
+           // Response.Write(exp.Message);
+            ClientScript.RegisterStartupScript(this.GetType(), "", "<script>alert('删除错误"+exp.Message.Replace("'","")+"')</script>");
         }
         finally {
             sqlcon.Close();
