@@ -288,7 +288,7 @@ public partial class htpsbEdit : System.Web.UI.Page {
 
         //流程会签部分除了发起人不能看到
         if (tbGroupName.Text.IndexOf("合同评审表-发起人") >= 0 || tbGroupName.Text.IndexOf("超级用户") >= 0) {
-            divLc.Style.Add("display", "");
+            aShowLc.Style.Add("display", "");
         }
 
         //变更的单据，变更的控件需要变色
@@ -710,7 +710,7 @@ public partial class htpsbEdit : System.Web.UI.Page {
         if (sdr.HasRows) {
             sdr.Read();
             tbWorkFlowFlag.Text = sdr["log"].ToString().Replace("&#x0D", "");
-            ClientScript.RegisterStartupScript(this.GetType(), "历史版本查看", "<script>showLsls()</script>");
+            ClientScript.RegisterStartupScript(this.GetType(), "历史版本查看", "<script>showDialog('divAllLsls')</script>");
         }
         sqlcon.Close();
     }
@@ -732,24 +732,26 @@ public partial class htpsbEdit : System.Web.UI.Page {
                 Cmd.Transaction = sqlTran;
                 Cmd.ExecuteNonQuery();
 
+                //套料单 
+                sqlstr = " if ( not exists (select 1 from js_tldH where  PSDBH='" + tbBh.Text + "') ) "
+                              + " insert into dbo.js_tldH (DjLsh, "
+                              + "        BH "
+                              + " ,BB,JBRQ,PSDBH,PSDBB,DJLX,KHDM,DDL,DXXH,BZXH,PACKXH) "
+                              + " select max(DjLsh)+1,  "
+                              + "         (select 'TLD-' + csr_init + replicate('0', 3 - len(max_init)) + cast(max_init as varchar(3)) bh  "
+                              + "          from   (  select substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) csr_init ,case when max(bh) is null then '001' else cast(substring(max(bh), 11, 3) as int) + 1 end max_init from   js_tldH  "
+                              + "         	where substring(JBRQ,1,4)+substring(JBRQ,6,2)= substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) ) A ) "
+                              + " ,'1.0',convert(varchar(10),getdate(),120),'" + tbBh.Text + "','" + ddlBB.Text + "','订单','" + tbKhdm.Text + "','" + tbDdsl.Text + "','" + tbNbdxxh.Text + "','" + tbNbbzxh.Text + "','" + tbNbpackxh.Text + "' from dbo.js_tldH ";
+                Cmd = new SqlCommand(sqlstr, sqlcon);
+                Cmd.Transaction = sqlTran;
+                Cmd.ExecuteNonQuery();
+
+                sqlTran.Commit();
+
+
                
             }
-            //套料单 
-            sqlstr = " if ( not exists (select 1 from js_tldH where  PSDBH='" + tbBh.Text + "') ) "
-                          + " insert into dbo.js_tldH (DjLsh, "
-                          + "        BH "
-                          + " ,BB,JBRQ,PSDBH,PSDBB,DJLX,KHDM,DDL,DXXH,BZXH,PACKXH) "
-                          + " select max(DjLsh)+1,  "
-                          + "         (select 'TLD-' + csr_init + replicate('0', 3 - len(max_init)) + cast(max_init as varchar(3)) bh  "
-                          + "          from   (  select substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) csr_init ,case when max(bh) is null then '001' else cast(substring(max(bh), 11, 3) as int) + 1 end max_init from   js_tldH  "
-                          + "         	where substring(JBRQ,1,4)+substring(JBRQ,6,2)= substring(convert(nvarchar(6), getdate(), 112), 1, 6 ) ) A ) "
-                          + " ,'1.0',convert(varchar(10),getdate(),120),'" + tbBh.Text + "','"+ddlBB.Text+"','订单','" + tbKhdm.Text + "','" + tbDdsl.Text + "','" + tbNbdxxh.Text + "','" + tbNbbzxh.Text + "','" + tbNbpackxh.Text + "' from dbo.js_tldH ";
-            Cmd = new SqlCommand(sqlstr, sqlcon);
-            Cmd.Transaction = sqlTran;
-            Cmd.ExecuteNonQuery();
-
-            sqlTran.Commit();
-
+          
           
 
 

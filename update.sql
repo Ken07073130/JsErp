@@ -1,5 +1,5 @@
 --常用查询
-select * from dbo.STUsers where UserName  like '%陈%';
+select * from dbo.STUsers where UserName  like '%华%';
 select * from dbo.js_shortMessage;
 select * from dbo.js_shortMessage_history order by sendTime desc;
 
@@ -154,4 +154,16 @@ create table js_btd_list
 --2014/05/22 增加入口URL
 update Erp_js_Sys.dbo.Tree set URL='swxt/btdList.aspx' where NodeCaption='生产补投评审单'
 update Erp_js_Sys.dbo.Tree set URL='swxt/htpsbList.aspx' where NodeCaption='合同评审表'
+create view view_htpsbOnBtd as
+    select bh,nbdxxh ,nbPACKXH,KHXH ,khdm ,
+	  convert(varchar(10), tcsl) + '(' + dw2 + ')' ddsl ,
+      convert(varchar(10), jbrq, 120) jbrq , khddh  from  dbo.js_htpsbH
+    union all
+    select bh,nbdxxh ,nbPACKXH,'' ,khdm ,
+      convert(varchar(10), isnull(ZJYJBT,0)+isnull(FJYJBT,0)+isnull(DXYJBT,0)+isnull(PACKYJBT,0)) + '(' + DW1 + ')' ddsl ,
+      convert(varchar(10), jbrq, 120) jbrq , DDH  from  dbo.js_btdH
+
+--2015/05/23 增加套料单的套料状态字段
+alter table dbo.js_tldH add sczt varchar(30)
+
 

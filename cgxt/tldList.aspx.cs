@@ -32,7 +32,7 @@ public partial class tldList : System.Web.UI.Page {
     public void bind() {
         string sqlStr = "";
         sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
-        sqlStr = "select a.BH,a.JBRQ,case when ( a.TLZT = '已生成' and cast(a.PSDBB as float) < cast(b.bb as float)) then '已生成需变更' else a.tlzt end tlzt ,a.DDH,a.KHDM,a.DDL,a.TCL,a.DXXH from dbo.js_tldH a left join  dbo.js_htpsb_newH b on a.PSDBH=b.psdbh  where SFBG=0 order by tlzt,a.jbrq desc";
+        sqlStr = "select a.BH,a.JBRQ,TLZT,case when ( a.SCZT = '已生成' and cast(a.PSDBB as float) < cast(b.bb as float)) then '已生成需变更' else a.SCZT end SCZT ,a.DDH,a.KHDM,a.DDL,a.TCL,a.DXXH,case when a.tlzt='请选择' then 0 else 1 end hqsx from dbo.js_tldH a left join  dbo.js_htpsb_newH b on a.PSDBH=b.psdbh  where SFBG=0 order by hqsx,tlzt,a.jbrq desc";
 
         SqlDataAdapter myda = new SqlDataAdapter(sqlStr, sqlcon);
         DataSet myds = new DataSet();

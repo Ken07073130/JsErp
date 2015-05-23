@@ -20,16 +20,35 @@
           height:500px;
         }
     </style>
+    <script type="text/javascript">
+        //页面一打开就执行，放入ready是为了layer所需配件（css、扩展模块）加载完毕
+        function showDialog(controlID){
+            var AllLsls = document.getElementById(controlID).innerHTML;
+            var ctop = document.getElementById('ddlBB').offsetTop+20;
+            //alert(ctop);
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: true,
+                offset: [ctop],
+                shadeClose: true,
+                skin: 'yourclass',
+                content: AllLsls
+            });
+        }
+
+     </script>
+    
 
     <script type="text/jscript">
         //点击显示变更日志
-        function showChangeLog() {
-            if (document.getElementById('aShowLog').innerHTML == "点击显示评审单变更日志") {
-                document.getElementById('aShowLog').innerHTML = '点击隐藏评审单变更日志';
-                document.getElementById('divChangeLog').style.display = '';
+        function showChangeLc() {
+            if (document.getElementById('aShowLc').innerHTML == "显示流程") {
+                document.getElementById('aShowLc').innerHTML = '隐藏流程';
+                document.getElementById('divLc').style.display = '';
             } else {
-                document.getElementById('aShowLog').innerHTML = '点击显示评审单变更日志';
-                document.getElementById('divChangeLog').style.display = 'none';
+                document.getElementById('aShowLc').innerHTML = '显示流程';
+                document.getElementById('divLc').style.display = 'none';
             }
         }
         //点击评审日志
@@ -242,9 +261,12 @@
 
         //发起人变更时，判断是否需要重置流程
         //tbWorkFlowFlag=1后台需要重置流程 即lb=CHANGE
-        function resetWorkFlowFlag() {
+        function resetWorkFlowFlag() {   
             var bb = parseFloat(document.getElementById('ddlBB').value);
             if (bb > 1.0 && (document.getElementById('tbGroupName').value.indexOf("合同评审表-发起人") >= 0 || document.getElementById('tbGroupName').value.indexOf("超级用户") >= 0)) {
+                //发起人权限在变更时，提交时显示流程以免忘记填写变更理由    
+                document.getElementById('divLc').style.display='';
+                //重置流程
                 var ctextbox = new Array("tbKhdm", "tbNbdxxh", "tbTcsl", "tbDxsl", "tbDdsl", "tbNbbzxh", "tbBbsl",
                             "tbGgsbh", "tbGgsbb", "tbGgsxh", "tbCltx");
 
@@ -259,18 +281,14 @@
                     document.getElementById('tbLchqzt').value = '单据变更中';
                     alert('基本信息已经被变更，此单将重新走流程');
                 }
-
-
             }
-
-
-
+            
 
         }
-
-
-
     </script>
+
+
+
 
 </head>
 <body>
@@ -347,9 +365,12 @@
                     <li style="text-align: center;">
                         <asp:LinkButton ID="lbGetAllChange" runat="server" Style="display: inline-block; font-size: 15px; width: 100px; color: white; line-height: 25px; background-color: #0099cc; text-decoration: none; text-align: center"
                             OnClick="lbGetAllChange_Click">变更记录汇总</asp:LinkButton>
-                        <a href="javascript:void(0)" style="line-height: 30px; display: none;" id="aShowLog"
-                            onclick="showChangeLog();">点击显示评审单变更日志</a></li>
-                    <li><a href="javascript:void(0)" style="line-height: 30px;" id="aShowPsLog" onclick="showPsLog();">点击显示评审记录</a></li>
+                        </li>
+                    <li><a href="javascript:void(0)" style="line-height: 30px;" id="aShowPsLog" onclick="showPsLog();">点击显示评审记录</a>
+                        &nbsp;&nbsp;
+                    <a href="javascript:void(0)" style="line-height: 30px; display: none;" id="aShowLc"
+                            onclick="showChangeLc();" runat="server">显示流程</a>
+                    </li>
                 </ul>
             </div>
             <div class="layout" style="height: 170px; width: 950px; display: none;" id="divLc"
@@ -1004,26 +1025,7 @@
             <asp:TextBox ID="tbWorkFlowFlag" runat="server" Rows="30" TextMode="MultiLine" Width="340px"></asp:TextBox>
         </div>
 
-        <script type="text/javascript">
-
-
-            //页面一打开就执行，放入ready是为了layer所需配件（css、扩展模块）加载完毕
-            function showLsls(){
-                var AllLsls = document.getElementById('divAllLsls').innerHTML;
-                var ctop = document.getElementById('ddlBB').offsetTop+20;
-                alert(ctop);
-                layer.open({
-                    type: 1,
-                    title: false,
-                    closeBtn: true,
-                    offset: [ctop],
-                    shadeClose: true,
-                    skin: 'yourclass',
-                    content: AllLsls
-                });
-            }
-
-        </script>
+       
     </form>
 </body>
 </html>

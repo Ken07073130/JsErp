@@ -141,13 +141,23 @@ public partial class htpsbList : System.Web.UI.Page {
         sqlcon.Open();
         SqlTransaction sqlTran = sqlcon.BeginTransaction();
         try {
-            string sqlDelMain = "insert into js_htpsb_history select * from js_htpsbH where bh='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
+            string sqlDelHitstory = "delete from  js_htpsb_history where  bh='" + GridView1.DataKeys[e.RowIndex][0].ToString() + "' and bb='" + GridView1.DataKeys[e.RowIndex][1].ToString() + "'";
+            sqlcom = new SqlCommand(sqlDelHitstory, sqlcon);
+            sqlcom.Transaction = sqlTran;
+            sqlcom.ExecuteNonQuery();
+
+            string sqlDelMain = "insert into js_htpsb_history select * from js_htpsbH where bh='" + GridView1.DataKeys[e.RowIndex][0].ToString() + "'";
             sqlcom = new SqlCommand(sqlDelMain, sqlcon);
             sqlcom.Transaction = sqlTran;
             sqlcom.ExecuteNonQuery();
 
-            string sqlUpdateHitstory = "insert into js_htpsb_history select * from js_htpsbH where bh='" + GridView1.DataKeys[e.RowIndex].Value.ToString() + "'";
-            sqlcom = new SqlCommand(sqlDelMain, sqlcon);
+            string sqlUpdateHitstory = "update js_htpsb_history set bh='(Del)"+tbBh.Text+"' where  bh='" + GridView1.DataKeys[e.RowIndex][0].ToString() + "' and bb='" + GridView1.DataKeys[e.RowIndex][1].ToString() + "'";
+            sqlcom = new SqlCommand(sqlUpdateHitstory, sqlcon);
+            sqlcom.Transaction = sqlTran;
+            sqlcom.ExecuteNonQuery();
+
+            string sqlDel = "delete from  js_htpsbH where bh='" + GridView1.DataKeys[e.RowIndex][0].ToString() + "'";
+            sqlcom = new SqlCommand(sqlDel, sqlcon);
             sqlcom.Transaction = sqlTran;
             sqlcom.ExecuteNonQuery();
 
@@ -175,7 +185,7 @@ public partial class htpsbList : System.Web.UI.Page {
         if (e.Row.RowType == DataControlRowType.DataRow) {
             System.Data.DataRowView drv = e.Row.DataItem as DataRowView;
             LinkButton btnDel = (LinkButton)e.Row.Cells[3].Controls[0];//删除
-            btnDel.Attributes.Add("onclick ", "return confirm( '确定删除记录(编号: " + (e.Row.Cells[0].Text) + " 吗)'); ");
+            btnDel.Attributes.Add("onclick ", "return confirm( '确定删除记录吗' ");
             LinkButton btnEdit = (LinkButton)e.Row.Cells[2].Controls[0];
             TableCell cellChange = e.Row.Cells[1];
             CheckBox cb = e.Row.FindControl("cbPrint") as CheckBox;

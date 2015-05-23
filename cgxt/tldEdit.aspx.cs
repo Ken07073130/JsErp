@@ -292,7 +292,7 @@ public partial class tldEdit : System.Web.UI.Page {
 
 
             if (GridView2.Rows.Count > 0) {
-                tbTlzt.Text = "已生成";
+                tbSczt.Text = "已生成";
             }
 
         }
@@ -419,7 +419,7 @@ public partial class tldEdit : System.Web.UI.Page {
         DateTime dtSysDate = DateTime.Now;
         tbJbrq.Text = dtSysDate.ToString("yyyy-MM-dd");
         ddlBB.Text = "1.0";
-        tbTlzt.Text = "未生成";
+        tbSczt.Text = "未生成";
     }
 
 

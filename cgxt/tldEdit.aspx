@@ -145,8 +145,12 @@
                                     <asp:ListItem>要</asp:ListItem>
                                     <asp:ListItem>不要</asp:ListItem>
                                 </asp:DropDownList></span> </li>
-                                <li><span class="spanLabel"></span><span class="spanControl"></span></li>
-                            </ul>
+                                <li><span class="spanLabel">套料状态</span><span class="spanControl"><asp:DropDownList
+                                    ID="ddlTlzt" runat="server">
+                                    <asp:ListItem>请选择</asp:ListItem>
+                                    <asp:ListItem>已套料</asp:ListItem>
+                                    <asp:ListItem>已处理</asp:ListItem>
+                                </asp:DropDownList></span></li></ul>
                         </div>
                         <div class="layout">
                             <ul>
@@ -169,8 +173,7 @@
                         <div class="layout">
                             <ul>
                                 <li><span class="spanLabel">容量</span><span class="spanControl"><asp:TextBox ID="tbRl"
-                                    runat="server" Width="90%"></asp:TextBox></span></li>
-                                <li><span class="spanLabel">评审单编号</span><span class="spanControl"><asp:TextBox ID="tbPsdbh"
+                                    runat="server" Width="90%"></asp:TextBox></span></li><li><span class="spanLabel">评审单编号</span><span class="spanControl"><asp:TextBox ID="tbPsdbh"
                                     runat="server" Width="65%"></asp:TextBox>
                                 </span></li>
                                 <li style="display: none;">
@@ -253,8 +256,8 @@
                         </div>
                         <div class="layout">
                             <ul>
-                                <li><span class="spanLabel">套料状态</span> <span class="spanControl">
-                                    <asp:TextBox ID="tbTlzt" runat="server" Width="90%"></asp:TextBox>
+                                <li><span class="spanLabel">生成状态</span> <span class="spanControl">
+                                    <asp:TextBox ID="tbSczt" runat="server" Width="90%"></asp:TextBox>
                                 </span></li>
                                 <li><span class="spanLabel">
                                     <asp:LinkButton ID="LinkButton1" runat="server" OnClick="lbBulidTld_Click">点击生成套料单</asp:LinkButton></span><span
