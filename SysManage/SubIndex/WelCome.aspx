@@ -137,7 +137,7 @@
                                 </HeaderTemplate>
                                 <ItemTemplate>
                                     <asp:HyperLink ID="hlURL" runat="server" CssClass="button" Style="width: 50px; background: #0099cc;
-                                        text-decoration: none; color: White">进入</asp:HyperLink>
+                                        text-decoration: none; color: White" Target="main">进入</asp:HyperLink>
                                 </ItemTemplate>
                             </asp:TemplateField>
                             <asp:BoundField DataField="URL" Visible="false" />
