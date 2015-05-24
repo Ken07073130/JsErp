@@ -177,7 +177,7 @@ public partial class htpsbList : System.Web.UI.Page {
     }
 
     protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e) {
-        Response.Redirect("htpsbEdit.aspx?bh=" + GridView1.DataKeys[e.NewEditIndex]["BH"].ToString() + " &bb=" + GridView1.DataKeys[e.NewEditIndex]["BB"].ToString() + "&lb=EDIT&editType=" + ((LinkButton)GridView1.Rows[e.NewEditIndex].Cells[2].Controls[0]).Text);
+        Response.Redirect("htpsbEdit.aspx?bh=" + GridView1.DataKeys[e.NewEditIndex]["BH"].ToString() + "&lb=EDIT&editType=" + ((LinkButton)GridView1.Rows[e.NewEditIndex].Cells[2].Controls[0]).Text);
     }
 
     protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e) {
@@ -185,7 +185,7 @@ public partial class htpsbList : System.Web.UI.Page {
         if (e.Row.RowType == DataControlRowType.DataRow) {
             System.Data.DataRowView drv = e.Row.DataItem as DataRowView;
             LinkButton btnDel = (LinkButton)e.Row.Cells[3].Controls[0];//删除
-            btnDel.Attributes.Add("onclick ", "return confirm( '确定删除记录吗' ");
+            btnDel.Attributes.Add("onclick ", "return confirm('确定删除记录吗') ");
             LinkButton btnEdit = (LinkButton)e.Row.Cells[2].Controls[0];
             TableCell cellChange = e.Row.Cells[1];
             CheckBox cb = e.Row.FindControl("cbPrint") as CheckBox;
@@ -193,7 +193,7 @@ public partial class htpsbList : System.Web.UI.Page {
             if (drv["dyzt"].ToString().Length > 0) {
                 cb.Text = "√";
             }
-            if (ddlHqzt.Text.Equals("全部")) {
+            if (ddlHqzt.Text.Equals("全部") || ddlHqzt.Text.Equals("已会签")) {
                 btnEdit.Text = "查看";
                 btnDel.Enabled = false;
                 cellChange.Enabled = false;

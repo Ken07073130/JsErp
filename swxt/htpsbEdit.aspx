@@ -16,51 +16,63 @@
             font-family: 微软雅黑;
             text-align: center;
         }
+
         .yourclass {
-          height:500px;
+            height: 500px;
+        }
+
+        .button {
+            overflow: visible;
+            display: inline-block;
+            padding: 0.4em 1em;
+            border: 1px solid #d4d4d4;
+            margin: 0;
+            text-decoration: none;
+            text-align: center;
+            text-shadow: 1px 1px 0 #fff;
+            font: 11px/normal sans-serif;
+            color: #333;
+            white-space: nowrap;
+            cursor: pointer;
+            outline: none;
+            background-color: #ececec;
+            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f4f4f4), to(#ececec));
+            background-image: -moz-linear-gradient(#f4f4f4, #ececec);
+            background-image: -ms-linear-gradient(#f4f4f4, #ececec);
+            background-image: -o-linear-gradient(#f4f4f4, #ececec);
+            background-image: linear-gradient(#f4f4f4, #ececec);
+            -moz-background-clip: padding; /* for Firefox 3.6 */
+            background-clip: padding-box;
+            border-radius: 0.2em;
+            /* IE hacks */
+            zoom: 1;
+            *display: inline;
         }
     </style>
     <script type="text/javascript">
         //页面一打开就执行，放入ready是为了layer所需配件（css、扩展模块）加载完毕
-        function showDialog(controlID){
-            var AllLsls = document.getElementById(controlID).innerHTML;
-            var ctop = document.getElementById('ddlBB').offsetTop+20;
+        function showDialog(controlID) {
+            var ID = '#' + controlID;
+            var cwidth = document.getElementById(controlID).style.width + 10;
+            var cheight = document.getElementById(controlID).style.height + 30;
+            var ctop = document.getElementById('ddlBB').offsetTop + 20;
             //alert(ctop);
             layer.open({
                 type: 1,
                 title: false,
                 closeBtn: true,
+                area: [cwidth, cheight],
                 offset: [ctop],
                 shadeClose: true,
-                skin: 'yourclass',
-                content: AllLsls
+                /*skin: 'yourclass',*/
+                content: $(ID)
             });
         }
 
      </script>
-    
+
 
     <script type="text/jscript">
-        //点击显示变更日志
-        function showChangeLc() {
-            if (document.getElementById('aShowLc').innerHTML == "显示流程") {
-                document.getElementById('aShowLc').innerHTML = '隐藏流程';
-                document.getElementById('divLc').style.display = '';
-            } else {
-                document.getElementById('aShowLc').innerHTML = '显示流程';
-                document.getElementById('divLc').style.display = 'none';
-            }
-        }
-        //点击评审日志
-        function showPsLog() {
-            if (document.getElementById('aShowPsLog').innerHTML == "点击显示评审记录") {
-                document.getElementById('aShowPsLog').innerHTML = '点击隐藏评审记录';
-                document.getElementById('divShowPsLog').style.display = '';
-            } else {
-                document.getElementById('aShowPsLog').innerHTML = '点击显示评审记录';
-                document.getElementById('divShowPsLog').style.display = 'none';
-            }
-        }
 
         //1.PACK型号与规格书型号一致
         //2.成品类型为电芯时，清空Pack型号
@@ -136,11 +148,11 @@
             //备注
             var bz = 'tb' + bm + 'bz';
             //评审记录累加
-            document.getElementById('tbPsjl').value = document.getElementById('tbPsjl').value
+            document.getElementById('tbPsjl').value = document.getElementById('tbPsjl').value + '\n'
                                                    + document.getElementById(hqr).value + '   '
                                                    + document.getElementById(hqsj).value + '   '
                                                    //备注不用写入+document.getElementById(bz).value+'   '
-                                                   + document.getElementById(controlName).value + '\n';
+                                                   + document.getElementById(controlName).value;
         }
 
         /*会签流程*/
@@ -184,12 +196,18 @@
                             document.getElementById('ddlPACKhqzt').value = '会签中';
                         }
                     }
+                    if (document.getElementById('tbLchqzt').value.indexOf('不同意') > 0) {
+                        document.getElementById('tbLchqzt').value = "工程已修改";
+                    }
 
                 }
                 //PACK评审
                 if (control.name == 'ddlPACKpsjg') {
                     if (document.getElementById('ddlGylhqzt').value == '-') {
                         document.getElementById('ddlGylhqzt').value = '会签中';
+                    }
+                    if (document.getElementById('tbLchqzt').value.indexOf('不同意') > 0) {
+                        document.getElementById('tbLchqzt').value = "PACK已修改";
                     }
                 }
 
@@ -261,14 +279,32 @@
 
         //发起人变更时，判断是否需要重置流程
         //tbWorkFlowFlag=1后台需要重置流程 即lb=CHANGE
-        function resetWorkFlowFlag() {   
+        function resetWorkFlowFlag() {
             var bb = parseFloat(document.getElementById('ddlBB').value);
             if (bb > 1.0 && (document.getElementById('tbGroupName').value.indexOf("合同评审表-发起人") >= 0 || document.getElementById('tbGroupName').value.indexOf("超级用户") >= 0)) {
                 //发起人权限在变更时，提交时显示流程以免忘记填写变更理由    
-                document.getElementById('divLc').style.display='';
+                if (document.getElementById('tbBgsm').value=='变更时请在此输入变更说明') {
+                    showDialog('divLc');
+                }
+                
                 //重置流程
+                getChangedText();
+
+                if (document.getElementById('tbWorkFlowFlag').value == 1) {
+                    document.getElementById('tbLchqzt').value = '单据变更中';
+                    alert('基本信息已经被变更，此单将重新走流程');
+                }
+            }
+
+
+        }
+
+        //FORM onsubmit之前判断
+        function getChangedText() {
+            var bb = parseFloat(document.getElementById('ddlBB').value);
+            if (bb > 1.0 && (document.getElementById('tbGroupName').value.indexOf("合同评审表-发起人") >= 0 || document.getElementById('tbGroupName').value.indexOf("超级用户") >= 0)) {
                 var ctextbox = new Array("tbKhdm", "tbNbdxxh", "tbTcsl", "tbDxsl", "tbDdsl", "tbNbbzxh", "tbBbsl",
-                            "tbGgsbh", "tbGgsbb", "tbGgsxh", "tbCltx");
+                               "tbGgsbh", "tbGgsbb", "tbGgsxh", "tbCltx");
 
                 for (var i = 0; i < ctextbox.length; i++) {
                     var tbControl = document.getElementById(ctextbox[i]);
@@ -277,13 +313,8 @@
                         document.getElementById('tbChangeControl').value = document.getElementById('tbChangeControl').value + ',' + ctextbox[i];
                     }
                 }
-                if (document.getElementById('tbWorkFlowFlag').value == 1) {
-                    document.getElementById('tbLchqzt').value = '单据变更中';
-                    alert('基本信息已经被变更，此单将重新走流程');
-                }
             }
             
-
         }
     </script>
 
@@ -294,7 +325,7 @@
 <body>
 
 
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" onsubmit="getChangedText()">
         <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="yyyy-MM-dd"
             TargetControlID="tbKhyqjq" />
         <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" Format="yyyy-MM-dd"
@@ -342,9 +373,9 @@
             <div class="layout" style="font-size: 25px; text-align: center; font-weight: bold;">
                 <asp:ValidationSummary ID="ValidationSummary1" runat="server" ShowSummary="false"
                     ShowMessageBox="true" EnableClientScript="true" HeaderText="以下校验项未通过：" />
-                <asp:LinkButton ID="lbBackToList" runat="server" CausesValidation="false" PostBackUrl="~/swxt/htpsbList.aspx"
-                    Style="display: inline-block; font-size: 18px; width: 105px; margin-left: -200px; color: white; line-height: 20px; background-color: #4b97e3; text-decoration: none;">返回列表</asp:LinkButton>
+                <asp:LinkButton ID="lbBackToList" runat="server" CausesValidation="false" PostBackUrl="~/swxt/htpsbList.aspx" CssClass="button" Style="font-size: 15px; margin-left: -120px;">返回列表</asp:LinkButton>
                 合同评审单
+           
            
             </div>
             <div class="layout">
@@ -362,101 +393,18 @@
                     </li>
                     <li><span class="spanLabel">业务员</span><span class="spanControl"><asp:TextBox ID="tbYwy"
                         runat="server" Width="95%"></asp:TextBox></span> </li>
-                    <li style="text-align: center;">
-                        <asp:LinkButton ID="lbGetAllChange" runat="server" Style="display: inline-block; font-size: 15px; width: 100px; color: white; line-height: 25px; background-color: #0099cc; text-decoration: none; text-align: center"
-                            OnClick="lbGetAllChange_Click">变更记录汇总</asp:LinkButton>
-                        </li>
-                    <li><a href="javascript:void(0)" style="line-height: 30px;" id="aShowPsLog" onclick="showPsLog();">点击显示评审记录</a>
-                        &nbsp;&nbsp;
-                    <a href="javascript:void(0)" style="line-height: 30px; display: none;" id="aShowLc"
-                            onclick="showChangeLc();" runat="server">显示流程</a>
+                    <li>
+                        <asp:LinkButton ID="lbGetAllChange" runat="server" CssClass="button" OnClick="lbGetAllChange_Click" CausesValidation="false">变更记录汇总</asp:LinkButton>
+                        <a href="#" class="button" style="margin-left: 15px;" onclick="showDialog('divPsjl')">显示评审记录</a>
+                    </li>
+                    <li>
+                        <a href="#" class="button" id="aShowLc" runat="server" onclick="showDialog('divLc')" style="display:none">显示流程</a>
+
+
                     </li>
                 </ul>
             </div>
-            <div class="layout" style="height: 170px; width: 950px; display: none;" id="divLc"
-                runat="server">
-                <ul>
-                    <li style="height: 170px;">
-                        <asp:TextBox ID="tbBgsm" runat="server" Rows="6" TextMode="MultiLine" Width="221px"
-                            Text="变更时请在此输入变更说明" onFocus="if(value==defaultValue){value='';this.style.color='#000'}"
-                            onBlur="if(!value){value=defaultValue;this.style.color='#999'}" Style="color: #999999"></asp:TextBox>
-                        <asp:CompareValidator ID="CompareValidator10" runat="server" ControlToValidate="tbBgsm"
-                            Display="Dynamic" Enabled="false" ErrorMessage="请填写理由" Operator="NotEqual" SetFocusOnError="true"
-                            Type="string" ValueToCompare="变更时请在此输入变更说明"></asp:CompareValidator>
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator17" runat="server" ControlToValidate="tbBgsm"
-                            Display="Dynamic" ErrorMessage="请填写变更说明" SetFocusOnError="true" Enabled="false"></asp:RequiredFieldValidator>发起人<asp:DropDownList
-                                ID="ddlFqrhqzt" runat="server">
-                                <asp:ListItem>已会签</asp:ListItem>
-                            </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>PMC<asp:DropDownList
-                                ID="ddlPMChqzt" runat="server">
-                                <asp:ListItem>会签中</asp:ListItem>
-                                <asp:ListItem>已会签</asp:ListItem>
-                            </asp:DropDownList><br />
-                        流程会签状态<asp:TextBox ID="tbLchqzt" runat="server" Text="单据建立中"></asp:TextBox></li>
-                    <li
-                        style="width: 400px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>工程部<asp:DropDownList
-                            ID="ddlGchqzt" runat="server">
-                            <asp:ListItem>-</asp:ListItem>
-                            <asp:ListItem>会签中</asp:ListItem>
-                            <asp:ListItem>已会签</asp:ListItem>
-                        </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>PACK<asp:DropDownList
-                            ID="ddlPACKhqzt" runat="server">
-                            <asp:ListItem>-</asp:ListItem>
-                            <asp:ListItem>会签中</asp:ListItem>
-                            <asp:ListItem>已会签</asp:ListItem>
-                        </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>供应链<span
-                            style="font-size: 24pt; color: #ff3366"></span><asp:DropDownList ID="ddlGylhqzt"
-                                runat="server">
-                                <asp:ListItem>-</asp:ListItem>
-                                <asp:ListItem>会签中</asp:ListItem>
-                                <asp:ListItem>已会签</asp:ListItem>
-                            </asp:DropDownList><br />
-                        <span style="font-size: 24pt; color: #ff3366">→</span>设备部<asp:DropDownList ID="ddlSbhqzt"
-                            runat="server">
-                            <asp:ListItem>-</asp:ListItem>
-                            <asp:ListItem>会签中</asp:ListItem>
-                            <asp:ListItem>已会签</asp:ListItem>
-                        </asp:DropDownList><br />
-                        <span style="font-size: 24pt; color: #ff3366">→</span>制造部<asp:DropDownList ID="ddlZzhqzt"
-                            runat="server">
-                            <asp:ListItem>-</asp:ListItem>
-                            <asp:ListItem>会签中</asp:ListItem>
-                            <asp:ListItem>已会签</asp:ListItem>
-                        </asp:DropDownList><br />
-                        <span style="font-size: 24pt; color: #ff3366">→</span>质量部<asp:DropDownList ID="ddlZlhqzt"
-                            runat="server">
-                            <asp:ListItem>-</asp:ListItem>
-                            <asp:ListItem>会签中</asp:ListItem>
-                            <asp:ListItem>已会签</asp:ListItem>
-                        </asp:DropDownList></li>
-                    <li style="width: 152px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>生产总监<asp:DropDownList ID="ddlSczjhqzt" runat="server">
-                        <asp:ListItem>-</asp:ListItem>
-                        <asp:ListItem>会签中</asp:ListItem>
-                        <asp:ListItem>已会签</asp:ListItem>
-                    </asp:DropDownList><br />
-                        <span style="font-size: 24pt; color: #ff3366">→</span>总工<asp:DropDownList ID="ddlZghqzt"
-                            runat="server">
-                            <asp:ListItem>-</asp:ListItem>
-                            <asp:ListItem>会签中</asp:ListItem>
-                            <asp:ListItem>已会签</asp:ListItem>
-                        </asp:DropDownList></li>
-                    <li style="width: 152px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>商务部<asp:DropDownList ID="ddlSwjlhqzt" runat="server">
-                        <asp:ListItem>-</asp:ListItem>
-                        <asp:ListItem>会签中</asp:ListItem>
-                        <asp:ListItem>已会签</asp:ListItem>
-                    </asp:DropDownList></li>
-                </ul>
-            </div>
-            <div class="layout" id="divChangeLog" style="display: none;">
-                &nbsp;
-               
-                <asp:TextBox ID="tbLsls" runat="server" Rows="8" TextMode="MultiLine" Width="80%"></asp:TextBox>
-            </div>
-            <div class="layout" id="divShowPsLog" style="display: none;">
-                评审记录
-               
-                <asp:TextBox ID="tbPsjl" runat="server" Rows="8" TextMode="MultiLine" Width="88%"></asp:TextBox>
-            </div>
+
             <div class="layout">
                 <ul>
                     <li><span class="spanLabel">评审单号</span><span class="spanControl"><asp:TextBox ID="tbBh"
@@ -555,7 +503,7 @@
             <div class="layout">
                 <ul>
                     <li><span class="spanLabel">电芯数量＊</span><span class="spanControl"><asp:TextBox ID="tbDxsl"
-                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw4" runat="server"
+                        runat="server" Width="50%"></asp:TextBox><asp:DropDownList ID="ddlDw4" runat="server"
                             Width="40%">
                             <asp:ListItem>PCS</asp:ListItem>
                             <asp:ListItem>组</asp:ListItem>
@@ -564,7 +512,7 @@
                             Display="Dynamic" ErrorMessage="请填写电芯数量" SetFocusOnError="true"></asp:RequiredFieldValidator></span>
                     </li>
                     <li><span class="spanLabel">订单数量＊</span><span class="spanControl"><asp:TextBox ID="tbDdsl"
-                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw" runat="server"
+                        runat="server" Width="50%"></asp:TextBox><asp:DropDownList ID="ddlDw" runat="server"
                             Width="40%">
                             <asp:ListItem>PCS</asp:ListItem>
                             <asp:ListItem>组</asp:ListItem>
@@ -583,7 +531,7 @@
             <div class="layout">
                 <ul>
                     <li><span class="spanLabel">备品数量＊</span><span class="spanControl"><asp:TextBox ID="tbBbsl"
-                        runat="server" Width="50%"></asp:TextBox>&nbsp;<asp:DropDownList ID="ddlDw1" runat="server"
+                        runat="server" Width="50%"></asp:TextBox><asp:DropDownList ID="ddlDw1" runat="server"
                             Width="40%">
                             <asp:ListItem>PCS</asp:ListItem>
                             <asp:ListItem>组</asp:ListItem>
@@ -742,6 +690,7 @@
             </div>
             <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
                 ↓
+           
             </div>
             <!--商务会签-->
             <div style="width: 950px; border: 2px solid #99CCFF;" runat="server" id="divPMChq">
@@ -796,6 +745,7 @@
             <!--商务会签结束-->
             <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
                 ↓
+           
             </div>
             <!--主体部门会签-->
             <div style="border: 2px solid #99CCFF; width: 950px;">
@@ -951,6 +901,7 @@
             <!--主体部门会签结束-->
             <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
                 ↓
+           
             </div>
             <!--生产总监、总工、商务评审结果-->
             <div style="border: 1px solid #99CCFF; width: 950px;">
@@ -1016,16 +967,99 @@
         <div style="display: none">
             <asp:TextBox ID="tbUserName" runat="server"></asp:TextBox>
             <asp:TextBox ID="tbGroupName" runat="server"></asp:TextBox>
-           
+
             <asp:TextBox ID="tbChangeControl" runat="server"></asp:TextBox>
-            
+
         </div>
-        <div id="divAllLsls" style="display:none">
-            <div style="font-weight:bold;font-size:25px; text-align:center;Width:340px" >变更记录汇总</div>
+        <div id="divAllLsls" style="display: none">
+            <div style="font-weight: bold; font-size: 25px; text-align: center; width: 340px">变更记录汇总</div>
             <asp:TextBox ID="tbWorkFlowFlag" runat="server" Rows="30" TextMode="MultiLine" Width="340px"></asp:TextBox>
         </div>
+        <div class="layout" id="divPsjl" style="display: none;width: 350px">
+            <div style="font-weight: bold; font-size: 25px; text-align: center; width: 300px">变更记录汇总</div>
+               
+            <asp:TextBox ID="tbPsjl" runat="server" Rows="30" TextMode="MultiLine" Width="300px"></asp:TextBox>
+        </div>
+        <div class="layout" style="width: 950px; display: none;" id="divLc" runat="server">
+            <div style="font-weight: bold; font-size: 25px; text-align: center; width: 900px">会签流程</div>
+            <ul>
+                <li style="height: 170px;">
+                    <asp:TextBox ID="tbBgsm" runat="server" Rows="6" TextMode="MultiLine" Width="221px"
+                        Text="变更时请在此输入变更说明" onFocus="if(value==defaultValue){value='';this.style.color='#000'}"
+                        onBlur="if(!value){value=defaultValue;this.style.color='#999'}" Style="color: #999999"></asp:TextBox>
+                    <asp:CompareValidator ID="CompareValidator10" runat="server" ControlToValidate="tbBgsm"
+                        Display="Dynamic" Enabled="false" ErrorMessage="请填写理由" Operator="NotEqual" SetFocusOnError="true"
+                        Type="string" ValueToCompare="变更时请在此输入变更说明"></asp:CompareValidator>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator17" runat="server" ControlToValidate="tbBgsm"
+                        Display="Dynamic" ErrorMessage="请填写变更说明" SetFocusOnError="true" Enabled="false"></asp:RequiredFieldValidator>发起人<asp:DropDownList
+                            ID="ddlFqrhqzt" runat="server">
+                            <asp:ListItem>已会签</asp:ListItem>
+                        </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>PMC<asp:DropDownList
+                            ID="ddlPMChqzt" runat="server">
+                            <asp:ListItem>会签中</asp:ListItem>
+                            <asp:ListItem>已会签</asp:ListItem>
+                        </asp:DropDownList><br />
+                    流程会签状态<asp:TextBox ID="tbLchqzt" runat="server" Text="单据建立中"></asp:TextBox></li>
+                <li
+                    style="width: 400px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>工程部<asp:DropDownList
+                        ID="ddlGchqzt" runat="server">
+                        <asp:ListItem>-</asp:ListItem>
+                        <asp:ListItem>会签中</asp:ListItem>
+                        <asp:ListItem>已会签</asp:ListItem>
+                    </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>PACK<asp:DropDownList
+                        ID="ddlPACKhqzt" runat="server">
+                        <asp:ListItem>-</asp:ListItem>
+                        <asp:ListItem>会签中</asp:ListItem>
+                        <asp:ListItem>已会签</asp:ListItem>
+                    </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>供应链<span
+                        style="font-size: 24pt; color: #ff3366"></span><asp:DropDownList ID="ddlGylhqzt"
+                            runat="server">
+                            <asp:ListItem>-</asp:ListItem>
+                            <asp:ListItem>会签中</asp:ListItem>
+                            <asp:ListItem>已会签</asp:ListItem>
+                        </asp:DropDownList><br />
+                    <span style="font-size: 24pt; color: #ff3366">→</span>设备部<asp:DropDownList ID="ddlSbhqzt"
+                        runat="server">
+                        <asp:ListItem>-</asp:ListItem>
+                        <asp:ListItem>会签中</asp:ListItem>
+                        <asp:ListItem>已会签</asp:ListItem>
+                    </asp:DropDownList><br />
+                    <span style="font-size: 24pt; color: #ff3366">→</span>制造部<asp:DropDownList ID="ddlZzhqzt"
+                        runat="server">
+                        <asp:ListItem>-</asp:ListItem>
+                        <asp:ListItem>会签中</asp:ListItem>
+                        <asp:ListItem>已会签</asp:ListItem>
+                    </asp:DropDownList><br />
+                    <span style="font-size: 24pt; color: #ff3366">→</span>质量部<asp:DropDownList ID="ddlZlhqzt"
+                        runat="server">
+                        <asp:ListItem>-</asp:ListItem>
+                        <asp:ListItem>会签中</asp:ListItem>
+                        <asp:ListItem>已会签</asp:ListItem>
+                    </asp:DropDownList></li>
+                <li style="width: 152px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>生产总监<asp:DropDownList ID="ddlSczjhqzt" runat="server">
+                    <asp:ListItem>-</asp:ListItem>
+                    <asp:ListItem>会签中</asp:ListItem>
+                    <asp:ListItem>已会签</asp:ListItem>
+                </asp:DropDownList><br />
+                    <span style="font-size: 24pt; color: #ff3366">→</span>总工<asp:DropDownList ID="ddlZghqzt"
+                        runat="server">
+                        <asp:ListItem>-</asp:ListItem>
+                        <asp:ListItem>会签中</asp:ListItem>
+                        <asp:ListItem>已会签</asp:ListItem>
+                    </asp:DropDownList></li>
+                <li style="width: 152px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>商务部<asp:DropDownList ID="ddlSwjlhqzt" runat="server">
+                    <asp:ListItem>-</asp:ListItem>
+                    <asp:ListItem>会签中</asp:ListItem>
+                    <asp:ListItem>已会签</asp:ListItem>
+                </asp:DropDownList></li>
+            </ul>
+        </div>
+        <div class="layout" id="divChangeLog" style="display: none;">
+            <asp:TextBox ID="tbLsls" runat="server" Rows="8" TextMode="MultiLine" Width="80%"></asp:TextBox>
+        </div>
+      
 
-       
+
     </form>
 </body>
 </html>

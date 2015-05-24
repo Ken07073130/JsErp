@@ -22,7 +22,6 @@ public partial class htpsbEdit : System.Web.UI.Page {
         editType = Request.QueryString["editType"];
         bh = Request.QueryString["bh"];
         lb = Request.QueryString["lb"];
-        
         if (!IsPostBack) {
             bb = Request.QueryString["bb"];
             if (Session["username"] != null) {
@@ -101,34 +100,54 @@ public partial class htpsbEdit : System.Web.UI.Page {
 
     //清空流程
     public void resetWorkFlow() {
-        ddlPMCpsjg.SelectedIndex = 0;
+       // ddlPMCpsjg.SelectedIndex = 0;
+        ddlPMCpsjg.Items.Clear();
+        ddlPMCpsjg.Items.Add("请选择");
         ddlPMChqzt.SelectedIndex = 0;
 
-        ddlGcpsjg.SelectedIndex = 0;
+       // ddlGcpsjg.SelectedIndex = 0;
+        ddlGcpsjg.Items.Clear();
+        ddlGcpsjg.Items.Add("请选择");
         ddlGchqzt.SelectedIndex = 0;
 
-        ddlPACKpsjg.SelectedIndex = 0;
+       // ddlPACKpsjg.SelectedIndex = 0;
+        ddlPACKpsjg.Items.Clear();
+        ddlPACKpsjg.Items.Add("请选择");
         ddlPACKhqzt.SelectedIndex = 0;
 
-        ddlGylpsjg.SelectedIndex = 0;
+      //  ddlGylpsjg.SelectedIndex = 0;
+        ddlGylpsjg.Items.Clear();
+        ddlGylpsjg.Items.Add("请选择");
         ddlGylhqzt.SelectedIndex = 0;
 
-        ddlSbpsjg.SelectedIndex = 0;
+       // ddlSbpsjg.SelectedIndex = 0;
+        ddlSbpsjg.Items.Clear();
+        ddlSbpsjg.Items.Add("请选择");
         ddlSbhqzt.SelectedIndex = 0;
 
-        ddlZlpsjg.SelectedIndex = 0;
+      //  ddlZlpsjg.SelectedIndex = 0;
+        ddlZlpsjg.Items.Clear();
+        ddlZlpsjg.Items.Add("请选择");
         ddlZlhqzt.SelectedIndex = 0;
 
-        ddlZzpsjg.SelectedIndex = 0;
+      //  ddlZzpsjg.SelectedIndex = 0;
+        ddlZzpsjg.Items.Clear();
+        ddlZzpsjg.Items.Add("请选择");
         ddlZzhqzt.SelectedIndex = 0;
 
-        ddlSczjpsjg.SelectedIndex = 0;
+       // ddlSczjpsjg.SelectedIndex = 0;
+        ddlSczjpsjg.Items.Clear();
+        ddlSczjpsjg.Items.Add("请选择");
         ddlSczjhqzt.SelectedIndex = 0;
 
-        ddlZgpsjg.SelectedIndex = 0;
+      //  ddlZgpsjg.SelectedIndex = 0;
+        ddlZgpsjg.Items.Clear();
+        ddlZgpsjg.Items.Add("请选择");
         ddlZghqzt.SelectedIndex = 0;
 
-        ddlSwjlpsjg.SelectedIndex = 0;
+       // ddlSwjlpsjg.SelectedIndex = 0;
+        ddlSwjlpsjg.Items.Clear();
+        ddlSwjlpsjg.Items.Add("请选择");
         ddlSwjlhqzt.SelectedIndex = 0;
 
 
@@ -210,6 +229,7 @@ public partial class htpsbEdit : System.Web.UI.Page {
                 if ("TEXTBOX" == sdr["lx"].ToString()) {
                     //((TextBox)FindControl(sdr["mc"].ToString().Trim())).Attributes.Add("readonly","1" == sdr["qx"].ToString()?"false":"true"); 
                     ((TextBox)FindControl(sdr["mc"].ToString().Trim())).ReadOnly = !("1" == sdr["qx"].ToString());
+                    ((TextBox)FindControl(sdr["mc"].ToString().Trim())).BackColor = System.Drawing.Color.White;
                 }
                 else if ("DROPDOWNLIST" == sdr["lx"].ToString()) {
                     string ddlVaule = ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).SelectedValue;
@@ -296,7 +316,7 @@ public partial class htpsbEdit : System.Web.UI.Page {
             string[] controls = tbChangeControl.Text.Split(',');
             for (int i = 1; i < controls.Length; i++) {
                 (FindControl(controls[i]) as TextBox).BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFF99");
-            }
+            } 
         }
 
     }
@@ -669,6 +689,7 @@ public partial class htpsbEdit : System.Web.UI.Page {
         bb = ddlBB.Text;
        // Response.Redirect("htpsbEdit.aspx?bh=" + tbBh.Text + " &bb=" + ddlBB.Text + "&lb=EDIT&editType=查看");
         getData();
+        controlEnable();
     }
 
     //根据内部电芯型号，获取电芯型号的容量和代码
