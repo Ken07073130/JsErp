@@ -38,7 +38,7 @@ public partial class SysManage_SubIndex_Default : System.Web.UI.Page {
                           + "                                     where   userid = " + Session["OID"].ToString() + " ) ) ";
         }
         //只有样品权限才能看到样品综合评审
-        if (Session["groupnames"].ToString().IndexOf("样品综合评审") > 0 || Session["groupnames"].ToString().IndexOf("超级用户") >= 0) {
+        if (Session["groupnames"].ToString().IndexOf("样品综合评审") >=0 || Session["groupnames"].ToString().IndexOf("超级用户") >= 0) {
             sqlstr = sqlstr + "union all select '样品评审','yp/ypzhpsdList.aspx',0,0 ";
         }
 

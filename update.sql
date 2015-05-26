@@ -166,4 +166,22 @@ create view view_htpsbOnBtd as
 --2015/05/23 增加套料单的套料状态字段
 alter table dbo.js_tldH add sczt varchar(30)
 
-
+--2015/5/25  同步合同数据
+insert into dbo.js_htpsbH (DjLsh,lchqzt,bh,jbrq,bb,khdm,ddsl,dxsl,KHXH,khyqjq,khddh,bbsl,nbdxxh,
+wspsjq,ggsbh,ggsbb,nbPACKXH,HSFyq,QT,sykxx,ggssfqh,tlsj,PACKsj,lhsj,gyxfsj,motzxfsj,gzfzxfsj,
+cldexfsj,cltx,PACKgydecfsj,PACKmzyq,gmdwsj,bhbdwsj,wfmzjq,sbnfmz,ywpzyc,cnwt,PACKbz,gcbz,gylbz,zlbz,zzbz,
+PSJL,DDLX,sctl,bhdh,bhsl,ZGBZ,swjlbz,sczjbz,zbr,dw,RoHS,REACH,wlyq,CHBZDM,PMYQ,DXBL,PACKBL,
+TCSL,KCSL,KCCH,dw1,dw2,dw3,dw4,scsc,lckxx,gylxkxx,sfywjawt,gylx,fqrhqzt,pmchqzt,jsbhqzt,packhqzt,
+gylhqzt,zghqzt,sczjhqzt,swjlhqzt,gchqzt,sbhqzt,zlhqzt,zzhqzt,LSLS,NBBZXH,CPLX,GGSXH,PMCPSJG,PMCHQR,
+PMCHQSJ,gcpsjg,gchqr,gchqsj,sbpsjg,sbhqr,sbhqsj,zlpsjg,zlhqr,zlhqsj,gylpsjg,gylhqr,gylhqsj,PACKpsjg,
+PACKhqr,Packhqsj,zzpsjg,zzhqr,zzhqsj,sczjpsjg,sczjhqr,sczjhqsj,zgpsjg,zghqr,zghqsj,swjlpsjg,swjlhqr,
+swjlhqsj,PMCbz,sbbz,ddcf,bgly,dyzt,tlzt,tczt,changeControl)
+select DjLsh,lchqzt,psdbh,jbrq,bb,khdm,ddsl,dxsl,KHXH,khyqjq,khddh,bbsl,nbdxxh,
+wspsjq,ggsbh,ggsbb,nbPACKXH,HSPyq,QT,sykxx,ggssfqh,tlsj,PACKsj,lhsj,gyxfsj,motzxfsj,gzfzxfsj,
+cldexfsj,cltx,PACKgydecfsj,PACKmzyq,gmdwsj,bhbdwsj,wfmzjq,sbnfmz,ywpzyc,cnwt,jsPACKbz,gcbz,gylbz,zlbz,zzbz,
+'',DDLX,sctl,bhdh,bhsl,ZGBZ,swjlbz,sczjbz,zbr,dw,RoHS,REACH,wlyq,CHBZDM,PMYQ,DXBL,PACKBL,
+TCSL,KCSL,KCCH,dw1,dw2,dw3,dw4,scsc,lckxx,gylxkxx,sfywjawt,'',fqrhqzt,swbhqzt,jsbhqzt,jspackhqzt,
+gylhqzt,zghqzt,sczjhqzt,swjlhqzt,gcbhqzt,sbbhqzt,zlbhqzt,zzbhqzt,LSLS,NBBZXH,CPLX,GGSXH,SWPSJG,swjlqz,
+swqzsj,gcpsjg,gcjlqm,gchqsj,sbpsjg,sbjlqm,sbhqsj,zlpsjg,zljl,zlqzsj,gylpsjg,gyljlqm,gylqmsj,PACKpsjg,
+PACKhqsj,jsPackhqsj,zzpsjg,zzjlqm,zzhqsj,sczjps,sczjqz,sczjshsj,psjg,zgqz,zgshrq,swjlpsjg,swjlqz,
+swjlshsj,swbz,sbbbz,'否','','','','','' from dbo.js_htpsb_newH
