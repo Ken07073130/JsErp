@@ -79,7 +79,7 @@ public partial class ypzhpsdList : System.Web.UI.Page {
             sdr.Close();
             sqlcon.Close();
 
-            bind();
+           // bind();
         }
 
     }
@@ -485,5 +485,8 @@ public partial class ypzhpsdList : System.Web.UI.Page {
         sqlcon.Close();
         ClientScript.RegisterStartupScript(this.GetType(), "", "<script>alert('" + errorMessage + "')</script>");
 
+    }
+    protected void lbQuery_Click(object sender, EventArgs e) {
+        bind();
     }
 }

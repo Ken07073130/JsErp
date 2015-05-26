@@ -10,6 +10,24 @@
      display:none; 
    }
  </style>
+ <script src="../jquery-ui/jquery-1.10.2.js" type="text/javascript"></script>
+ <script src="../js/layer.js" type="text/javascript"></script>
+ <script type="text/javascript" >
+     //第一次加载特别慢，因此需要有加载提示，放在body onload(页面加载完毕)执行
+     function firstClick() {
+         if (document.getElementById("GridView1") == null) {
+             document.getElementById("lbQuery").click();
+             //document.getElementById("cblTitleList").onchange();
+         }
+     }
+
+     function queryClick() {
+         layer.msg('数据加载中，请稍后', {
+             offset: 200,
+             time: 10000
+         });
+     }
+ </script>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -73,7 +91,9 @@
                  起始日期<asp:TextBox ID="tbQsrq" runat="server" Width="89px" Height="15px"></asp:TextBox>结束日期<asp:TextBox ID="tbJsrq"
                      runat="server" Width="102px" Height="15px"></asp:TextBox>客户代码<asp:TextBox ID="tbKhdm" runat="server" Width="104px" Height="15px"></asp:TextBox>业务员<asp:TextBox
                          ID="tbYwy" runat="server" Width="102px" Height="15px"></asp:TextBox>
-                 <asp:Button ID="btnExcel" runat="server" Text="查询并导出EXCEL" OnClick="btnExcel_Click"   /></div>
+                 <asp:Button ID="btnExcel" runat="server" Text="查询并导出EXCEL" OnClick="btnExcel_Click"   />
+                <div style="display:none;"> <asp:Button ID="lbQuery" runat="server" Text="查询" OnClick="lbQuery_Click"  OnClientClick="queryClick()" /></div>
+        </div>
          <table align="Center" border="0" cellpadding="0" cellspacing="0" width="100%">
              <tr>
                  <td style="height: 30px">
@@ -205,6 +225,7 @@
              </tr>
          </table>
     </div>
+    <script type="text/javascript">firstClick()</script>
     </form>
 </body>
 </html>
