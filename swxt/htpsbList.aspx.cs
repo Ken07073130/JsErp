@@ -16,7 +16,7 @@ public partial class htpsbList : System.Web.UI.Page {
     SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
     SqlCommand sqlcom;
     protected void Page_Load(object sender, EventArgs e) {
-      
+
         if (Session["username"] != null) {
             UserName = Session["username"].ToString();   //取出session里面的相应用户权限
             GroupNames = Session["groupnames"].ToString();
@@ -29,7 +29,7 @@ public partial class htpsbList : System.Web.UI.Page {
         }
 
         if (!IsPostBack) {
-           // bind();
+            // bind();
             workFlowBind();
             //发起人可以查看会签流程
             if (GroupNames.IndexOf("合同评审表-发起人") >= 0 || GroupNames.IndexOf("超级用户") >= 0) {
@@ -42,7 +42,7 @@ public partial class htpsbList : System.Web.UI.Page {
             }
             //初始化cbTitleList
             initCbTitleList();
-            
+
 
 
         }
@@ -139,7 +139,7 @@ public partial class htpsbList : System.Web.UI.Page {
 
 
     protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e) {
-        
+
         sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
         sqlcon.Open();
         SqlTransaction sqlTran = sqlcon.BeginTransaction();
@@ -154,7 +154,7 @@ public partial class htpsbList : System.Web.UI.Page {
             sqlcom.Transaction = sqlTran;
             sqlcom.ExecuteNonQuery();
 
-            string sqlUpdateHitstory = "update js_htpsb_history set bh='(Del)"+tbBh.Text+"' where  bh='" + GridView1.DataKeys[e.RowIndex][0].ToString() + "' and bb='" + GridView1.DataKeys[e.RowIndex][1].ToString() + "'";
+            string sqlUpdateHitstory = "update js_htpsb_history set bh='(Del)" + tbBh.Text + "' where  bh='" + GridView1.DataKeys[e.RowIndex][0].ToString() + "' and bb='" + GridView1.DataKeys[e.RowIndex][1].ToString() + "'";
             sqlcom = new SqlCommand(sqlUpdateHitstory, sqlcon);
             sqlcom.Transaction = sqlTran;
             sqlcom.ExecuteNonQuery();
@@ -168,8 +168,8 @@ public partial class htpsbList : System.Web.UI.Page {
         }
         catch (Exception exp) {
             sqlTran.Rollback();
-           // Response.Write(exp.Message);
-            ClientScript.RegisterStartupScript(this.GetType(), "", "<script>alert('删除错误"+exp.Message.Replace("'","")+"')</script>");
+            // Response.Write(exp.Message);
+            ClientScript.RegisterStartupScript(this.GetType(), "", "<script>alert('删除错误" + exp.Message.Replace("'", "") + "')</script>");
         }
         finally {
             sqlcon.Close();
@@ -248,6 +248,8 @@ public partial class htpsbList : System.Web.UI.Page {
 
     protected void lbQuery_Click(object sender, EventArgs e) {
         bind();
+        //显示列查询
+        cblTitleList_SelectedIndexChanged(cblTitleList, new EventArgs());
     }
     protected void ddlHqzt_SelectedIndexChanged(object sender, EventArgs e) {
         bind();
