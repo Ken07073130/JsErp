@@ -248,6 +248,8 @@ public partial class htpsbList : System.Web.UI.Page {
 
     protected void lbQuery_Click(object sender, EventArgs e) {
         bind();
+        //显示列查询
+        cblTitleList_SelectedIndexChanged(cblTitleList, new EventArgs());
     }
     protected void ddlHqzt_SelectedIndexChanged(object sender, EventArgs e) {
         bind();

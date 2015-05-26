@@ -169,19 +169,19 @@
             </div>
             <div style="overflow: auto;">
                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4"
-                    Style="text-align: center" Font-Names="Verdana" Font-Size="13px" OnRowDataBound="GridView1_RowDataBound"
+                    Style="text-align: center; table-layout:fixed; word-wrap:break-word;" Font-Names="Verdana" Font-Size="12px" OnRowDataBound="GridView1_RowDataBound"
                     OnRowDeleting="GridView1_RowDeleting" OnRowEditing="GridView1_RowEditing" EmptyDataText="无记录"
                     Width="100%" BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px"
                     GridLines="Horizontal" AllowPaging="True" AllowSorting="True" PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging"
                     EmptyDataRowStyle-BackColor="#40e0d0">
                     <RowStyle ForeColor="#333333" BackColor="White" />
                     <Columns>
-                        <asp:BoundField DataField="LCHQZT" HeaderText="状态" />
+                        <asp:BoundField DataField="LCHQZT" HeaderText="状态" HeaderStyle-Width="50px" ItemStyle-Width="50px" />
                         <asp:HyperLinkField DataNavigateUrlFields="bh,bb" DataNavigateUrlFormatString="~/swxt/htpsbEdit.aspx?bh={0}&amp;lb=CHANGE&amp;editType=1&amp;bb={1}"
-                            Target="main" Text="变更" />
-                        <asp:CommandField HeaderText="修改" ShowEditButton="True" />
-                        <asp:CommandField HeaderText="删除" ShowDeleteButton="True" />
-                        <asp:TemplateField>
+                            Target="main" Text="变更" HeaderStyle-Width="50px" ItemStyle-Width="50px" />
+                        <asp:CommandField HeaderText="修改" ShowEditButton="True" HeaderStyle-Width="30px" ItemStyle-Width="30px" />
+                        <asp:CommandField HeaderText="删除" ShowDeleteButton="True" HeaderStyle-Width="30px" ItemStyle-Width="30px" />
+                        <asp:TemplateField HeaderStyle-Width="30px" ItemStyle-Width="30px">
                             <HeaderTemplate>
                                 打印
                             </HeaderTemplate>
@@ -189,7 +189,7 @@
                                 <asp:CheckBox ID="cbPrint" runat="server"></asp:CheckBox>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="BH" HeaderText="单号" />
+                        <asp:BoundField DataField="BH" HeaderText="单号"  />
                         <asp:BoundField DataField="BB" HeaderText="版本" />
                         <asp:BoundField DataField="JBRQ1" HeaderText="建表日期" />
                         <asp:BoundField DataField="GGSXH" HeaderText="规格书型号" />
