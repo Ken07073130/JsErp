@@ -283,10 +283,10 @@
             var bb = parseFloat(document.getElementById('ddlBB').value);
             if (bb > 1.0 && (document.getElementById('tbGroupName').value.indexOf("合同评审表-发起人") >= 0 || document.getElementById('tbGroupName').value.indexOf("超级用户") >= 0)) {
                 //发起人权限在变更时，提交时显示流程以免忘记填写变更理由    
-                if (document.getElementById('tbBgsm').value=='变更时请在此输入变更说明') {
+                if (document.getElementById('tbBgsm').value == '变更时请在此输入变更说明') {
                     showDialog('divLc');
                 }
-                
+
                 //重置流程
                 getChangedText();
 
@@ -314,7 +314,7 @@
                     }
                 }
             }
-            
+
         }
     </script>
 
@@ -323,7 +323,7 @@
 
 </head>
 <body>
-    
+
     <form id="form1" runat="server" onsubmit="getChangedText()">
         <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="yyyy-MM-dd"
             TargetControlID="tbKhyqjq" />
@@ -376,6 +376,7 @@
                 合同评审单
            
            
+           
             </div>
             <div class="layout">
                 <ul>
@@ -397,7 +398,7 @@
                         <a href="#" class="button" style="margin-left: 15px;" onclick="showDialog('divPsjl')">显示评审记录</a>
                     </li>
                     <li>
-                        <a href="#" class="button" id="aShowLc" runat="server" onclick="showDialog('divLc')" style="display:none">显示流程</a>
+                        <a href="#" class="button" id="aShowLc" runat="server" onclick="showDialog('divLc')" style="display: none">显示流程</a>
 
 
                     </li>
@@ -692,6 +693,7 @@
             <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
                 ↓
            
+           
             </div>
             <!--商务会签-->
             <div style="width: 950px; border: 2px solid #99CCFF;" runat="server" id="divPMChq">
@@ -746,6 +748,7 @@
             <!--商务会签结束-->
             <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
                 ↓
+           
            
             </div>
             <!--主体部门会签-->
@@ -903,6 +906,7 @@
             <div style="text-align: center; font-size: 25px; font-weight: bold; width: 950px;">
                 ↓
            
+           
             </div>
             <!--生产总监、总工、商务评审结果-->
             <div style="border: 1px solid #99CCFF; width: 950px;">
@@ -976,15 +980,15 @@
             <div style="font-weight: bold; font-size: 25px; text-align: center; width: 340px">变更记录汇总</div>
             <asp:TextBox ID="tbWorkFlowFlag" runat="server" Rows="30" TextMode="MultiLine" Width="340px"></asp:TextBox>
         </div>
-        <div class="layout" id="divPsjl" style="display: none;width: 350px">
-            <div style="font-weight: bold; font-size: 25px; text-align: center; width: 300px">变更记录汇总</div>
-               
-            <asp:TextBox ID="tbPsjl" runat="server" Rows="30" TextMode="MultiLine" Width="300px"></asp:TextBox>
+        <div class="layout" id="divPsjl" style="display: none; width: 350px">
+            <div style="font-weight: bold; font-size: 25px; text-align: center; width: 340px">变更记录汇总</div>
+
+            <asp:TextBox ID="tbPsjl" runat="server" Rows="30" TextMode="MultiLine" Width="340px"></asp:TextBox>
         </div>
-        <div class="layout" style="width: 950px; display: none;" id="divLc" runat="server">
+        <div class="layout" style="width: 950px; font-size:13px;display:none " id="divLc" runat="server">
             <div style="font-weight: bold; font-size: 25px; text-align: center; width: 900px">会签流程</div>
             <ul>
-                <li style="height: 200px;">
+                <li style="height: 150px;">
                     <asp:TextBox ID="tbBgsm" runat="server" Rows="6" TextMode="MultiLine" Width="221px"
                         Text="变更时请在此输入变更说明" onFocus="if(value==defaultValue){value='';this.style.color='#000'}"
                         onBlur="if(!value){value=defaultValue;this.style.color='#999'}" Style="color: #999999"></asp:TextBox>
@@ -1002,12 +1006,12 @@
                         </asp:DropDownList><br />
                     流程会签状态<asp:TextBox ID="tbLchqzt" runat="server" Text="单据建立中"></asp:TextBox></li>
                 <li
-                    style="width: 400px; height: 200px;"><span style="color: #ff3366">→</span>工程部<asp:DropDownList
+                    style="width: 400px; height: 150px;"><span style="color: #ff3366">→</span>工程部<asp:DropDownList
                         ID="ddlGchqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
-                    </asp:DropDownList><span style=" color: #ff3366">→</span>PACK<asp:DropDownList
+                    </asp:DropDownList><span style="color: #ff3366">→</span>PACK<asp:DropDownList
                         ID="ddlPACKhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
@@ -1037,7 +1041,7 @@
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></li>
-                <li style="width: 152px; height: 200px;"><span style="color: #ff3366">→</span>生产总监<asp:DropDownList ID="ddlSczjhqzt" runat="server">
+                <li style="width: 152px; height: 150px;"><span style="color: #ff3366">→</span>生产总监<asp:DropDownList ID="ddlSczjhqzt" runat="server">
                     <asp:ListItem>-</asp:ListItem>
                     <asp:ListItem>会签中</asp:ListItem>
                     <asp:ListItem>已会签</asp:ListItem>
@@ -1048,7 +1052,7 @@
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></li>
-                <li style="width: 152px; height: 200px;"><span style="color: #ff3366">→</span>商务部<asp:DropDownList ID="ddlSwjlhqzt" runat="server">
+                <li style="width: 152px; height: 150px;"><span style="color: #ff3366">→</span>商务部<asp:DropDownList ID="ddlSwjlhqzt" runat="server">
                     <asp:ListItem>-</asp:ListItem>
                     <asp:ListItem>会签中</asp:ListItem>
                     <asp:ListItem>已会签</asp:ListItem>
@@ -1058,7 +1062,7 @@
         <div class="layout" id="divChangeLog" style="display: none;">
             <asp:TextBox ID="tbLsls" runat="server" Rows="8" TextMode="MultiLine" Width="80%"></asp:TextBox>
         </div>
-      
+
 
     </form>
 </body>

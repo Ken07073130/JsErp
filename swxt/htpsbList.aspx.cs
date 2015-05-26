@@ -214,6 +214,11 @@ public partial class htpsbList : System.Web.UI.Page {
                     btnDel.Enabled = false;//不是发起人不能删除单据
                     cellChange.Enabled = false;//不是发起人不能变更
                 }
+
+                //销售人员-编辑变查看
+                if (GroupNames.IndexOf("销售人员") > 0) {
+                    btnEdit.Text = "查看";
+                }
             }
 
             //行颜色转换,变更中的单子标色
