@@ -45,6 +45,7 @@ local.properties
 *.svn-base
 *.sln.docstates
 *.sln
+*.config
 
 # Build results
 
