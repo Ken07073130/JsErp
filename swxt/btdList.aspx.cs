@@ -36,6 +36,7 @@ public partial class btdList : System.Web.UI.Page {
 
     public void bind() {
         string GroupNames = Session["GroupNames"].ToString();
+        UserName = Session["UserName"].ToString();
         string sqlStr = "";
         sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
         sqlStr = "select convert(varchar(10),jbrq,120) jbrq,case when lchqzt='已完成' then 1 else 0 end hqsx,* from js_btdH where " +

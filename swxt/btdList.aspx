@@ -16,7 +16,7 @@
                 </span><span runat="server" id="spanTitle"></span>补投单列表
             </div>
             <div style="margin-bottom: 5px;">
-                会签中<asp:DropDownList ID="ddlHqzt" runat="server" AutoPostBack="True">
+                会签中<asp:DropDownList ID="ddlHqzt" runat="server" AutoPostBack="True" OnSelectedIndexChanged="ddlHqzt_SelectedIndexChanged">
                     <asp:ListItem>会签中</asp:ListItem>
                     <asp:ListItem>已会签</asp:ListItem>
                     <asp:ListItem>全部</asp:ListItem>

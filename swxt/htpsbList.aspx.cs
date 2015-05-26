@@ -16,6 +16,7 @@ public partial class htpsbList : System.Web.UI.Page {
     SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
     SqlCommand sqlcom;
     protected void Page_Load(object sender, EventArgs e) {
+      
         if (Session["username"] != null) {
             UserName = Session["username"].ToString();   //取出session里面的相应用户权限
             GroupNames = Session["groupnames"].ToString();
@@ -28,7 +29,7 @@ public partial class htpsbList : System.Web.UI.Page {
         }
 
         if (!IsPostBack) {
-            bind();
+           // bind();
             workFlowBind();
             //发起人可以查看会签流程
             if (GroupNames.IndexOf("合同评审表-发起人") >= 0 || GroupNames.IndexOf("超级用户") >= 0) {
@@ -41,7 +42,7 @@ public partial class htpsbList : System.Web.UI.Page {
             }
             //初始化cbTitleList
             initCbTitleList();
-            cblTitleList_SelectedIndexChanged(cblTitleList, e);
+            
 
 
         }
@@ -131,6 +132,8 @@ public partial class htpsbList : System.Web.UI.Page {
 
 
         sqlcon.Close();
+
+        //cblTitleList_SelectedIndexChanged(cblTitleList, new EventArgs());
 
     }
 

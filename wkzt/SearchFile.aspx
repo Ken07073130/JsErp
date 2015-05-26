@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="SearchFile.aspx.cs" Inherits="wkzt_SearchFile" Title="文控管理—搜索结果" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
+
 <head id="Head1" runat="server" >
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -7,7 +9,7 @@
 </head>
 <body>
 <form id="form1" runat="server" >
-    ` <div align="center">
+     <div align="center">
         <asp:HiddenField ID="OldID" runat ="server" />
         <asp:HiddenField ID="WJCC" runat ="server" />
         <asp:HiddenField ID="UserID" runat ="server" />
@@ -17,7 +19,7 @@
 
                     
                 </td>
-                                <td valign="bottom" class="STYLE1" style="height: 20px">
+                 <td valign="bottom" class="STYLE1" style="height: 20px">
                 <div align="right">  <asp:TextBox runat="server" ID ="SearchName"></asp:TextBox><asp:Button ID="SearchButton"  runat="server" OnClick="SearchClick" Text="搜 索"/>&nbsp;&nbsp;&nbsp;</div></td>
             </tr>
         </table>
@@ -25,7 +27,7 @@
              Font-Names="Verdana" Font-Size="12px" 
              emptydatatext="无记录"  
              Width="800px" GridLines="Horizontal"  EmptyDataRowStyle-BackColor="#40e0d0" OnRowCommand="GridView1_RowCommand"  
-             BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px"
+             BackColor="White" BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" 
               >
              <Columns >
                  <asp:TemplateField HeaderText="名称" >

@@ -323,8 +323,7 @@
 
 </head>
 <body>
-
-
+    
     <form id="form1" runat="server" onsubmit="getChangedText()">
         <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="yyyy-MM-dd"
             TargetControlID="tbKhyqjq" />
@@ -610,7 +609,9 @@
                 <ul>
                     <li><span class="spanLabel"></span><span class="spanControl"></span></li>
                     <li><span class="spanLabel">客户型号＊</span><span class="spanControl"><asp:TextBox ID="tbKhxh"
-                        runat="server" Width="95%"></asp:TextBox></span> </li>
+                        runat="server" Width="95%"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="RequiredFieldValidator15" runat="server" ControlToValidate="tbGgsxh"
+                            Display="Dynamic" ErrorMessage="请填写客户型号" SetFocusOnError="true"></asp:RequiredFieldValidator></span> </li>
                     <li><span class="spanLabel">材料体系</span><span class="spanControl"><asp:TextBox ID="tbCltx"
                         runat="server" Width="95%"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="tbCltx"
@@ -983,7 +984,7 @@
         <div class="layout" style="width: 950px; display: none;" id="divLc" runat="server">
             <div style="font-weight: bold; font-size: 25px; text-align: center; width: 900px">会签流程</div>
             <ul>
-                <li style="height: 170px;">
+                <li style="height: 200px;">
                     <asp:TextBox ID="tbBgsm" runat="server" Rows="6" TextMode="MultiLine" Width="221px"
                         Text="变更时请在此输入变更说明" onFocus="if(value==defaultValue){value='';this.style.color='#000'}"
                         onBlur="if(!value){value=defaultValue;this.style.color='#999'}" Style="color: #999999"></asp:TextBox>
@@ -994,60 +995,60 @@
                         Display="Dynamic" ErrorMessage="请填写变更说明" SetFocusOnError="true" Enabled="false"></asp:RequiredFieldValidator>发起人<asp:DropDownList
                             ID="ddlFqrhqzt" runat="server">
                             <asp:ListItem>已会签</asp:ListItem>
-                        </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>PMC<asp:DropDownList
+                        </asp:DropDownList><span style="color: #ff3366">→</span>PMC<asp:DropDownList
                             ID="ddlPMChqzt" runat="server">
                             <asp:ListItem>会签中</asp:ListItem>
                             <asp:ListItem>已会签</asp:ListItem>
                         </asp:DropDownList><br />
                     流程会签状态<asp:TextBox ID="tbLchqzt" runat="server" Text="单据建立中"></asp:TextBox></li>
                 <li
-                    style="width: 400px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>工程部<asp:DropDownList
+                    style="width: 400px; height: 200px;"><span style="color: #ff3366">→</span>工程部<asp:DropDownList
                         ID="ddlGchqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
-                    </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>PACK<asp:DropDownList
+                    </asp:DropDownList><span style=" color: #ff3366">→</span>PACK<asp:DropDownList
                         ID="ddlPACKhqzt" runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
-                    </asp:DropDownList><span style="font-size: 24pt; color: #ff3366">→</span>供应链<span
-                        style="font-size: 24pt; color: #ff3366"></span><asp:DropDownList ID="ddlGylhqzt"
+                    </asp:DropDownList><span style="color: #ff3366">→</span>供应链<span
+                        style="color: #ff3366"></span><asp:DropDownList ID="ddlGylhqzt"
                             runat="server">
                             <asp:ListItem>-</asp:ListItem>
                             <asp:ListItem>会签中</asp:ListItem>
                             <asp:ListItem>已会签</asp:ListItem>
                         </asp:DropDownList><br />
-                    <span style="font-size: 24pt; color: #ff3366">→</span>设备部<asp:DropDownList ID="ddlSbhqzt"
+                    <span style="color: #ff3366">→</span>设备部<asp:DropDownList ID="ddlSbhqzt"
                         runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList><br />
-                    <span style="font-size: 24pt; color: #ff3366">→</span>制造部<asp:DropDownList ID="ddlZzhqzt"
+                    <span style="color: #ff3366">→</span>制造部<asp:DropDownList ID="ddlZzhqzt"
                         runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList><br />
-                    <span style="font-size: 24pt; color: #ff3366">→</span>质量部<asp:DropDownList ID="ddlZlhqzt"
+                    <span style="color: #ff3366">→</span>质量部<asp:DropDownList ID="ddlZlhqzt"
                         runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></li>
-                <li style="width: 152px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>生产总监<asp:DropDownList ID="ddlSczjhqzt" runat="server">
+                <li style="width: 152px; height: 200px;"><span style="color: #ff3366">→</span>生产总监<asp:DropDownList ID="ddlSczjhqzt" runat="server">
                     <asp:ListItem>-</asp:ListItem>
                     <asp:ListItem>会签中</asp:ListItem>
                     <asp:ListItem>已会签</asp:ListItem>
                 </asp:DropDownList><br />
-                    <span style="font-size: 24pt; color: #ff3366">→</span>总工<asp:DropDownList ID="ddlZghqzt"
+                    <span style="color: #ff3366">→</span>总工<asp:DropDownList ID="ddlZghqzt"
                         runat="server">
                         <asp:ListItem>-</asp:ListItem>
                         <asp:ListItem>会签中</asp:ListItem>
                         <asp:ListItem>已会签</asp:ListItem>
                     </asp:DropDownList></li>
-                <li style="width: 152px; height: 170px;"><span style="font-size: 24pt; color: #ff3366">→</span>商务部<asp:DropDownList ID="ddlSwjlhqzt" runat="server">
+                <li style="width: 152px; height: 200px;"><span style="color: #ff3366">→</span>商务部<asp:DropDownList ID="ddlSwjlhqzt" runat="server">
                     <asp:ListItem>-</asp:ListItem>
                     <asp:ListItem>会签中</asp:ListItem>
                     <asp:ListItem>已会签</asp:ListItem>
@@ -1058,7 +1059,6 @@
             <asp:TextBox ID="tbLsls" runat="server" Rows="8" TextMode="MultiLine" Width="80%"></asp:TextBox>
         </div>
       
-
 
     </form>
 </body>

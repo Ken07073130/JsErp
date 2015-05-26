@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>收料单</title>
-
+    <script src="../jquery-ui/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="../js/layer.js" type="text/javascript"></script>
     <script type="text/javascript">
         function showWorkFlow() {
             if (document.getElementById('aShowWorkFlow').innerText == '显示签单进度') {
@@ -25,10 +26,27 @@
                 document.getElementById('aShowQuery').innerText = "显示查询";
             }
         }
+        
+        
+        
+        //第一次加载特别慢，因此需要有加载提示，放在body onload(页面加载完毕)执行
+        function firstClick(){
+           if(document.getElementById("GridView1")==null){
+              document.getElementById("lbQuery").click();
+              //document.getElementById("cblTitleList").onchange();
+           } 
+        }
+        
+        function queryClick(){
+           layer.msg('数据加载中，请稍后',{
+                            offset: 200,
+                            time:10000
+                        });
+        }
     </script>
 
 </head>
-<body>
+<body >
     <form id="form1" runat="server">
         <div style="margin: 0 auto; width: 100%; font-size: 12px;">
             <div style="text-align: center; font-size: 25px; font-weight: bold; background-color: #FFFFCC;">
@@ -139,7 +157,7 @@
                             Width="89px" Font-Size="12px" />&nbsp;
                
                     <asp:LinkButton ID="lbQuery" runat="server" Width="71px" Style="text-align: center; background-color: #3385ff; color: white; font-size: 13px; line-height: 20px; text-decoration: none;"
-                        OnClick="lbQuery_Click">查询</asp:LinkButton>
+                        OnClick="lbQuery_Click" OnClientClick="queryClick()">查询</asp:LinkButton>
                 </div>
                 <div style="margin-bottom: 5px; margin-top: 5px;">
                     内部电芯型号<asp:TextBox ID="tbNbdxxh" runat="server" Height="12px" Width="89px" Font-Size="12px" />
@@ -229,6 +247,8 @@
                 </asp:GridView>
             </div>
         </div>
+        
+        <script type="text/javascript">firstClick()</script>
     </form>
 </body>
 </html>

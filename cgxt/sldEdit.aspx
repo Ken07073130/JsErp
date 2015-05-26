@@ -264,6 +264,10 @@
             
 
             addTr(tab, row, trHtml);
+            //改变ClientHeight的高度 
+            var win=window.parent.document.getElementsByName("main")[0];
+            win.height=win.height+50;
+           
         }
         
         function rkztChange(obj){
@@ -646,7 +650,7 @@
     </script>
 
 </head>
-<body onload="load()">
+<body id="bMain">
     <form id="form1" runat="server">
         <div>
             <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
