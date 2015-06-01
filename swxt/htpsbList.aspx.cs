@@ -46,6 +46,10 @@ public partial class htpsbList : System.Web.UI.Page {
 
 
         }
+        //非第一次载入加载bind();
+       // else {
+       //     bind();
+       // }
 
 
     }
@@ -78,7 +82,7 @@ public partial class htpsbList : System.Web.UI.Page {
         sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
         string conditionString = "";
         //销售人员语句做特殊处理
-        if (GroupNames.IndexOf("销售人员") > 0) {
+        if (GroupNames.IndexOf("销售人员") > 0 && GroupNames.IndexOf("合同评审表-商务经理审核") < 0) {
             conditionString = conditionString + " or (charindex('" + UserName + "',dbo.js_func_getYwyLeaders(b.VwXm0004,'销售人员'))>0)";
         }
         sqlStr = "select convert(varchar(10),a.jbrq,120) jbrq,*,case when lchqzt='已完成' then 1 else 0 end hqsx,convert(varchar(10),jbrq,120) jbrq1,convert(varchar(20),ddsl)+'('+dw+')' ddsl1  from js_htpsbH a,view_0391 b where a.khdm=b.VwXm0002 and " +
@@ -196,6 +200,7 @@ public partial class htpsbList : System.Web.UI.Page {
             if (drv["dyzt"].ToString().Length > 0) {
                 cb.Text = "√";
             }
+           
             if (ddlHqzt.Text.Equals("全部") || ddlHqzt.Text.Equals("已会签")) {
                 btnEdit.Text = "查看";
                 btnDel.Enabled = false;
@@ -214,11 +219,12 @@ public partial class htpsbList : System.Web.UI.Page {
                     btnDel.Enabled = false;//不是发起人不能删除单据
                     cellChange.Enabled = false;//不是发起人不能变更
                 }
-
                 //销售人员-编辑变查看
-                if (GroupNames.IndexOf("销售人员") > 0) {
+                if (GroupNames.IndexOf("销售人员") > 0 && GroupNames.IndexOf("合同评审表-商务经理审核") < 0) {
                     btnEdit.Text = "查看";
                 }
+
+                
             }
 
             //行颜色转换,变更中的单子标色

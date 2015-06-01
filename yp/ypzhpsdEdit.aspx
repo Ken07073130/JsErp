@@ -225,7 +225,7 @@ function xsjlChange(){
 //2.商务经理会签
 function swjlChange(){
        if(document.getElementById('ddlSwjl').value.length>0){
-           if(document.getElementById('tbLclx')=='样品建议书'){
+           if(document.getElementById('tbLclx').value=='样品建议书'){
                //激活必填项
                ValidatorEnable(document.getElementById('CompareValidator4'), true);
                ValidatorEnable(document.getElementById('CompareValidator11'), true);
@@ -1927,7 +1927,7 @@ function changeTab(num){
                             <td style="width: 60px; height: 39px">
                                 是否需要退单</td>
                             <td colspan="4" style="height: 39px">
-                                <asp:DropDownList ID="ddlSfxyth" runat="server" Width="45%" onchange="swjlChange()">
+                                <asp:DropDownList ID="ddlSfxyth" runat="server" Width="45%" >
                                     <asp:ListItem>否</asp:ListItem>
                                     <asp:ListItem>是</asp:ListItem>
                                 </asp:DropDownList></td>

@@ -160,4 +160,24 @@ public partial class btdList : System.Web.UI.Page {
     protected void ddlHqzt_SelectedIndexChanged(object sender, EventArgs e) {
         bind();
     }
+    protected void lbPrint_Click(object sender, EventArgs e) {
+        //打印列
+        string bhList = "";
+        for (int i = 0; i < GridView1.Rows.Count; i++) {
+            CheckBox cbPrint = GridView1.Rows[i].FindControl("cbPrint") as CheckBox;
+            if (cbPrint.Checked) {
+                bhList = bhList + GridView1.Rows[i].Cells[3].Text + ",";
+            }
+        }
+
+
+       if (!bhList.Equals("")) {
+           /* sqlcon.Open();
+           string sqlstr = "update js_htpsbH set dyzt=isnull(dyzt,'')+'" + Session["username"].ToString() + "'+'-'+'" + DateTime.Now.ToString("yyyy-MM-dd") + "'+';' where charindex(bh,'" + bhList + "')>0 ";
+           sqlcom = new SqlCommand(sqlstr, sqlcon);
+           sqlcom.ExecuteNonQuery();
+           sqlcon.Close();*/
+            Response.Write("<script>window.open('rpt/btdPrint.aspx?bh=" + bhList + "','_blank')</script>");
+        }
+    }
 }

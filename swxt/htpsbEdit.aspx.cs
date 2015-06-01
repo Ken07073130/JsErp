@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
+using System.Web.Services;
 
 public partial class htpsbEdit : System.Web.UI.Page {
     string lb = "";
@@ -229,7 +230,7 @@ public partial class htpsbEdit : System.Web.UI.Page {
                 if ("TEXTBOX" == sdr["lx"].ToString()) {
                     //((TextBox)FindControl(sdr["mc"].ToString().Trim())).Attributes.Add("readonly","1" == sdr["qx"].ToString()?"false":"true"); 
                     ((TextBox)FindControl(sdr["mc"].ToString().Trim())).ReadOnly = !("1" == sdr["qx"].ToString());
-                    ((TextBox)FindControl(sdr["mc"].ToString().Trim())).BackColor = System.Drawing.Color.White;
+                    ((TextBox)FindControl(sdr["mc"].ToString().Trim())).BackColor = System.Drawing.ColorTranslator.FromHtml("#CCFFFF");//System.Drawing.Color.White;
                 }
                 else if ("DROPDOWNLIST" == sdr["lx"].ToString()) {
                     string ddlVaule = ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).SelectedValue;
@@ -237,9 +238,10 @@ public partial class htpsbEdit : System.Web.UI.Page {
                         //只读的，只保留默认项目,除字段BB之外
                         ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Items.Clear();
                         ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Items.Add(ddlVaule);
+                       
                     }
                     //((DropDownList)FindControl(sdr["mc"].ToString().Trim())).Enabled = ();
-
+                    ((DropDownList)FindControl(sdr["mc"].ToString().Trim())).BackColor =  System.Drawing.ColorTranslator.FromHtml("#CCFFFF");
                    
                 }
                 else if ("CHECKBOX" == sdr["lx"].ToString())
@@ -723,17 +725,23 @@ public partial class htpsbEdit : System.Web.UI.Page {
     }
 
     //查看变更汇总
-    protected void lbGetAllChange_Click(object sender, EventArgs e) {
-        sqlcon.Open();
-        string sqlstr = "select stuff((select a.LSLS+char(10)+'**********************************************'+char(10) from dbo.v_htpsb a where a.bh='" + tbBh.Text + "' order by a.bb desc for xml path('')),1,1,'') log";
-        Cmd = new SqlCommand(sqlstr, sqlcon);
-        sdr = Cmd.ExecuteReader();
-        if (sdr.HasRows) {
-            sdr.Read();
-            tbWorkFlowFlag.Text = sdr["log"].ToString().Replace("&#x0D", "");
-            ClientScript.RegisterStartupScript(this.GetType(), "历史版本查看", "<script>showDialog('divAllLsls')</script>");
+    [WebMethod]
+    public static string getAllChange(string bh) {
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
+        con.Open();
+
+        string sqlstr = "select stuff((select a.LSLS+char(10)+'**********************************************'+char(10) from dbo.v_htpsb a where a.bh='" + bh + "' order by a.bb desc for xml path('')),1,1,'') log";
+        SqlCommand cmd = new SqlCommand(sqlstr,con);
+        SqlDataReader sdrLog = cmd.ExecuteReader();
+        string log = String.Empty;
+        if (sdrLog.HasRows) {
+            sdrLog.Read();
+            log = sdrLog["log"].ToString().Replace("&#x0D", "");
+            //ClientScript.RegisterStartupScript(this.GetType(), "历史版本查看", "<script>showDialog('divAllLsls')</script>");
         }
-        sqlcon.Close();
+        con.Close();
+        con.Dispose();
+        return log;
     }
 
     //完成的合同评审表需要同步其他单据

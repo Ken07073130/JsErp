@@ -1,11 +1,11 @@
-Ôªø<%@ Page Language="C#" AutoEventWireup="true"  CodeFile="ksdlb.aspx.cs" Inherits="ksdlb" Title="ÂÆ¢ËØâÂçï‰ø°ÊÅØÂàóË°®" %>
+<%@ Page Language="C#" AutoEventWireup="true"  CodeFile="ksdlb.aspx.cs" Inherits="ksdlb" Title="øÕÀﬂµ•–≈œ¢¡–±Ì" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit"   %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server" >
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>ÈáëËâ≤ËÉΩÊ∫êÊï∞ÊçÆÁ≥ªÁªü</title>
+<title>Ω…´ƒ‹‘¥ ˝æ›œµÕ≥</title>
 </head>
 <body>
 <form id="form1" runat="server" >
@@ -20,31 +20,31 @@
          <table width="800px" style="font-size:smaller" >
             <tr>
                 <td style="height: 42px">
-                  ‰ºöÁ≠æÁä∂ÊÄÅ<asp:DropDownList ID="ddlHqzt" runat="server" OnSelectedIndexChanged="btnCX_Click" AutoPostBack="True" >
-                     <asp:ListItem Selected="True">‰ºöÁ≠æ‰∏≠</asp:ListItem>
-                     <asp:ListItem>ÂÖ®ÈÉ®</asp:ListItem>
-                     <asp:ListItem>Â∑≤‰ºöÁ≠æ</asp:ListItem>                 
+                  ª·«©◊¥Ã¨<asp:DropDownList ID="ddlHqzt" runat="server" OnSelectedIndexChanged="btnCX_Click" AutoPostBack="True" >
+                     <asp:ListItem Selected="True">ª·«©÷–</asp:ListItem>
+                     <asp:ListItem>»´≤ø</asp:ListItem>
+                     <asp:ListItem>“—ª·«©</asp:ListItem>                 
                     </asp:DropDownList> 
                 </td> 
-                <td style="height: 42px">ÂΩìÂâçÁä∂ÊÄÅÔºö
+                <td style="height: 42px">µ±«∞◊¥Ã¨£∫
                 </td> 
                 <td style="height: 42px"><asp:DropDownList ID="DD_Find_dqzt" runat="server"  AutoPostBack="True" >
-                     <asp:ListItem>ÂïÜÂä°ÂÆ¢ËØâÂΩïÂÖ•‰∏≠</asp:ListItem>
-                     <asp:ListItem>Ë¥®ÈáèÂàÜÊûêÂΩïÂÖ•‰∏≠</asp:ListItem>    
-                     <asp:ListItem>Ë¥®ÈáèÁªèÁêÜÂÆ°Ê†∏‰∏≠</asp:ListItem>
-                     <asp:ListItem>ÂïÜÂä°ÊùêËÄóÁªüËÆ°‰∏≠</asp:ListItem>
+                     <asp:ListItem>…ÃŒÒøÕÀﬂ¬º»Î÷–</asp:ListItem>
+                     <asp:ListItem>÷ ¡ø∑÷Œˆ¬º»Î÷–</asp:ListItem>    
+                     <asp:ListItem>÷ ¡øæ≠¿Ì…Û∫À÷–</asp:ListItem>
+                     <asp:ListItem>…ÃŒÒ≤ƒ∫ƒÕ≥º∆÷–</asp:ListItem>
                      <asp:ListItem Selected="True"></asp:ListItem>             
                     </asp:DropDownList> 
                 </td>  
-                <td style="height: 42px">ÂÆ¢Êà∑‰ª£Á†ÅÔºö
+                <td style="height: 42px">øÕªß¥˙¬Î£∫
                 </td>  
                 <td style="height: 42px"><asp:TextBox id="tb_Find_khdm" runat="server" Width="110px" onchange="this.value=this.value.split('|')[0];" ></asp:TextBox>
                 </td> 
-                <td style="height: 42px">‰∫ßÂìÅÂûãÂè∑Ôºö
+                <td style="height: 42px">≤˙∆∑–Õ∫≈£∫
                 </td>  
                 <td style="height: 42px"><asp:TextBox id="tb_Find_cpxh" runat="server" Width="110px"></asp:TextBox>
                 </td>    
-                <td style="height: 42px"><asp:Button ID="b_Find" runat="server" Text="Êü•  ËØ¢" OnClick="b_Find_Click" />
+                <td style="height: 42px"><asp:Button ID="b_Find" runat="server" Text="≤È  —Ø" OnClick="b_Find_Click" />
                 </td>            
              </tr>
          </table>
@@ -54,8 +54,8 @@
                   <table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#FFFFE0">
                          <tr >
                              <td rowspan="2" align="center" style="height: 31px" bgcolor="#FEEDC9" >
-                                 <div style="margin:10px 0px;"><asp:LinkButton ID="lbTjbd" runat="server" OnClick="tjbd_Click" style="background-color:#FEEDC9;display: block ;text-align: center;color: #d84700;  font-size: 14px; font-weight: bold; text-decoration: none; " Width="120px">Ê∑ªÂä†Êñ∞ÂÆ¢ËØâÂçï</asp:LinkButton></div>
-                             <td width="94%" rowspan="2" align="center" style="height: 31px;font-size:15px;font-weight:bold;">Ë¥®ÈáèÊäïËØâÂ§ÑÁêÜÂçï</td>
+                                 <div style="margin:10px 0px;"><asp:LinkButton ID="lbTjbd" runat="server" OnClick="tjbd_Click" style="background-color:#FEEDC9;display: block ;text-align: center;color: #d84700;  font-size: 14px; font-weight: bold; text-decoration: none; " Width="120px">ÃÌº”–¬øÕÀﬂµ•</asp:LinkButton></div>
+                             <td width="94%" rowspan="2" align="center" style="height: 31px;font-size:15px;font-weight:bold;">÷ ¡øÕ∂Àﬂ¥¶¿Ìµ•</td>
                          </tr>
                                <tr >                                     </tr>
                      </table>
@@ -73,39 +73,39 @@
                                      <RowStyle ForeColor="#333333" BackColor="White" />
                                      <Columns >
                                      <asp:HyperLinkField DataNavigateUrlFields="djlsh" DataNavigateUrlFormatString="ksdAjax.aspx?lb=Edite&hqzt='<%= ddlHqzt.text%>'&xh={0}"
-                                             DataTextField="tsbh" HeaderText="ÊäïËØâÁºñÂè∑"  ItemStyle-Width="9%"/>
-                                         <asp:BoundField DataField="dqzt" HeaderText="ÂΩìÂâçÁä∂ÊÄÅ" ReadOnly="True"  >
+                                             DataTextField="tsbh" HeaderText="Õ∂Àﬂ±‡∫≈"  ItemStyle-Width="9%"/>
+                                         <asp:BoundField DataField="dqzt" HeaderText="µ±«∞◊¥Ã¨" ReadOnly="True"  >
                                              <ItemStyle Width="9%" />
                                          </asp:BoundField>
-                                         <asp:BoundField DataField="dyzt" HeaderText="ÊâìÂç∞Áä∂ÊÄÅ">
+                                         <asp:BoundField DataField="dyzt" HeaderText="¥Ú”°◊¥Ã¨">
                                              <ItemStyle Width="6%" />
                                          </asp:BoundField>
-                                         <asp:BoundField DataField="cpph" HeaderText="‰∫ßÂìÅÊâπÂè∑">
+                                         <asp:BoundField DataField="cpph" HeaderText="≤˙∆∑≈˙∫≈">
                                              <ItemStyle Width="15%" />
                                          </asp:BoundField>
-                                         <asp:BoundField DataField="thsl" HeaderText="ÈÄÄË¥ßÊï∞Èáè" >
+                                         <asp:BoundField DataField="thsl" HeaderText="ÕÀªı ˝¡ø" >
                                              <ItemStyle Width="5%" />
                                          </asp:BoundField>
-                                         <asp:BoundField DataField="sdthrq" HeaderText="Êî∂Âà∞ÈÄÄË¥ßÊó•Êúü" DataFormatString="{0:yyyy-MM-dd}"  >
+                                         <asp:BoundField DataField="sdthrq" HeaderText=" ’µΩÕÀªı»’∆⁄" DataFormatString="{0:yyyy-MM-dd}"  >
                                              <ItemStyle Width="10%" />
                                          </asp:BoundField>
-                                         <asp:BoundField DataField="khdm" HeaderText="ÂÆ¢Êà∑‰ª£Á†Å">
+                                         <asp:BoundField DataField="khdm" HeaderText="øÕªß¥˙¬Î">
                                              <ItemStyle Width="9%" />
                                          </asp:BoundField>
-                                         <asp:BoundField DataField="cpxh" HeaderText="‰∫ßÂìÅÂûãÂè∑">
+                                         <asp:BoundField DataField="cpxh" HeaderText="≤˙∆∑–Õ∫≈">
                                              <ItemStyle Width="18%" />
                                          </asp:BoundField>
-                                         <asp:BoundField DataField="chsl" HeaderText="Âá∫Ë¥ßÊï∞Èáè">
+                                         <asp:BoundField DataField="chsl" HeaderText="≥ˆªı ˝¡ø">
                                              <ItemStyle Width="8%" />
                                          </asp:BoundField>
-                                         <asp:BoundField DataField="chrq"  HeaderText="Âá∫Ë¥ßÊó•Êúü" DataFormatString="{0:yyyy-MM-dd}"  >
+                                         <asp:BoundField DataField="chrq"  HeaderText="≥ˆªı»’∆⁄" DataFormatString="{0:yyyy-MM-dd}"  >
                                              <ItemStyle Width="10%" />
                                          </asp:BoundField>
                                           <asp:TemplateField >
                                             <ItemTemplate>
-                                                <asp:LinkButton ID="LinkButton2" runat="server" CommandName="Delete"    OnClientClick='return confirm("Ê≠§Âà†Èô§Êìç‰Ωú‰∏çÂèØÊÅ¢Â§çÔºåÊÇ®Á°ÆËÆ§Âà†Èô§Ê≠§ËÆ∞ÂΩïÂêóÔºü")'>Âà†Èô§</asp:LinkButton>
+                                                <asp:LinkButton ID="LinkButton2" runat="server" CommandName="Delete"    OnClientClick='return confirm("¥À…æ≥˝≤Ÿ◊˜≤ªø…ª÷∏¥£¨ƒ˙»∑»œ…æ≥˝¥Àº«¬º¬£ø")'>…æ≥˝</asp:LinkButton>
                                             </ItemTemplate>
-                                                <HeaderTemplate  >Âà†Èô§</HeaderTemplate>
+                                                <HeaderTemplate  >…æ≥˝</HeaderTemplate>
                                            </asp:TemplateField>
 
                                      </Columns>
@@ -113,17 +113,17 @@
                                            <table style="font-size :12px;">
                                            <tr>
                                         
-                                             <td> ÊÄªÂÖ±<asp:Label ID="Label1" runat="server" Text="<%#((GridView)Container.NamingContainer).PageCount %>"></asp:Label>È°µ &nbsp; </td>
+                                             <td> ◊‹π≤<asp:Label ID="Label1" runat="server" Text="<%#((GridView)Container.NamingContainer).PageCount %>"></asp:Label>“≥ &nbsp; </td>
                                             
-                                                <td> Á¨¨<asp:Label ID="Label2" runat="server" Text="<%#((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>È°µ &nbsp;</td>
+                                                <td> µ⁄<asp:Label ID="Label2" runat="server" Text="<%#((GridView)Container.NamingContainer).PageIndex+1 %>"></asp:Label>“≥ &nbsp;</td>
                                              
-                                                      <td> <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument ="1" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>">È¶ñÈ°µ</asp:LinkButton> &nbsp;</td>
+                                                      <td> <asp:LinkButton ID="LinkButton1" runat="server" CommandArgument ="1" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>"> ◊“≥</asp:LinkButton> &nbsp;</td>
                                                       <td>
-                                                          <asp:LinkButton ID="LinkButton2" runat="server" CommandArgument ="Prev" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>">‰∏ä‰∏ÄÈ°µ</asp:LinkButton> &nbsp;</td>
+                                                          <asp:LinkButton ID="LinkButton2" runat="server" CommandArgument ="Prev" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=0 %>">…œ“ª“≥</asp:LinkButton> &nbsp;</td>
                                                           <td>
-                                                              <asp:LinkButton ID="LinkButton3" runat="server" CommandArgument ="Next" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">‰∏ã‰∏ÄÈ°µ </asp:LinkButton> &nbsp;</td>
+                                                              <asp:LinkButton ID="LinkButton3" runat="server" CommandArgument ="Next" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">œ¬“ª“≥ </asp:LinkButton> &nbsp;</td>
                                                         <td>
-                                                            <asp:LinkButton ID="LinkButton4" runat="server" CommandArgument ="Last" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">Â∞æÈ°µ</asp:LinkButton> &nbsp;</td>
+                                                            <asp:LinkButton ID="LinkButton4" runat="server" CommandArgument ="Last" CommandName ="Page" Enabled ="<%#((GridView)Container.NamingContainer).PageIndex!=((GridView)Container.NamingContainer).PageCount-1 %>">Œ≤“≥</asp:LinkButton> &nbsp;</td>
                                                             <td>
                                                                 <asp:LinkButton ID="LinkButton5" runat="server" CommandArgument ="-1" CommandName ="Page" ValidationGroup="1" >GO</asp:LinkButton> </td>
                                                                 <td>

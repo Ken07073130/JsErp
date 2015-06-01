@@ -139,8 +139,8 @@ public partial class btdEdit : System.Web.UI.Page {
             TextBox tbDc = e.Row.FindControl("tbDc") as TextBox;
             tbFsyy.Text = drv["fsyy"].ToString();
             tbDc.Text = drv["dc"].ToString();
-            tbFsyy.ReadOnly =( Session["Groupnames"].ToString().IndexOf("生产补投单-工程部审核") >= 0 || Session["Groupnames"].ToString().IndexOf("超级用户")>=0);
-            tbDc.ReadOnly = (Session["Groupnames"].ToString().IndexOf("生产补投单-工程部审核") >= 0 || Session["Groupnames"].ToString().IndexOf("超级用户")>=0);
+            tbFsyy.ReadOnly =!( Session["Groupnames"].ToString().IndexOf("生产补投单-工程部审核") >= 0 || Session["Groupnames"].ToString().IndexOf("超级用户")>=0);
+            tbDc.ReadOnly = !(Session["Groupnames"].ToString().IndexOf("生产补投单-工程部审核") >= 0 || Session["Groupnames"].ToString().IndexOf("超级用户")>=0);
         }
     }
 
@@ -452,15 +452,18 @@ public partial class btdEdit : System.Web.UI.Page {
 
 
         //校验规格书型号
-        sqlstr = "select 1 from dbo.View_0395 where VwXm0001='" + tbGgsxh.Text + "'";
-        Cmd = new SqlCommand(sqlstr, sqlcon);
-        count = Convert.ToInt32(Cmd.ExecuteScalar());
-        if (count != 1) {
-            args.IsValid = false;
-            CustomValidator1.ErrorMessage = "经校验，系统中无该规格书型号，请检查规格书型号是否填写正确";
-            sqlcon.Close();
-            return;
+        if (!tbGgsxh.Text.Equals("")) {
+            sqlstr = "select 1 from dbo.View_0395 where VwXm0001='" + tbGgsxh.Text + "'";
+            Cmd = new SqlCommand(sqlstr, sqlcon);
+            count = Convert.ToInt32(Cmd.ExecuteScalar());
+            if (count != 1) {
+                args.IsValid = false;
+                CustomValidator1.ErrorMessage = "经校验，系统中无该规格书型号，请检查规格书型号是否填写正确";
+                sqlcon.Close();
+                return;
+            }
         }
+       
 
         sqlcon.Close();
 

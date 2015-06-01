@@ -14,6 +14,9 @@ public partial class SysManage_SubIndex_Default : System.Web.UI.Page {
     SqlConnection sqlcon = new SqlConnection(ConfigurationManager.ConnectionStrings["DatebaseConnection"].ConnectionString);
     SqlCommand cmd = null;
     protected void Page_Load(object sender, EventArgs e) {
+        if (Session["UserName"] == null) {
+            Response.Redirect("~/Login.aspx");
+        }
         if (!IsPostBack) {
             if (Session["groupnames"].ToString().Equals("超级用户")) {
                 divCp.Visible = true;

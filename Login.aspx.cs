@@ -71,7 +71,8 @@ public partial class Login : System.Web.UI.Page
                 while (sdr.Read()) {
                     Session.Add("GroupNames", sdr["GroupNames"].ToString());
                 }
-                Response.Redirect("index.aspx");
+              //  Response.Redirect("index.aspx");
+                Response.Write("<script>window.open('index.aspx','_top')</script>");
             }
 
 

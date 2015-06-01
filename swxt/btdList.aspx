@@ -8,7 +8,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div style="margin: 0 auto; width: 1000px; overflow: auto; font-size: 12px;">
+        <div style="margin: 0 auto; width: 100%; overflow: auto; font-size: 12px;">
             <div style="text-align: center; font-size: 25px; font-weight: bold; background-color: #FFFFCC;">
                 <span style="float: left; vertical-align: middle;">
                     <asp:LinkButton ID="lbtnOK" runat="server" Style="display: inline; width: 70px; height: 25px;
@@ -23,11 +23,13 @@
                 </asp:DropDownList>
                 <span style="border: 1px solid; background-color: #FFFF99; display: inline-block;
                     width: 50px;">&nbsp</span> 变更中
-            </div>
+                <asp:LinkButton ID="lbPrint" runat="server" OnClick="lbPrint_Click" Style="font-size: 13px;
+                    color: white; line-height: 20px; background-color: #3385ff; text-align: center;
+                    text-decoration: none" Width="71px">打印</asp:LinkButton></div>
             <div style="margin-bottom: 5px;">
-                客户代码<asp:TextBox ID="tbKhdm" runat="server" Height="13px" Width="100px"></asp:TextBox>
-                电芯型号<asp:TextBox ID="tbNbdxxh" runat="server" Height="13px" Width="100px"></asp:TextBox>
-                PACK型号<asp:TextBox ID="tbNbpackxh" runat="server" Height="13px" Width="100px"></asp:TextBox>
+                客户代码<asp:TextBox ID="tbKhdm" runat="server" Width="100px"></asp:TextBox>
+                电芯型号<asp:TextBox ID="tbNbdxxh" runat="server" Width="100px"></asp:TextBox>
+                PACK型号<asp:TextBox ID="tbNbpackxh" runat="server" Width="100px"></asp:TextBox>
                 <asp:LinkButton ID="lbQuery" runat="server" Style="font-size: 13px; color: white;
                     line-height: 20px; background-color: #3385ff; text-align: center; text-decoration: none"
                     Width="71px" OnClick="lbQuery_Click">查询</asp:LinkButton>
@@ -35,7 +37,7 @@
             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4"
                 Style="text-align: center; table-layout: fixed; word-wrap: break-word;" Font-Names="Verdana"
                 Font-Size="12px" OnRowDataBound="GridView1_RowDataBound" OnRowEditing="GridView1_RowEditing"
-                EmptyDataText="无记录" Width="1000px" BackColor="White" BorderColor="#336666" BorderStyle="Double"
+                EmptyDataText="无记录" Width="100%" BackColor="White" BorderColor="#336666" BorderStyle="Double"
                 BorderWidth="3px" GridLines="Horizontal" AllowPaging="true" AllowSorting="true"
                 PageSize="50" OnPageIndexChanging="GridView1_PageIndexChanging" EmptyDataRowStyle-BackColor="#40e0d0"
                 OnRowDeleting="GridView1_RowDeleting">
@@ -43,12 +45,26 @@
                 <Columns>
                     <asp:BoundField DataField="lchqzt" HeaderText="状态" ItemStyle-Width="50px" HeaderStyle-Width="50px" />
                     <asp:CommandField ShowEditButton="true" HeaderText="编辑" ItemStyle-Width="50px" HeaderStyle-Width="50px" />
-                    <asp:BoundField DataField="ddh" HeaderText="单号" ItemStyle-Width="150px" HeaderStyle-Width="150px" />
+                    <asp:TemplateField HeaderStyle-Width="50px" ItemStyle-Width="50px">
+                            <HeaderTemplate>
+                                打印
+                            </HeaderTemplate>
+                            <ItemTemplate>
+                                <asp:CheckBox ID="cbPrint" runat="server"></asp:CheckBox>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                    <asp:BoundField DataField="bh" HeaderText="编号">
+                        <ControlStyle CssClass="hidden" />
+                        <FooterStyle CssClass="hidden" />
+                        <HeaderStyle CssClass="hidden" />
+                        <ItemStyle CssClass="hidden" />
+                    </asp:BoundField>
+                    <asp:BoundField DataField="ddh" HeaderText="单号" ItemStyle-Width="150px" HeaderStyle-Width="150px"  />
                     <asp:BoundField DataField="jbrq" HeaderText="日期" ItemStyle-Width="80px" HeaderStyle-Width="80px" />
                     <asp:BoundField DataField="KHDM" HeaderText="客户代码" ItemStyle-Width="60px" HeaderStyle-Width="60px" />
-                    <asp:BoundField DataField="GGSXH" HeaderText="规格书型号" ItemStyle-Width="90px" HeaderStyle-Width="90px" />
-                    <asp:BoundField DataField="nbdxxh" HeaderText="内部电芯" ItemStyle-Width="80px" HeaderStyle-Width="80px" />
-                    <asp:BoundField DataField="nbpackxh" HeaderText="PACK型号" ItemStyle-Width="80px" HeaderStyle-Width="80px" />
+                    <asp:BoundField DataField="GGSXH" HeaderText="规格书型号" />
+                    <asp:BoundField DataField="nbdxxh" HeaderText="内部电芯" />
+                    <asp:BoundField DataField="nbpackxh" HeaderText="PACK型号"  />
                     <asp:BoundField DataField="DXYJBT" HeaderText="电芯" ItemStyle-Width="50px" HeaderStyle-Width="50px" />
                     <asp:BoundField DataField="ZJYJBT" HeaderText="正极" ItemStyle-Width="50px" HeaderStyle-Width="50px" />
                     <asp:BoundField DataField="FJYJBT" HeaderText="负极" ItemStyle-Width="50px" HeaderStyle-Width="50px" />

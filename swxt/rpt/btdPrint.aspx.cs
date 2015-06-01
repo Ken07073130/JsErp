@@ -12,7 +12,7 @@ using System.Data.OleDb;
 using CrystalDecisions.CrystalReports.Engine;
 using System.Data.SqlClient;
 
-public partial class ddfhPrint : System.Web.UI.Page
+public partial class btdPrint : System.Web.UI.Page
 {
     ReportDocument myReport;
     protected void Page_Load(object sender, EventArgs e) {
@@ -33,16 +33,22 @@ public partial class ddfhPrint : System.Web.UI.Page
         if (!String.IsNullOrEmpty(Request["bh"].ToString())) {
             conditionString = " where charindex(a.bh,'" + Request["bh"].ToString() + "')>0";
         }
-        String sqlstr = " select (select distinct convert(varchar(30), VwXm0002)+'mAh'+'  '+VwXm0004 from dbo.View_0395 where VwXm0001=a.nbdxxh) pmyq,* from js_htpsbH a "
-                       + conditionString;
+        String sqlstr = "select b.hj,b.BLXM1,b.DC1,a.* from js_btdH a left join "
+                      + " (select btdbh,sum(sl) hj, "
+                      + "  (select '不良项目：'+c.blxm+'，数量(PCS)：'+convert(varchar(10),c.sl)+'，问题描述：'+c.wtms+char(10) from js_btd_list c where c.btdbh=d.btdbh for xml path('')) BLXM1, "
+                      + "  (select '不良项目：'+c.blxm+'，发生原因：'+c.fsyy+'，对策：'+c.dc+char(10) from js_btd_list c where c.btdbh=d.btdbh for xml path('')) DC1 "
+                      + "  from dbo.js_btd_list d "
+                      + "  group by btdbh "
+                      + "  ) b on a.BH=b.btdbh "
+                      + conditionString;
         DataSet ds = new DataSet();
         SqlDataAdapter sda = new SqlDataAdapter(sqlstr, sqlconn);
         //水晶报表里每张表都要设置一下数据集
-        sda.Fill(ds, "js_htpsbH");
+        sda.Fill(ds, "js_btdH");
 
 
         myReport = new ReportDocument();
-        string reportPath = Server.MapPath("~/swxt/rpt/htpsbPrint.rpt");
+        string reportPath = Server.MapPath("~/swxt/rpt/btdPrint.rpt");
         myReport.Load(reportPath);
 
         //绑定数据集，注意，一个报表用一个数据集。

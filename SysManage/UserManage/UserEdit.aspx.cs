@@ -77,7 +77,7 @@ public partial class UserEdit : System.Web.UI.Page
 
             if (OldPwd == T_OldPwd.Text.Trim())
             {
-                sqlstr = "update  STUsers set Password='" + T_NewPwd.Text.Trim() + " ' phoneNo='"+T_PhoneNo.Text.Trim()+"'  where uGroup=0 and UnUsed=0 and UserID='" + L_ID.Text + "'";
+                sqlstr = "update  STUsers set Password='" + T_NewPwd.Text.Trim() + " ',phoneNo='"+T_PhoneNo.Text.Trim()+"'  where uGroup=0 and UnUsed=0 and UserID='" + L_ID.Text + "'";
                 Cmd = new SqlCommand(sqlstr, sqlcon);
                 Cmd.ExecuteNonQuery();
 

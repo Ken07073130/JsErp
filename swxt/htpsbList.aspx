@@ -90,6 +90,7 @@
                     <asp:ListItem Selected="True" Value="KHDDH">客户订单号</asp:ListItem>
                     <asp:ListItem Selected="True" Value="NBDXXH">内部电芯型号</asp:ListItem>
                     <asp:ListItem Selected="True" Value="NBPACKXH">PACK型号</asp:ListItem>
+                    <asp:ListItem Value="dyzt">打印状态</asp:ListItem>
                 </asp:CheckBoxList>
             </div>
             <div id="divWorkFlow" style="display: none; margin-bottom: 20px;">
@@ -136,6 +137,7 @@
                         <asp:BoundField DataField="SWJLHQZT" HeaderText="商务经理">
                             <ItemStyle Width="10%" />
                         </asp:BoundField>
+                        
                     </Columns>
                     <FooterStyle BackColor="White" ForeColor="#000066" />
                     <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
@@ -189,18 +191,19 @@
                                 <asp:CheckBox ID="cbPrint" runat="server"></asp:CheckBox>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="BH" HeaderText="单号"  />
-                        <asp:BoundField DataField="BB" HeaderText="版本" />
+                        <asp:BoundField DataField="BH" HeaderText="单号" />
+                        <asp:BoundField DataField="BB" HeaderText="版本" HeaderStyle-Width="30px" ItemStyle-Width="30px" />
                         <asp:BoundField DataField="JBRQ1" HeaderText="建表日期" />
                         <asp:BoundField DataField="GGSXH" HeaderText="规格书型号" />
                         <asp:BoundField DataField="KHXH" HeaderText="客户型号" />
                         <asp:BoundField DataField="KHDM" HeaderText="客户代码" />
                         <asp:BoundField DataField="GGSBH" HeaderText="规格书编号" />
-                        <asp:BoundField DataField="GGSBB" HeaderText="规格书版本" />
+                        <asp:BoundField DataField="GGSBB" HeaderText="规格书版本"  HeaderStyle-Width="70px" ItemStyle-Width="70px" />
                         <asp:BoundField DataField="DDSL1" HeaderText="订单数量" />
                         <asp:BoundField DataField="KHDDH" HeaderText="客户订单号" />
                         <asp:BoundField DataField="NBDXXH" HeaderText="内部电芯型号" />
                         <asp:BoundField DataField="NBPACKXH" HeaderText="PACK型号" />
+                        <asp:BoundField DataField="DYZT" HeaderText="打印状态" />
                     </Columns>
                     <PagerTemplate>
                         <table style="font-size: 12px;">

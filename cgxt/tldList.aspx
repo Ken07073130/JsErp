@@ -20,6 +20,18 @@
                  <label style="background-color:#CC0033;width:50px;display:inline-block;">&nbsp</label> 
                  <label>需变更</label> 
              </div>
+              <div style="margin-top: 5px;">
+                    &nbsp; &nbsp; &nbsp; 评审单编号 
+               
+                    <asp:TextBox ID="tbPsdbh" runat="server" Height="12px" Width="151px" Font-Size="12px" />&nbsp;&nbsp;内部电芯型号
+               
+                    <asp:TextBox ID="tbDxxh" runat="server" Height="12px" Width="89px" Font-Size="12px" />
+                    &nbsp; 客户代码 &nbsp;<asp:TextBox ID="tbKhdm" runat="server" Height="12px" Width="89px"
+                        Font-Size="12px" />&nbsp; 
+               
+                    <asp:LinkButton ID="lbQuery" runat="server" Width="71px" Style="text-align: center; background-color: #3385ff; color: white; font-size: 13px; line-height: 20px; text-decoration: none;"
+                        OnClick="lbQuery_Click" OnClientClick="queryClick()">查询</asp:LinkButton>
+                </div>
             <div>
                 <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="4"
                     Style="text-align: center" Font-Names="Verdana" Font-Size="12px" OnRowDataBound="GridView1_RowDataBound"
@@ -29,36 +41,22 @@
                     EmptyDataRowStyle-BackColor="#40e0d0">
                     <RowStyle ForeColor="#333333" BackColor="White" />
                     <Columns>
-                        <asp:BoundField DataField="BH" HeaderText="单号">
-                            <ItemStyle Width="8%" />
-                        </asp:BoundField>
+                        <asp:BoundField DataField="BH" HeaderText="单号" />
                         <asp:CommandField HeaderText="修改" ShowEditButton="True">
                             <ItemStyle Width="3%" />
                         </asp:CommandField>
                         <asp:CommandField HeaderText="删除" ShowDeleteButton="True">
                             <ItemStyle Width="3%" />
                         </asp:CommandField>
-                        <asp:BoundField DataField="JBRQ" HeaderText="建表日期">
-                            <ItemStyle Width="7%" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="TLZT" HeaderText="套料状态">
-                            <ItemStyle Width="8%" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="DXXH" HeaderText="电芯型号">
-                            <ItemStyle Width="6%" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="DDH" HeaderText="合同订单号">
-                            <ItemStyle Width="8%" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="KHDM" HeaderText="客户代码">
-                            <ItemStyle Width="8%" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="DDL" HeaderText="合同投产量">
-                            <ItemStyle Width="5%" />
-                        </asp:BoundField>
-                        <asp:BoundField DataField="TCL" HeaderText="投料量">
-                            <ItemStyle Width="5%" />
-                        </asp:BoundField>
+                        <asp:BoundField DataField="PSDBH" HeaderText="评审单号" />
+                        <asp:BoundField DataField="JBRQ" HeaderText="建表日期" />
+                        <asp:BoundField DataField="TLZT" HeaderText="套料状态" />
+                        <asp:BoundField DataField="DXXH" HeaderText="电芯型号" />
+                         <asp:BoundField DataField="PACKXH" HeaderText="PACK型号" />
+                        <asp:BoundField DataField="DDH" HeaderText="合同订单号" />
+                        <asp:BoundField DataField="KHDM" HeaderText="客户代码" />
+                        <asp:BoundField DataField="DDL" HeaderText="合同投产量" />
+                        <asp:BoundField DataField="TCL" HeaderText="投料量" />
                         <asp:HyperLinkField DataNavigateUrlFields="bh" DataNavigateUrlFormatString="tldEdit.aspx?xh={0}&lb=Change" Text="变更" ItemStyle-Width="3%"  />
                     </Columns>
                     <PagerTemplate>

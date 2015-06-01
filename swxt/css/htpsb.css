@@ -4,6 +4,7 @@
   font-size:12px;
 }
 
+
 .layout
 {
 	overflow:hidden;
@@ -54,6 +55,7 @@ display:none;
     width:60px;
     display:inline-block;
     text-align:center;
+    
 }
 .swSpanControl
 {

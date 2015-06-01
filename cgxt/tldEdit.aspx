@@ -5,7 +5,6 @@
 <head runat="server">
     <title>系统套料单</title>
     <link rel="stylesheet" type="text/css" href="css/common.css" />
-
     <script type="text/javascript">
            function detailDjxxClick(){
               if (document.getElementById('aShow').innerHTML=="点击展开"){
@@ -32,6 +31,14 @@
              document.getElementById('<%= tbDxtcl.ClientID %>').value=(parseFloat(document.getElementById('<%= tbTcbl.ClientID %>').value)*parseFloat(document.getElementById('<%= tbDDL.ClientID %>').value)).toFixed(0);
           
            }       
+           
+           
+           function toHtps(){
+             var bh=document.getElementById('tbPsdbh').value;
+             var shref="../swxt/htpsbEdit.aspx?bh="+bh+"&lb=EDIT&editType=查看";
+             document.getElementById('aHtps').href=encodeURI(shref); 
+             
+           }
     </script>
 
 </head>
@@ -40,11 +47,16 @@
         <div>
             <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
                 AsyncPostBackTimeout="600" />
+                
+                <div style="font-size: 25px; font-weight: bold; width:1000px; text-align:center; margin:0 auto;">
+                            <asp:Label ID="lblTitle" runat="server" Text="套料单"></asp:Label>
+                                   
+                 <a id="aHtps" href="javascript:void(0);" target="_blank" class="button"  onclick="toHtps()">查看关联合同评审</a>
+                 </div>
             <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div id="divPage">
-                        <div style="font-size: 25px; text-align: center; font-weight: bold;">
-                            <asp:Label ID="lblTitle" runat="server" Text="套料单"></asp:Label></div>
+                        
                         <div class="layout">
                             <ul>
                                 <li><span class="spanLabel">套料单号</span><span class="spanControl"><asp:TextBox ID="tbBh"
